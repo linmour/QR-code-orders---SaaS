@@ -1,7 +1,9 @@
 package com.linmour.common.dtos;
 
+import com.linmour.common.exception.enums.ExceptionEnum;
 import lombok.Data;
 import lombok.ToString;
+
 
 /**
  * @Classname Result
@@ -16,7 +18,7 @@ import lombok.ToString;
 public class Result<T> {
 
     /**
-     * 响应编码,0为正常,-1错误
+     * 响应编码,200为正常,201错误
      */
     private int code;
 
@@ -28,11 +30,11 @@ public class Result<T> {
     /**
      * 响应内容
      */
-    private T result;
+    private T data;
 
 
     public Result() {
-        this(0, "success");
+        this(200, "success");
     }
 
     public Result(int code, String msg) {
@@ -47,20 +49,31 @@ public class Result<T> {
      * @param <T>
      * @return
      */
-    public static <T> com.linmour.common.dtos.Result<T> validfail(String msg) {
-        com.linmour.common.dtos.Result<T> response = new com.linmour.common.dtos.Result<T>();
-        response.setCode(-1);
+    public static <T> Result<T> error(String msg) {
+        Result<T> response = new Result<T>();
+        response.setCode(201);
         response.setMsg(msg);
         return response;
     }
-    public static <T> com.linmour.common.dtos.Result<T> validfail(T result, String msg) {
-        com.linmour.common.dtos.Result<T> response = new com.linmour.common.dtos.Result<T>();
-        response.setCode(-1);
-        response.setResult(result);
+    public static <T> Result<T> error(T data, String msg) {
+        Result<T> response = new Result<T>();
+        response.setCode(201);
+        response.setData(data);
         response.setMsg(msg);
         return response;
     }
 
+    public static Result error(ExceptionEnum enums){
+        return setExceptionEnum(enums);
+    }
+
+
+    public static Result setExceptionEnum(ExceptionEnum enums){
+        return success(enums.getCode(),enums.getErrorMessage());
+    }
+
+
+    
 
 
     /**
@@ -68,14 +81,14 @@ public class Result<T> {
      *
      * @return RestResponse Rest服务封装相应数据
      */
-    public static <T> com.linmour.common.dtos.Result<T> success(T result) {
-        com.linmour.common.dtos.Result<T> response = new com.linmour.common.dtos.Result<T>();
-        response.setResult(result);
+    public static <T> Result<T> success(T data) {
+        Result<T> response = new Result<T>();
+        response.setData(data);
         return response;
     }
-    public static <T> com.linmour.common.dtos.Result<T> success(T result, String msg) {
-        com.linmour.common.dtos.Result<T> response = new com.linmour.common.dtos.Result<T>();
-        response.setResult(result);
+    public static <T> Result<T> success(T data, String msg) {
+        Result<T> response = new Result<T>();
+        response.setData(data);
         response.setMsg(msg);
         return response;
     }
@@ -85,14 +98,26 @@ public class Result<T> {
      *
      * @return RestResponse Rest服务封装相应数据
      */
-    public static <T> com.linmour.common.dtos.Result<T> success() {
-        return new com.linmour.common.dtos.Result<T>();
+    public static <T> Result<T> success() {
+        return new Result<T>();
     }
 
 
-    public Boolean isSuccessful() {
-        return this.code == 0;
+    public Integer getCode() {
+        return code;
     }
 
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }
 

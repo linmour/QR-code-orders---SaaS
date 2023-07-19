@@ -1,16 +1,16 @@
 package com.linmour.common.exception;
 
-import com.linmour.common.exception.enums.ExceptionEnum;
+import com.linmour.common.exception.enums.AppHttpCodeEnum;
 
 public class CustomException extends RuntimeException {
 
-    private ExceptionEnum exceptionEnum;
+    private AppHttpCodeEnum appHttpCodeEnum;
 
-    public CustomException(ExceptionEnum exceptionEnum){
-        this.exceptionEnum = exceptionEnum;
+    public CustomException(AppHttpCodeEnum appHttpCodeEnum){
+        this.appHttpCodeEnum = appHttpCodeEnum;
     }
 
-    public ExceptionEnum getExceptionEnum() {
-        return exceptionEnum;
+    public AppHttpCodeEnum getExceptionEnum() {
+        return appHttpCodeEnum;
     }
 }

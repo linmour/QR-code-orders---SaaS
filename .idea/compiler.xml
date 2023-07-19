@@ -12,10 +12,13 @@
         <module name="linmour-gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="linmour-security" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="linmour-ScanOrder" options="-parameters" />
+      <module name="linmour-ScanOrder" options="" />
       <module name="linmour-account" options="-parameters" />
       <module name="linmour-common" options="-parameters" />
       <module name="linmour-gateway" options="-parameters" />

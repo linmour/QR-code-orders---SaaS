@@ -1,4 +1,4 @@
-package com.linmour.account;
+package com.linmour.account.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
@@ -25,7 +25,7 @@ public class RedisCache
      * @param key 缓存的键值
      * @param value 缓存的值
      */
-    public <T> void setCacheObject(final String key, final T value)
+    public <T> void  setCacheObject(final String key, final T value)
     {
         redisTemplate.opsForValue().set(key, value);
     }

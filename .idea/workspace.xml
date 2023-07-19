@@ -5,31 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1fed795-e058-42cc-994d-e1c686edb537" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/linmour-account/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/AccountApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/RedisCache.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/constants/constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/controller/merchant/Login.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/convert/LoginVoConvert.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/pojo/Vo/LoginVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/LoginUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/UserDetailServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/resources/bootstrap.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/CustomException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/enums/ExceptionEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/utils/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/utils/RedisCache.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-gateway/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/GatewayApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/AuthorizeFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/util/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/linmour-gateway/src/main/resources/bootstrap.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linmour-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/dtos/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/dtos/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/AccessDeniedHandlerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/AuthenticationEntryPointImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a49cd7a9-f907-41a4-8a46-8162e493109d.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/GatewayAuthorizeFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/util/JwtUtil.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +36,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/linmour-account/pom.xml" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/linmour-common/pom.xml" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -56,16 +44,11 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\soft\maven\apache-maven-3.8.6\maven-repo" />
+        <option name="localRepository" value="D:\maven\apache-maven-3.8.6\maven-repo" />
         <option name="mavenHome" value="$PROJECT_DIR$/../../../soft/maven/apache-maven-3.8.6" />
         <option name="useMavenConfig" value="true" />
         <option name="userSettingsFile" value="D:\soft\maven\apache-maven-3.8.6\conf\settings.xml" />
       </MavenGeneralSettings>
-    </option>
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
     </option>
   </component>
   <component name="ProjectId" id="2SgUp2gozWzfy5Rk3XM1g0UqZXR" />
@@ -73,50 +56,58 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/soft/maven/apache-maven-3.8.6/maven-repo/org/springframework/security/spring-security-config/5.3.6.RELEASE/spring-security-config-5.3.6.RELEASE.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;fc8e18874e7ab67a242735adf7ebe96a&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "jdk.selected.JAVA_MODULE": "1.8",
+    "last_directory_selection": "D:/project/java/linmour-ScanOrder/linmour-account/src/main/java/com/linmour/account",
+    "last_opened_file_path": "D:/java/project/linmour-ScanOrder/linmour-account/src/main/java/com/linmour/account/security",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "spring.configuration.checksum": "fc8e18874e7ab67a242735adf7ebe96a",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\java\project\linmour-ScanOrder\linmour-account\src\main\java\com\linmour\account\security" />
       <recent name="D:\project\java\linmour-ScanOrder\linmour-gateway\src\main\java\com\linmour\gateway" />
       <recent name="D:\project\java\linmour-ScanOrder\linmour-gateway\src\main\resources" />
       <recent name="D:\project\java\linmour-ScanOrder\linmour-account\src\main\resources" />
     </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.linmour.account" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.linmour.account.utils" />
       <recent name="com.linmour.common.utils" />
+      <recent name="com.linmour.account.enums" />
+      <recent name="com.linmour.account.filter" />
+      <recent name="com.linmour.gateway.util" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -194,11 +185,24 @@
       <workItem from="1689665041255" duration="229000" />
       <workItem from="1689665378906" duration="9513000" />
       <workItem from="1689682041398" duration="5307000" />
+      <workItem from="1689742028938" duration="21295000" />
+      <workItem from="1689768145074" duration="6574000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
@@ -206,17 +210,37 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/impl/MerchantServiceImpl.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="22" />
+          <line>69</line>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/GatewayAuthorizeFilter.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/UserDetailServiceImpl.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="23" />
+          <line>25</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/impl/MerchantServiceImpl.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest" memberName="request" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -2,7 +2,7 @@ package com.linmour.account.service;
 
 import com.linmour.account.pojo.Do.Merchant;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.account.pojo.Vo.LoginVo;
+import com.linmour.account.pojo.Dto.LoginDto;
 import com.linmour.common.dtos.Result;
 
 /**
@@ -12,5 +12,7 @@ import com.linmour.common.dtos.Result;
 */
 public interface MerchantService extends IService<Merchant> {
 
-    Result login(LoginVo loginVo);
+    Result login(LoginDto loginDto);
+
+    Result logout();
 }

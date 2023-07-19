@@ -1,7 +1,7 @@
 package com.linmour.account.convert;
 
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.account.pojo.Vo.LoginVo;
+import com.linmour.account.pojo.Dto.LoginDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,15 +9,15 @@ import org.mapstruct.factory.Mappers;
 public interface LoginVoConvert {
     LoginVoConvert INSTANCE = Mappers.getMapper(LoginVoConvert.class);
 
-    default LoginVo Merchant(Merchant merchant){
+    default LoginDto Merchant(Merchant merchant){
         if ( merchant == null ) {
             return null;
         }
-        LoginVo loginVo = new LoginVo();
-        loginVo.setPassword(merchant.getPassword());
-        loginVo.setPhone(merchant.getPhone());
-        loginVo.setId(merchant.getId());
-        return loginVo;
+        LoginDto loginDto = new LoginDto();
+        loginDto.setPassword(merchant.getPassword());
+        loginDto.setPhone(merchant.getPhone());
+        loginDto.setId(merchant.getId());
+        return loginDto;
 
     }
 }

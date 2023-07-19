@@ -1,7 +1,7 @@
 package com.linmour.common.exception;
 
 import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.enums.ExceptionEnum;
+import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         log.error("catch exception:{}",e.getMessage());
 
-        return Result.error(ExceptionEnum.SERVER_ERROR);
+        return Result.error(AppHttpCodeEnum.SYSTEM_ERROR);
     }
 
     /**

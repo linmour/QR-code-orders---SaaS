@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.linmour.account.convert.LoginVoConvert;
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.account.pojo.Vo.LoginVo;
+import com.linmour.account.pojo.Dto.LoginDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +28,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (merchant == null){
             throw new UsernameNotFoundException("找不到用户");
         }
-        LoginVo merchant1 = LoginVoConvert.INSTANCE.Merchant(merchant);
+        LoginDto merchant1 = LoginVoConvert.INSTANCE.Merchant(merchant);
         UserDetails loginUser = new LoginUser(merchant1);
         return loginUser;
     }

@@ -1,109 +1,112 @@
 package com.linmour.gateway.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.UUID;
 
+/**
+ * JWT工具类
+ */
 public class JwtUtil {
 
-    // TOKEN的有效期一天（S）
-    private static final int TOKEN_TIME_OUT = 3_600;
-    // 加密KEY
-    private static final String TOKEN_ENCRY_KEY = "MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY";
-    // 最小刷新间隔(S)
-    private static final int REFRESH_TIME = 300;
+    //有效期为
+    public static final Long JWT_TTL = 24*60 * 60 *1000L;// 60 * 60 *1000  一个小时
+    //设置秘钥明文
+    public static final String JWT_KEY = "sangeng";
 
-    // 生产ID
-    public static String getToken(Long id) {
-        Map<String, Object> claimMaps = new HashMap<>();
-        claimMaps.put("id", id);
-        long currentTime = System.currentTimeMillis();
+    public static String getUUID(){
+        String token = UUID.randomUUID().toString().replaceAll("-", "");
+        return token;
+    }
+    
+    /**
+     * 生成jtw
+     * @param subject token中要存放的数据（json格式）
+     * @return
+     */
+    public static String createJWT(String subject) {
+        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());// 设置过期时间
+        return builder.compact();
+    }
+
+    /**
+     * 生成jtw
+     * @param subject token中要存放的数据（json格式）
+     * @param ttlMillis token超时时间
+     * @return
+     */
+    public static String createJWT(String subject, Long ttlMillis) {
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());// 设置过期时间
+        return builder.compact();
+    }
+
+    private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SecretKey secretKey = generalKey();
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        if(ttlMillis==null){
+            ttlMillis=JwtUtil.JWT_TTL;
+        }
+        long expMillis = nowMillis + ttlMillis;
+        Date expDate = new Date(expMillis);
         return Jwts.builder()
-                .setId(UUID.randomUUID().toString())
-                .setIssuedAt(new Date(currentTime))  //签发时间
-                .setSubject("system")  //说明
-                .setIssuer("heima") //签发者信息
-                .setAudience("app")  //接收用户
-                .compressWith(CompressionCodecs.GZIP)  //数据压缩方式
-                .signWith(SignatureAlgorithm.HS512, generalKey()) //加密方式
-                .setExpiration(new Date(currentTime + TOKEN_TIME_OUT * 1000))  //过期时间戳
-                .addClaims(claimMaps) //cla信息
-                .compact();
+                .setId(uuid)              //唯一的ID
+                .setSubject(subject)   // 主题  可以是JSON数据
+                .setIssuer("sg")     // 签发者
+                .setIssuedAt(now)      // 签发时间
+                .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
+                .setExpiration(expDate);
     }
 
     /**
-     * 获取token中的claims信息
-     *
-     * @param token
+     * 创建token
+     * @param id
+     * @param subject
+     * @param ttlMillis
      * @return
      */
-    private static Jws<Claims> getJws(String token) {
-        return Jwts.parser()
-                .setSigningKey(generalKey())
-                .parseClaimsJws(token);
+    public static String createJWT(String id, String subject, Long ttlMillis) {
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);// 设置过期时间
+        return builder.compact();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYWM2ZDVhZi1mNjVlLTQ0MDAtYjcxMi0zYWEwOGIyOTIwYjQiLCJzdWIiOiJzZyIsImlzcyI6InNnIiwiaWF0IjoxNjM4MTA2NzEyLCJleHAiOjE2MzgxMTAzMTJ9.JVsSbkP94wuczb4QryQbAke3ysBDIL5ou8fWsbt_ebg";
+        Claims claims = parseJWT(token);
+        System.out.println(claims);
     }
 
     /**
-     * 获取payload body信息
-     *
-     * @param token
-     * @return
-     */
-    public static Claims getClaimsBody(String token) throws ExpiredJwtException {
-        return getJws(token).getBody();
-    }
-
-    /**
-     * 获取hearder body信息
-     *
-     * @param token
-     * @return
-     */
-    public static JwsHeader getHeaderBody(String token) {
-        return getJws(token).getHeader();
-    }
-
-    /**
-     * 是否过期
-     *
-     * @param claims
-     * @return -1：有效，0：有效，1：过期，2：过期
-     */
-    public static int verifyToken(Claims claims) throws Exception {
-        if (claims == null) {
-            return 1;
-        }
-
-        claims.getExpiration().before(new Date());
-        // 需要自动刷新TOKEN
-        if ((claims.getExpiration().getTime() - System.currentTimeMillis()) > REFRESH_TIME * 1000) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * 由字符串生成加密key
-     *
+     * 生成加密后的秘钥 secretKey
      * @return
      */
     public static SecretKey generalKey() {
-        byte[] encodedKey = Base64.getEncoder().encode(TOKEN_ENCRY_KEY.getBytes());
+        byte[] encodedKey = Base64.getDecoder().decode(JwtUtil.JWT_KEY);
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return key;
     }
-
-    public static void main(String[] args) {
-       /* Map map = new HashMap();
-        map.put("id","11");*/
-        System.out.println(JwtUtil.getToken(1102L));
-        Jws<Claims> jws = JwtUtil.getJws("eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAADWLQQqEMAwA_5KzhURNt_qb1KZYQSi0wi6Lf9942NsMw3zh6AVW2DYmDGl2WabkZgreCaM6VXzhFBfJMcMARTqsxIG9Z888QLui3e3Tup5Pb81013KKmVzJTGo11nf9n8v4nMUaEY73DzTabjmDAAAA.4SuqQ42IGqCgBai6qd4RaVpVxTlZIWC826QA9kLvt9d-yVUw82gU47HDaSfOzgAcloZedYNNpUcd18Ne8vvjQA");
-        Claims claims = jws.getBody();
-        System.out.println(claims.get("id"));
-
+    
+    /**
+     * 解析
+     *
+     * @param jwt
+     * @return
+     * @throws Exception
+     */
+    public static Claims parseJWT(String jwt) throws Exception {
+        SecretKey secretKey = generalKey();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(jwt)
+                .getBody();
     }
 
 }

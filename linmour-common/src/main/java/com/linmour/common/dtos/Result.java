@@ -1,6 +1,6 @@
 package com.linmour.common.dtos;
 
-import com.linmour.common.exception.enums.ExceptionEnum;
+import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.Data;
 import lombok.ToString;
 
@@ -63,13 +63,13 @@ public class Result<T> {
         return response;
     }
 
-    public static Result error(ExceptionEnum enums){
+    public static Result error(AppHttpCodeEnum enums){
         return setExceptionEnum(enums);
     }
 
 
-    public static Result setExceptionEnum(ExceptionEnum enums){
-        return success(enums.getCode(),enums.getErrorMessage());
+    public static Result setExceptionEnum(AppHttpCodeEnum enums){
+        return success(enums.getCode(),enums.getMsg());
     }
 
 
@@ -89,6 +89,13 @@ public class Result<T> {
     public static <T> Result<T> success(T data, String msg) {
         Result<T> response = new Result<T>();
         response.setData(data);
+        response.setMsg(msg);
+        return response;
+    }
+
+    public static <T> Result<T> success(int code, String msg) {
+        Result<T> response = new Result<T>();
+        response.setCode(code);
         response.setMsg(msg);
         return response;
     }

@@ -32,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private AuthorizeFilter authorizeFilter;
 
+    @Resource
+    private AuthorizeFilter authorizeFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -67,10 +70,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 // 添加自定义过滤器
+<<<<<<< HEAD
                 .addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint);
+=======
+                .addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
     }
 
 

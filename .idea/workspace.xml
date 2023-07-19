@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1fed795-e058-42cc-994d-e1c686edb537" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/AccessDeniedHandlerImpl.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/AuthenticationEntryPointImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
@@ -17,6 +18,39 @@
       <change beforePath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/GatewayAuthorizeFilter.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/util/JwtUtil.java" beforeDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/utils/WebUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/RedisCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/utils/RedisCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/constants/constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/constants/constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/controller/merchant/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/controller/merchant/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/convert/LoginVoConvert.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/convert/LoginVoConvert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/pojo/Do/Merchant.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/pojo/Do/Merchant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/pojo/Vo/LoginVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/pojo/Dto/LoginDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/LoginUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/LoginUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/security/UserDetailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/MerchantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/MerchantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/impl/MerchantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/impl/MerchantServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-account/target/generated-sources/annotations/com/linmour/account/convert/LoginVoConvertImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/dtos/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/dtos/Result.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/CustomException.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/CustomException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/enums/ExceptionEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/exception/enums/AppHttpCodeEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-common/src/main/java/com/linmour/common/utils/RedisCache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/AuthorizeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/GatewayAuthorizeFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/util/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/linmour/account/mapper/SystemMerchantMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/linmour/account/pojo/SystemMerchant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/linmour/account/service/SystemMerchantService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/linmour/account/service/impl/SystemMerchantServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mapper/SystemMerchantMapper.xml" beforeDir="false" />
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +104,11 @@
     "go.import.settings.migrated": "true",
     "jdk.selected.JAVA_MODULE": "1.8",
     "last_directory_selection": "D:/project/java/linmour-ScanOrder/linmour-account/src/main/java/com/linmour/account",
+<<<<<<< HEAD
     "last_opened_file_path": "D:/java/project/linmour-ScanOrder/linmour-account/src/main/java/com/linmour/account/security",
+=======
+    "last_opened_file_path": "D:/soft/maven/apache-maven-3.8.6/maven-repo/org/springframework/security/spring-security-config/5.3.6.RELEASE/spring-security-config-5.3.6.RELEASE.jar",
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,9 +116,15 @@
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
+<<<<<<< HEAD
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "File.Encoding",
     "spring.configuration.checksum": "fc8e18874e7ab67a242735adf7ebe96a",
+=======
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "spring.configuration.checksum": "b2e10b80b845a481da981bd8776f4625",
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -165,8 +209,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.AccountApplication" />
         <item itemvalue="Spring Boot.GatewayApplication" />
+        <item itemvalue="Spring Boot.AccountApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -186,7 +230,10 @@
       <workItem from="1689665378906" duration="9513000" />
       <workItem from="1689682041398" duration="5307000" />
       <workItem from="1689742028938" duration="21295000" />
+<<<<<<< HEAD
       <workItem from="1689768145074" duration="6574000" />
+=======
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
     </task>
     <servers />
   </component>
@@ -215,11 +262,16 @@
           <line>69</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
+<<<<<<< HEAD
         <line-breakpoint type="java-line">
+=======
+        <line-breakpoint enabled="true" type="java-line">
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
           <url>file://$PROJECT_DIR$/linmour-gateway/src/main/java/com/linmour/gateway/filter/GatewayAuthorizeFilter.java</url>
           <line>33</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
+<<<<<<< HEAD
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java</url>
           <line>37</line>
@@ -234,6 +286,12 @@
           <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/service/impl/MerchantServiceImpl.java</url>
           <line>47</line>
           <option name="timeStamp" value="56" />
+=======
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/linmour-account/src/main/java/com/linmour/account/filter/AuthorizeFilter.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="53" />
+>>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

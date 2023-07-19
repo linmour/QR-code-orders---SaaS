@@ -1,0 +1,62 @@
+package com.linmour.gateway.filter;
+
+
+
+import com.linmour.gateway.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.core.Ordered;
+
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+@Component
+public class GatewayAuthorizeFilter implements Ordered, GlobalFilter {
+
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        //1.获取request和response对象
+        ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
+
+
+
+        //3.获取token
+        String token = request.getHeaders().getFirst("token");
+
+        //4.判断token是否存在
+        if(StringUtils.isBlank(token)){
+            return chain.filter(exchange);
+        }
+        String userId = null;
+        //5.判断token是否有效
+        try {
+            Claims claimsBody = JwtUtil.parseJWT(token);
+            userId = claimsBody.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("token解析异常");
+        }
+
+
+
+        //6.放行
+        return chain.filter(exchange);
+    }
+
+    /**
+     * 优先级设置  值越小  优先级越高
+     * @return
+     */
+    @Override
+    public int getOrder() {
+        return -99;
+    }
+}

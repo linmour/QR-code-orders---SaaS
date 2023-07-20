@@ -3,12 +3,13 @@ package com.linmour.common.exception;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-
-@ControllerAdvice  //控制器增强类
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+//控制器增强类
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
@@ -24,6 +25,15 @@ public class GlobalExceptionHandler {
         log.error("catch exception:{}",e.getMessage());
 
         return Result.error(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    public Result exception(BadCredentialsException e){
+        e.printStackTrace();
+        log.error("catch exception:{}",e.getMessage());
+
+        return Result.error(AppHttpCodeEnum.LOGIN_ERROR);
     }
 
     /**

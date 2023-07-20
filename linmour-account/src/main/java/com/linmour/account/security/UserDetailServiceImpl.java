@@ -1,7 +1,9 @@
 package com.linmour.account.security;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.linmour.account.convert.LoginVoConvert;
+import com.linmour.account.convert.LoginDtoConvert;
+
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
 import com.linmour.account.pojo.Dto.LoginDto;
@@ -24,11 +26,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         Merchant merchant = merchantMapper.selectOne(new LambdaQueryWrapper<Merchant>().eq(Merchant::getPhone, phone));
-
-        if (merchant == null){
-            throw new UsernameNotFoundException("找不到用户");
+        if (ObjectUtil.isNull(merchant)) {
+            throw new UsernameNotFoundException("用户不存在");
         }
-        LoginDto merchant1 = LoginVoConvert.INSTANCE.Merchant(merchant);
+        LoginDto merchant1 = LoginDtoConvert.INSTANCE.Merchant(merchant);
         UserDetails loginUser = new LoginUser(merchant1);
         return loginUser;
     }

@@ -79,7 +79,7 @@ public class JwtUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYWM2ZDVhZi1mNjVlLTQ0MDAtYjcxMi0zYWEwOGIyOTIwYjQiLCJzdWIiOiJzZyIsImlzcyI6InNnIiwiaWF0IjoxNjM4MTA2NzEyLCJleHAiOjE2MzgxMTAzMTJ9.JVsSbkP94wuczb4QryQbAke3ysBDIL5ou8fWsbt_ebg";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NjA3OTAyYjhmN2Q0MjlhYmQ2OGFhMjJkZTM3NGJiMCIsInN1YiI6IjEiLCJpc3MiOiJzZyIsImlhdCI6MTY4OTgyMTk2NywiZXhwIjoxNjg5OTA4MzY3fQ.-NEPe5y_GtdIr6f_Zp2e8mzpqmj9jcbwOMt0tg_T5AU";
         Claims claims = parseJWT(token);
         System.out.println(claims);
     }

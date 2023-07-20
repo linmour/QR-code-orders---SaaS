@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@SpringBootApplication
+// 这个是为了扫描到全局异常类的包，要不然捕获不到
+@SpringBootApplication(scanBasePackages = {"com.linmour"})
 @EnableDiscoveryClient
 @MapperScan("com.linmour.account.mapper")
 

@@ -10,6 +10,8 @@ import com.linmour.account.pojo.Dto.LoginDto;
 import com.linmour.account.security.LoginUser;
 import com.linmour.account.service.MerchantService;
 import com.linmour.common.dtos.Result;
+import com.linmour.common.exception.CustomException;
+import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import com.linmour.common.utils.JwtUtil;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,22 +47,22 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getPhone(), loginDto.getPassword());
         //这个方法就会调用我们写的UserDetailsService类进行数据库查询，如果返回null说明用户名错误
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if(authenticate == null){
-            throw new RuntimeException("密码错误");
+
+            LoginUser loginUser = (LoginUser)authenticate.getPrincipal();
+        if (loginUser.getLoginDto().getStatus() == 0){
+            throw new CustomException(AppHttpCodeEnum.ACCOUNT_DISABLE);
         }
-        LoginUser loginUser = (LoginUser)authenticate.getPrincipal();
         String UserId = loginUser.getLoginDto().getId().toString();
         //用id生成jwt
-        String jwt = JwtUtil.createJWT(UserId,3L);
+        String jwt = JwtUtil.createJWT(UserId);
+        //获取用户信息
+
         //把用户信息存入redis
         redisCache.setCacheObject(USER_LOGIN_KEY +UserId,loginUser);
         HashMap<String, String> map = new HashMap<>();
         map.put("token",jwt);
 
-//        //把用户信息封装成vo
-//        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
-//        //再把token和用户信息封装成一个vo
-//        BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt,userInfoVo);
+
         return Result.success(map);
     }
 

@@ -3,9 +3,11 @@ package com.linmour.account.security;
 import com.alibaba.fastjson.JSON;
 
 import com.linmour.common.dtos.Result;
+import com.linmour.common.exception.GlobalExceptionHandler;
 import com.linmour.common.utils.WebUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 

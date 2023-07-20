@@ -22,7 +22,6 @@ public class Login {
     }
 
     @PostMapping("logout")
-
     public Result logout(){
         return merchantService.logout();
     }

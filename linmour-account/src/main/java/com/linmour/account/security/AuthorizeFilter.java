@@ -1,4 +1,4 @@
-package com.linmour.account.filter;
+package com.linmour.account.security;
 
 
 import com.alibaba.fastjson.JSON;
@@ -35,13 +35,9 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         //从请求头中获取token
-        String token = request.getHeader("token");
+        String token = request.getHeader("Token");
         //这个为空说明用户未注册，就直接放行，让他就像往下面的过滤链走
-<<<<<<< HEAD
         if(StringUtils.isBlank(token) || request.getRequestURI().contains("login")){
-=======
-        if(StringUtils.isBlank(token) && request.getRequestURI().contains("login")){
->>>>>>> 994951962ca7a3aeb2f38814752d741052da3c04
             filterChain.doFilter(request,response);
             //这个ruturn是不让他继续执行下面的代码
             return;

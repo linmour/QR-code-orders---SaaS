@@ -29,7 +29,11 @@ public enum AppHttpCodeEnum {
 
     NICKNAME_EXIST(512, "昵称已存在"),
 
+    ACCOUNT_DISABLE(513,"账号已停用"),
+
     LOGOUT_ERROR(603,"退出失败");
+
+
     int code;
     String msg;
 

@@ -6,8 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface LoginVoConvert {
-    LoginVoConvert INSTANCE = Mappers.getMapper(LoginVoConvert.class);
+public interface LoginDtoConvert {
+    LoginDtoConvert INSTANCE = Mappers.getMapper(LoginDtoConvert.class);
 
     default LoginDto Merchant(Merchant merchant){
         if ( merchant == null ) {
@@ -17,6 +17,7 @@ public interface LoginVoConvert {
         loginDto.setPassword(merchant.getPassword());
         loginDto.setPhone(merchant.getPhone());
         loginDto.setId(merchant.getId());
+        loginDto.setStatus(merchant.getStatus());
         return loginDto;
 
     }

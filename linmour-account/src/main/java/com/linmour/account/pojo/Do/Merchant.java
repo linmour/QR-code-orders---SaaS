@@ -1,9 +1,7 @@
 package com.linmour.account.pojo.Do;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,7 +18,7 @@ public class Merchant implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.ID_WORKER)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -74,18 +72,22 @@ public class Merchant implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time")
+    //将时间转换为自己要的时间格式向前端发送(具体还是json数据不变)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 
      */
-    @TableField(value = "update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
      * 是否删除 0没1删
      */
+    @TableLogic(value = "0", delval = "1")
     @TableField(value = "deleted")
     private Integer deleted;
 

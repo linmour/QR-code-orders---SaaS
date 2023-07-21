@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @SpringBootApplication(scanBasePackages = {"com.linmour"})
 @EnableDiscoveryClient
 @MapperScan("com.linmour.account.mapper")
-
 public class AccountApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccountApplication.class,args);

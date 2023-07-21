@@ -4,6 +4,7 @@ import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,14 @@ public class GlobalExceptionHandler {
         log.error("catch exception:{}",e.getMessage());
 
         return Result.error(AppHttpCodeEnum.LOGIN_ERROR);
+    }
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    public Result exception(BindException e){
+        e.printStackTrace();
+        log.error("catch exception:{}",e.getMessage());
+
+        return Result.error(AppHttpCodeEnum.ARAUMENT_ERROR);
     }
 
     /**

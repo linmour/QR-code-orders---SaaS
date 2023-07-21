@@ -1,9 +1,11 @@
 package com.linmour.account.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.linmour.account.convert.UserInfoDtoConvert;
+import com.linmour.account.pojo.Dto.UserInfoDto;
 import com.linmour.account.utils.RedisCache;
-import com.linmour.account.constants.constants;
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
 import com.linmour.account.pojo.Dto.LoginDto;
@@ -39,6 +41,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     private AuthenticationManager authenticationManager;
     @Resource
     private RedisCache redisCache;
+    @Resource
+    private MerchantMapper merchantMapper;
 
 
     @Override
@@ -59,23 +63,30 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
 
         //把用户信息存入redis
         redisCache.setCacheObject(USER_LOGIN_KEY +UserId,loginUser);
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
+        UserInfoDto userInfo = userInfo(Long.valueOf(UserId));
         map.put("token",jwt);
+        map.put("userInfo",userInfo);
 
 
         return Result.success(map);
     }
 
     @Override
-    public Result logout() {
-        //从SecurityContextHolder中拿到用户信息
-        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //获取用户id
-        Long id = user.getLoginDto().getId();
-
+    public Result logout(Long id) {
         redisCache.deleteObject(USER_LOGIN_KEY+id);
         return Result.success();
 
+    }
+
+    @Override
+    public UserInfoDto userInfo(Long userId) {
+        Merchant merchant = merchantMapper.selectById(userId);
+        if (ObjectUtil.isNull(merchant)){
+            throw new CustomException(AppHttpCodeEnum.USERINFO_ERROR);
+        }
+        UserInfoDto userInfo = UserInfoDtoConvert.INSTANCE.Merchant(merchant);
+        return userInfo;
     }
 }
 

@@ -21,19 +21,9 @@ public class Login {
         return (merchantService.login(loginDto));
     }
 
-    @PostMapping("logout")
-    public Result logout(){
-        return merchantService.logout();
+    @PostMapping("/logout/{id}")
+    public Result logout(@PathVariable Long id){
+        return merchantService.logout(id);
     }
 
-    @RequestMapping("/a")
-    public Result a(){
-        String password = "123";
-        
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
-
-        System.out.println("加密后的值：" + hashedPassword);
-        return Result.success(hashedPassword);
-    }
 }

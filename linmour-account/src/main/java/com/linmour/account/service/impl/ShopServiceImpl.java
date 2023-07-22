@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.account.convert.ShopListDtoConvert;
 import com.linmour.account.pojo.Do.Shop;
-import com.linmour.account.pojo.Dto.ShopDto;
+import com.linmour.account.pojo.Dto.ShopPageDto;
 import com.linmour.account.security.LoginUser;
 import com.linmour.account.service.ShopService;
 import com.linmour.account.mapper.ShopMapper;
@@ -35,12 +35,10 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
 
     @Override
-    public Result shopList(ShopDto dto) {
-
+    public Result shopList(ShopPageDto dto) {
         //从SecurityContextHolder中拿到用户信息
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginDto().getId();
-
 
         Page<Shop> ShopListPage = page(new Page<Shop>(dto.getPageNo(),dto.getPageSize()),
                 new LambdaQueryWrapper<Shop>().eq(Shop::getMerchantId, id)
@@ -51,9 +49,24 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             throw new CustomException(AppHttpCodeEnum.SHOP_ERRPR);
         }
 
-        List<ShopDto> shopDtos = ShopListDtoConvert.INSTANCE.ShopList(ShopListPage.getRecords());
-        return Result.success(new PageResult<>(shopDtos,ShopListPage.getTotal()));
+        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.ShopList(ShopListPage.getRecords());
+        return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
 
+    }
+
+    @Override
+    public Result SonShopList(ShopPageDto dto) {
+        Page<Shop> ShopListPage = page(new Page<Shop>(dto.getPageNo(),dto.getPageSize()),
+                new LambdaQueryWrapper<Shop>().eq(Shop::getParentId,dto.getId())
+                        .like(!StringUtils.isBlank(dto.getName()),Shop::getName,dto.getName())
+                        .eq(!ObjectUtil.isNull(dto.getStatus()),Shop::getStatus,dto.getStatus()));
+
+        if (ObjectUtil.isNull(ShopListPage.getRecords())){
+            throw new CustomException(AppHttpCodeEnum.SHOP_ERRPR);
+        }
+
+        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.ShopList(ShopListPage.getRecords());
+        return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
     }
 }
 

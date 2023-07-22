@@ -19,4 +19,6 @@ public class UserInfoDto implements Serializable {
     private Integer sex;
     private String avatar;
 
+    private String idCard;
+
 }

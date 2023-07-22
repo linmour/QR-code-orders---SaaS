@@ -1,6 +1,7 @@
 package com.linmour.account.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.linmour.account.convert.UserInfoDtoConvert;
@@ -14,16 +15,23 @@ import com.linmour.account.service.MerchantService;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.common.service.FileStorageService;
 import com.linmour.common.utils.JwtUtil;
 
+import com.lowagie.text.pdf.PRIndirectReference;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 import static com.linmour.account.constants.constants.USER_LOGIN_KEY;
 
@@ -43,6 +51,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     private RedisCache redisCache;
     @Resource
     private MerchantMapper merchantMapper;
+    @Resource
+    private FileStorageService fileStorageService;
 
 
     @Override
@@ -87,6 +97,40 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         }
         UserInfoDto userInfo = UserInfoDtoConvert.INSTANCE.Merchant(merchant);
         return userInfo;
+    }
+
+    @Override
+    public Result uploadPicture(MultipartFile multipartFile, String prefix) {
+        if (multipartFile == null || multipartFile.getSize() == 0){
+            return Result.error(AppHttpCodeEnum.ARAUMENT_ERROR);
+        }
+        String originalFilename = multipartFile.getOriginalFilename();
+        String postfix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileId = null;
+        String fileName =null;
+        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = user.getLoginDto().getId();
+        if (StringUtils.isNotBlank(prefix) && prefix.equals("avatar")){
+            //从SecurityContextHolder中拿到用户信息
+
+            fileName = id.toString();
+        }else {
+            fileName = UUID.randomUUID().toString().replace("-", "");
+        }
+
+        try {
+            fileId = fileStorageService.uploadImgFile(prefix, fileName + postfix, multipartFile.getInputStream());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        merchantMapper.update(null,new LambdaUpdateWrapper<Merchant>().eq(Merchant::getId,id)
+                .set(StringUtils.isNotBlank(fileId),Merchant::getAvatar,fileId));
+
+
+        return Result.success(fileId);
+
     }
 }
 

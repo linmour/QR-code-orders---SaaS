@@ -1,7 +1,7 @@
 package com.linmour.account.convert;
 
 import com.linmour.account.pojo.Do.Shop;
-import com.linmour.account.pojo.Dto.ShopDto;
+import com.linmour.account.pojo.Dto.ShopPageDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,13 +13,13 @@ public interface ShopListDtoConvert {
 
     ShopListDtoConvert INSTANCE = Mappers.getMapper(ShopListDtoConvert.class);
 
-    default List<ShopDto> ShopList(List<Shop> shopList){
+    default List<ShopPageDto> ShopList(List<Shop> shopList){
         if (shopList == null){
             return null;
         }
-        List<ShopDto> shopDtos = new ArrayList<>();
+        List<ShopPageDto> shopPageDtos = new ArrayList<>();
         for (Shop shop : shopList) {
-            shopDtos.add(ShopDto.builder()
+            shopPageDtos.add(ShopPageDto.builder()
                     .auditStatus(shop.getAuditStatus())
                     .id(shop.getId())
                     .intro(shop.getIntro())
@@ -27,9 +27,11 @@ public interface ShopListDtoConvert {
                     .certificate(shop.getCertificate())
                     .name(shop.getName())
                     .position(shop.getPosition())
-                    .parentId(shop.getParentId()).build());
+                    .parentId(shop.getParentId())
+                    .createTime(shop.getCreateTime())
+                    .businessStatus(shop.getBusinessStatus()).build());
         }
-        return shopDtos;
+        return shopPageDtos;
     }
 
 }

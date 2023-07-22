@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.account.pojo.Dto.LoginDto;
 import com.linmour.account.pojo.Dto.UserInfoDto;
 import com.linmour.common.dtos.Result;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
 * @author linmour
@@ -18,4 +19,6 @@ public interface MerchantService extends IService<Merchant> {
     Result logout(Long id);
 
     UserInfoDto userInfo(Long userId);
+
+    Result uploadPicture(MultipartFile multipartFile, String type);
 }

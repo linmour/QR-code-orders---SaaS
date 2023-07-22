@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -70,16 +73,25 @@ public class Shop implements Serializable {
     private String position;
 
     /**
-     * 
+     *  经营状态 0休息中 1营业中
      */
-    @TableField(value = "create_time")
-    private Date createTime;
+    @TableField(value = "business_status")
+    private Integer businessStatus;
+
 
     /**
      * 
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "create_time")
+    private LocalDateTime createTime;
+
+    /**
+     * 
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "update_time")
-    private Date updateTime;
+    private LocalDateTime  updateTime;
 
     /**
      * 

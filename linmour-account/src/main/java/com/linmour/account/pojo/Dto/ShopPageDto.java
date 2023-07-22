@@ -1,5 +1,7 @@
 package com.linmour.account.pojo.Dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.linmour.common.dtos.PageParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +9,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ShopDto  extends PageParam implements Serializable{
+public class ShopPageDto extends PageParam implements Serializable{
     private Long id;
 
 
@@ -30,9 +34,14 @@ public class ShopDto  extends PageParam implements Serializable{
 
     private Integer auditStatus;
 
+    private Integer businessStatus;
+
 
     private Long parentId;
 
 
     private String position;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime createTime;
 }

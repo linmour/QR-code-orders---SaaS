@@ -2,7 +2,7 @@ package com.linmour.account.service;
 
 import com.linmour.account.pojo.Do.Shop;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.account.pojo.Dto.ShopDto;
+import com.linmour.account.pojo.Dto.ShopPageDto;
 import com.linmour.common.dtos.Result;
 
 /**
@@ -12,5 +12,17 @@ import com.linmour.common.dtos.Result;
 */
 public interface ShopService extends IService<Shop> {
 
-    Result shopList(ShopDto dto);
+    /**
+     * 查询拥有的店铺
+     * @param dto
+     * @return
+     */
+    Result shopList(ShopPageDto dto);
+
+    /**
+     * 查询分店
+     * @param dto
+     * @return
+     */
+    Result SonShopList(ShopPageDto dto);
 }

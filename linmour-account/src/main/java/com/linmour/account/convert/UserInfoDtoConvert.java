@@ -20,7 +20,8 @@ public interface UserInfoDtoConvert {
                 .avatar(merchant.getAvatar())
                 .phone(merchant.getPhone())
                 .id(merchant.getId())
-                .realName(merchant.getRealName()).build();
+                .realName(merchant.getRealName())
+                .idCard(merchant.getIdCard()).build();
 
     }
 }

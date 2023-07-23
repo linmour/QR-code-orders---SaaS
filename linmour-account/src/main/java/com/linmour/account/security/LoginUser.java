@@ -1,6 +1,6 @@
 package com.linmour.account.security;
 
-import com.linmour.account.pojo.Dto.LoginDto;
+import com.linmour.account.pojo.Vo.LoginVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
 
-    private LoginDto loginDto;
+    private LoginVo loginVo;
 
     /**
      * 获取用户的权限列表，返回一个集合，其中每个元素都是用户所拥有的权限
@@ -30,12 +30,12 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return loginDto.getPassword();
+        return loginVo.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return loginDto.getPhone();
+        return loginVo.getPhone();
     }
 
     /**

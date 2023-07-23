@@ -21,4 +21,5 @@ public class UserInfoDto implements Serializable {
 
     private String idCard;
 
+    private String idCardUrl;
 }

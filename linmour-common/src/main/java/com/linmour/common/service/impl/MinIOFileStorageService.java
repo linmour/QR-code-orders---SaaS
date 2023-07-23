@@ -44,7 +44,7 @@ public class MinIOFileStorageService implements FileStorageService {
         if(!StringUtils.isEmpty(dirPath)){
             stringBuilder.append(dirPath).append(separator);
         }
-        if (!dirPath.equals("avatar")){
+        if (dirPath.equals("")){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             String todayStr = sdf.format(new Date());
             stringBuilder.append(todayStr).append(separator);

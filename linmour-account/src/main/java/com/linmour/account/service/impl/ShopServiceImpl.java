@@ -38,7 +38,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     public Result shopList(ShopPageDto dto) {
         //从SecurityContextHolder中拿到用户信息
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long id = user.getLoginDto().getId();
+        Long id = user.getLoginVo().getId();
 
         Page<Shop> ShopListPage = page(new Page<Shop>(dto.getPageNo(),dto.getPageSize()),
                 new LambdaQueryWrapper<Shop>().eq(Shop::getMerchantId, id)
@@ -49,7 +49,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             throw new CustomException(AppHttpCodeEnum.SHOP_ERRPR);
         }
 
-        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.ShopList(ShopListPage.getRecords());
+        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.shopListToShopPageDtoList(ShopListPage.getRecords());
         return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
 
     }
@@ -65,7 +65,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
             throw new CustomException(AppHttpCodeEnum.SHOP_ERRPR);
         }
 
-        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.ShopList(ShopListPage.getRecords());
+        List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.shopListToShopPageDtoList(ShopListPage.getRecords());
         return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
     }
 }

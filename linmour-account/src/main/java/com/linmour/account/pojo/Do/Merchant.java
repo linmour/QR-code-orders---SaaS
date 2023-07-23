@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 
 /**
@@ -45,6 +45,12 @@ public class Merchant implements Serializable {
      */
     @TableField(value = "id_card")
     private String idCard;
+
+    /**
+     * 身份证照片
+     */
+    @TableField(value = "id_card_url")
+    private String idCardUrl;
 
     /**
      * 性别  0女 1男

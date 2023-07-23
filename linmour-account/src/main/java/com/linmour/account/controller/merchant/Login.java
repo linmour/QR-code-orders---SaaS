@@ -1,9 +1,8 @@
 package com.linmour.account.controller.merchant;
 
-import com.linmour.account.pojo.Dto.LoginDto;
+import com.linmour.account.pojo.Vo.LoginVo;
 import com.linmour.account.service.MerchantService;
 import com.linmour.common.dtos.Result;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,8 +16,8 @@ public class Login {
 
 
     @PostMapping("/login")
-    public Result login(@RequestBody LoginDto loginDto){
-        return (merchantService.login(loginDto));
+    public Result login(@RequestBody LoginVo loginVo){
+        return (merchantService.login(loginVo));
     }
 
     @PostMapping("/logout/{id}")

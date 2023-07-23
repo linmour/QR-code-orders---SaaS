@@ -1,6 +1,7 @@
 package com.linmour.common.dtos;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 
@@ -23,13 +24,13 @@ public class PageParam implements Serializable {
 
     @NotNull(message = "页码不能为空")
     @Min(value = 1, message = "页码最小值为 1")
-    @JSONField(serialize = false)
+    @JsonIgnore()
     public Integer pageNo = PAGE_NO;
 
     @NotNull(message = "每页条数不能为空")
     @Min(value = 1, message = "每页条数最小值为 1")
     @Max(value = 100, message = "每页条数最大值为 100")
-    @JSONField(serialize = false)
+    @JsonIgnore()
     public Integer pageSize = PAGE_SIZE;
 
 }

@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface MerchantConvert {
     MerchantConvert INSTANCE = Mappers.getMapper(MerchantConvert.class);
 
-    Merchant UserInfoDto(UserInfoDto userInfoDto);
+    Merchant userInfoDtoToMerchant(UserInfoDto userInfoDto);
 }

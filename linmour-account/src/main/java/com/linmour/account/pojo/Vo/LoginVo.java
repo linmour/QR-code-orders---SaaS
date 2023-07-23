@@ -1,11 +1,11 @@
-package com.linmour.account.pojo.Dto;
+package com.linmour.account.pojo.Vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class LoginDto implements Serializable {
+public class LoginVo implements Serializable {
 
     private Long id;
     private String phone;

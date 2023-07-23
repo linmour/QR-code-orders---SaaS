@@ -6,13 +6,13 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-22T20:35:38+0800",
+    date = "2023-07-23T15:34:23+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 1.8.0_361 (Oracle Corporation)"
 )
 public class MerchantConvertImpl implements MerchantConvert {
 
     @Override
-    public Merchant UserInfoDto(UserInfoDto userInfoDto) {
+    public Merchant userInfoDtoToMerchant(UserInfoDto userInfoDto) {
         if ( userInfoDto == null ) {
             return null;
         }
@@ -23,6 +23,7 @@ public class MerchantConvertImpl implements MerchantConvert {
         merchant.setRealName( userInfoDto.getRealName() );
         merchant.setPhone( userInfoDto.getPhone() );
         merchant.setIdCard( userInfoDto.getIdCard() );
+        merchant.setIdCardUrl( userInfoDto.getIdCardUrl() );
         merchant.setSex( userInfoDto.getSex() );
         merchant.setAvatar( userInfoDto.getAvatar() );
 

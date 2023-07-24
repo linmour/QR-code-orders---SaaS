@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmour.account.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmour.account.pojo.Do.Menu">
+            <id property="id" column="id" jdbcType="TINYINT"/>
+            <result property="parentId" column="parent_id" jdbcType="TINYINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="path" column="path" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="permissions" column="permissions" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,name,
+        path,icon,permissions
+    </sql>
+    <select id="getMenus" resultMap="BaseResultMap" parameterType="long">
+        SELECT b.* FROM system_menu AS b,system_merchant AS a WHERE a.id = #{id} AND b.permissions = a.type
+
+    </select>
+
+</mapper>

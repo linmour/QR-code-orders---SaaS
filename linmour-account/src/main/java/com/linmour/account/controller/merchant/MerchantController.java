@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/account/merchant")
-public class merchantController {
+public class MerchantController {
 
     @Resource
     private MerchantService merchantService;

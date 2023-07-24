@@ -25,4 +25,5 @@ public interface MerchantService extends IService<Merchant> {
     Result ocr(MultipartFile multipartFile);
 
 
+
 }

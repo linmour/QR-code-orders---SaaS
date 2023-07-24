@@ -18,6 +18,7 @@ public class UserInfoDto implements Serializable {
     private String phone;
     private Integer sex;
     private String avatar;
+    private String type;
 
     private String idCard;
 

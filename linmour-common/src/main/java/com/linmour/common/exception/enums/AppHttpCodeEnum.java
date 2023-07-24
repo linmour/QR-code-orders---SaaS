@@ -7,6 +7,7 @@ public enum AppHttpCodeEnum {
     NEED_LOGIN(401,"需要登录后操作"),
     TOKEN_ERROR(402,"token解析异常"),
     NO_OPERATOR_AUTH(403,"无权限操作"),
+    REQUEST_ERROR(499,"请求方法错误"),
 
 
     SYSTEM_ERROR(500,"出现错误"),

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,7 @@ public class GlobalExceptionHandler {
         return Result.error(AppHttpCodeEnum.SYSTEM_ERROR);
     }
 
+    //密码错误
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
     public Result exception(BadCredentialsException e){
@@ -37,6 +39,16 @@ public class GlobalExceptionHandler {
 
         return Result.error(AppHttpCodeEnum.LOGIN_ERROR);
     }
+    //请求方式不对
+    @ExceptionHandler(HttpRequestMethodNotSupportedException .class)
+    @ResponseBody
+    public Result exception(HttpRequestMethodNotSupportedException e){
+        e.printStackTrace();
+        log.error("catch exception:{}",e.getMessage());
+
+        return Result.error(AppHttpCodeEnum.REQUEST_ERROR);
+    }
+    //请求参数不对
     @ExceptionHandler(BindException.class)
     @ResponseBody
     public Result exception(BindException e){
@@ -45,15 +57,6 @@ public class GlobalExceptionHandler {
 
         return Result.error(AppHttpCodeEnum.ARAUMENT_ERROR);
     }
-
-//    @ExceptionHandler(DuplicateKeyException.class)
-//    @ResponseBody
-//    public Result exception(DuplicateKeyException e){
-//        e.printStackTrace();
-//        log.error("catch exception:{}",e.getMessage());
-//
-//        return Result.error(AppHttpCodeEnum.ARAUMENT_ERROR);
-//    }
 
     /**
      * 处理可控异常  自定义异常

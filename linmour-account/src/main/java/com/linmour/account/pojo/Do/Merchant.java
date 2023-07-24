@@ -53,6 +53,12 @@ public class Merchant implements Serializable {
     private String idCardUrl;
 
     /**
+     * 权限类型
+     */
+    @TableField(value = "type")
+    private String type;
+
+    /**
      * 性别  0女 1男
      */
     @TableField(value = "sex")

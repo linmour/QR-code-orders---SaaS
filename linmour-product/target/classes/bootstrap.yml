@@ -1,8 +1,8 @@
 server:
-  port: 12801
+  port: 12802
 spring:
   application:
-    name: linmour-account
+    name: linmour-product
   cloud:
     nacos:
       discovery:
@@ -10,6 +10,5 @@ spring:
       config:
         server-addr: 43.136.73.159:8848
         file-extension: yml
-
 
 

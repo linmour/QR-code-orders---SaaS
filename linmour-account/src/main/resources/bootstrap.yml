@@ -1,14 +1,6 @@
 server:
   port: 12801
 spring:
-
-  # 文件上传
-  servlet:
-    multipart:
-      # 单个文件大小
-      max-file-size: 100MB
-      # 设置总上传的文件大小
-      max-request-size: 200MB
   application:
     name: linmour-account
   cloud:
@@ -18,8 +10,6 @@ spring:
       config:
         server-addr: 43.136.73.159:8848
         file-extension: yml
-tess4j:
-  data-path: D:\project\java\linmour-ScanOrder\ocr
-  language: chi_sim
+
 
 

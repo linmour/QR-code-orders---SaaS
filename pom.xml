@@ -12,6 +12,7 @@
         <module>linmour-common</module>
         <module>linmour-account</module>
         <module>linmour-gateway</module>
+        <module>linmour-product</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

@@ -1,4 +1,4 @@
-package com.linmour.account.pojo.Vo;
+package com.linmour.security.pojo;
 
 import lombok.Data;
 

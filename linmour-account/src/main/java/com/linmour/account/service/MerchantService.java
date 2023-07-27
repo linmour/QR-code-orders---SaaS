@@ -1,8 +1,9 @@
 package com.linmour.account.service;
 
-import com.linmour.account.pojo.Do.Merchant;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.account.pojo.Vo.LoginVo;
+import com.linmour.account.pojo.Do.Merchant;
+
+import com.linmour.security.pojo.LoginVo;
 import com.linmour.account.pojo.Dto.UserInfoDto;
 import com.linmour.common.dtos.Result;
 import org.springframework.web.multipart.MultipartFile;

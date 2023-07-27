@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.account.convert.MenuListDtoConvert;
 import com.linmour.account.pojo.Do.Menu;
 import com.linmour.account.pojo.Dto.MenuListDto;
-import com.linmour.account.security.LoginUser;
+
 import com.linmour.account.service.MenuService;
 import com.linmour.account.mapper.MenuMapper;
 import com.linmour.common.dtos.Result;
+import com.linmour.security.pojo.LoginUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

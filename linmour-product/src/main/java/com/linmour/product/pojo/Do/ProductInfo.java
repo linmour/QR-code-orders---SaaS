@@ -39,11 +39,6 @@ public class ProductInfo implements Serializable {
     @TableField(value = "intro")
     private String intro;
 
-    /**
-     * 商品价格  基本价格+规格价钱
-     */
-    @TableField(value = "price")
-    private BigDecimal price;
 
     /**
      * 是否需要选规格 0不要 1要

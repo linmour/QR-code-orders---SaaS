@@ -1,6 +1,6 @@
-package com.linmour.account.security;
+package com.linmour.security.pojo;
 
-import com.linmour.account.pojo.Vo.LoginVo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

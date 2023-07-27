@@ -1,6 +1,6 @@
 package com.linmour.account.pojo.Dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.linmour.common.dtos.PageParam;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

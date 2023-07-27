@@ -2,7 +2,6 @@ package com.linmour.common.dtos;
 
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 

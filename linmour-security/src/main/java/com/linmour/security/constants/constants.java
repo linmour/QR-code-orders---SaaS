@@ -1,4 +1,4 @@
-package com.linmour.account.constants;
+package com.linmour.security.constants;
 
 public class constants {
     public static final String USER_LOGIN_KEY = "login:";

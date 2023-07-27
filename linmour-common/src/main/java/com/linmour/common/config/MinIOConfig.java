@@ -2,6 +2,7 @@ package com.linmour.common.config;
 
 
 import com.linmour.common.service.FileStorageService;
+import com.linmour.common.service.impl.MinIOFileStorageService;
 import io.minio.MinioClient;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,9 @@ public class MinIOConfig {
                 .endpoint(minIOConfigProperties.getEndpoint())
                 .build();
     }
+    @Bean
+    public FileStorageService fileStorageService() {
+        return new MinIOFileStorageService();
+    }
+
 }

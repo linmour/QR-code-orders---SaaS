@@ -1,18 +1,22 @@
-package com.linmour.account.security;
+package com.linmour.security.filter;
 
 
 import com.alibaba.fastjson.JSON;
-import com.linmour.account.security.LoginUser;
-import com.linmour.account.utils.RedisCache;
+
 import com.linmour.common.dtos.Result;
 import com.linmour.common.utils.JwtUtil;
+import com.linmour.common.utils.RedisCache;
 import com.linmour.common.utils.WebUtils;
-import org.apache.commons.lang.StringUtils;
+
+
+import com.linmour.security.pojo.LoginUser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,14 +25,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.linmour.account.constants.constants.USER_LOGIN_KEY;
 import static com.linmour.common.exception.enums.AppHttpCodeEnum.NEED_LOGIN;
+import static com.linmour.security.constants.constants.USER_LOGIN_KEY;
 
 @Component
-public class AuthorizeFilter extends OncePerRequestFilter {
+public class TokenOncePerRequestFilter extends OncePerRequestFilter {
 
     @Resource
-    private RedisCache redisCache;
+    private RedisCache a;
+    public static RedisCache redisCache;
+    @PostConstruct
+    public void b(){
+        redisCache = this.a;
+    }
 
 
     @Override

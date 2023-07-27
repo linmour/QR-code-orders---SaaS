@@ -4,13 +4,12 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.linmour.security.pojo.LoginUser;
 import com.linmour.account.convert.UserInfoDtoConvert;
 import com.linmour.account.pojo.Dto.UserInfoDto;
-import com.linmour.account.utils.RedisCache;
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.account.pojo.Vo.LoginVo;
-import com.linmour.account.security.LoginUser;
+import com.linmour.security.pojo.LoginVo;
 import com.linmour.account.service.MerchantService;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
@@ -19,6 +18,7 @@ import com.linmour.common.service.FileStorageService;
 import com.linmour.common.tess4j.Tess4jClient;
 import com.linmour.common.utils.JwtUtil;
 
+import com.linmour.common.utils.RedisCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,11 +33,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.linmour.account.constants.constants.USER_LOGIN_KEY;
+import static com.linmour.security.constants.constants.USER_LOGIN_KEY;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.linmour.account.security;
+package com.linmour.account.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -6,7 +6,8 @@ import com.linmour.account.convert.LoginVoConvert;
 
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.account.pojo.Vo.LoginVo;
+import com.linmour.security.pojo.LoginVo;
+import com.linmour.security.pojo.LoginUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

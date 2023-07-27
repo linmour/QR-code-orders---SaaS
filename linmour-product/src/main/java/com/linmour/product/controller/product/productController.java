@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/a")
+@RequestMapping("/product/product")
 public class productController {
 
     @Resource
     private ProductInfoService productInfoService;
-    @GetMapping("/b/{shopId}")
+    @GetMapping("/getProductList/{shopId}")
     public Result getProductList(@PathVariable Long shopId){
         return productInfoService.getProductList(shopId);
     }

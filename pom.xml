@@ -13,6 +13,7 @@
         <module>linmour-account</module>
         <module>linmour-gateway</module>
         <module>linmour-product</module>
+        <module>linmour-security</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

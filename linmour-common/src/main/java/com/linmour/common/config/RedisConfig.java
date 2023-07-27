@@ -1,4 +1,4 @@
-package com.linmour.account.config;
+package com.linmour.common.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;

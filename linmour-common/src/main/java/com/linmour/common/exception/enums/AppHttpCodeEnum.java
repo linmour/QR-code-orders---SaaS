@@ -29,7 +29,8 @@ public enum AppHttpCodeEnum {
     LOGOUT_ERROR(603,"退出失败"),
 
     USERINFO_ERROR(1000,"获取用户信息失败"),
-    SHOP_ERRPR(1001, "获取店面列表失败");
+    SHOP_ERRPR(1001, "获取店面列表失败"),
+    PRODUCT_ERROR(1002,"商品获取失败");
 
 
     int code;

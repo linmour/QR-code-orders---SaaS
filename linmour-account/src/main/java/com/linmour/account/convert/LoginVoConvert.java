@@ -1,7 +1,7 @@
 package com.linmour.account.convert;
 
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.security.pojo.LoginVo;
+import com.linmour.common.dtos.LoginVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -1,7 +1,8 @@
 package com.linmour.account.controller.merchant;
 
-import com.linmour.security.pojo.LoginVo;
+
 import com.linmour.account.service.MerchantService;
+import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.Result;
 import org.springframework.web.bind.annotation.*;
 

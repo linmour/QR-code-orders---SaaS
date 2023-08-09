@@ -3,6 +3,9 @@ package com.linmour.common.service.impl;
 
 import com.linmour.common.config.MinIOConfig;
 import com.linmour.common.config.MinIOConfigProperties;
+import com.linmour.common.dtos.Result;
+import com.linmour.common.exception.CustomException;
+import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import com.linmour.common.service.FileStorageService;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
@@ -13,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayOutputStream;
@@ -20,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @EnableConfigurationProperties(MinIOConfigProperties.class)
@@ -166,5 +171,23 @@ public class MinIOFileStorageService implements FileStorageService {
             byteArrayOutputStream.write(buff, 0, rc);
         }
         return byteArrayOutputStream.toByteArray();
+    }
+
+    @Override
+    public String uploadPicture(MultipartFile multipartFile, String prefix,String fileName) {
+        if (multipartFile == null || multipartFile.getSize() == 0) {
+            throw new CustomException(AppHttpCodeEnum.ARAUMENT_ERROR);
+        }
+        String originalFilename = multipartFile.getOriginalFilename();
+        String postfix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileId = null;
+
+        try {
+            fileId = (uploadImgFile(prefix, fileName + postfix, multipartFile.getInputStream()));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileId;
     }
 }

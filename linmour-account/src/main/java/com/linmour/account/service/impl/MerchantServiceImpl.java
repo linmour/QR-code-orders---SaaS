@@ -3,14 +3,14 @@ package com.linmour.account.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.linmour.security.pojo.LoginUser;
 import com.linmour.account.convert.UserInfoDtoConvert;
 import com.linmour.account.pojo.Dto.UserInfoDto;
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.security.pojo.LoginVo;
+
 import com.linmour.account.service.MerchantService;
+import com.linmour.common.dtos.LoginUser;
+import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
@@ -31,8 +31,8 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +56,6 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     private MerchantMapper merchantMapper;
     @Resource
     private FileStorageService fileStorageService;
-
     @Resource
     private Tess4jClient tess4jClient;
 
@@ -107,29 +106,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     }
 
     @Override
-    public Result uploadPicture(MultipartFile multipartFile,String prefix) {
-        if (multipartFile == null || multipartFile.getSize() == 0){
-            return Result.error(AppHttpCodeEnum.ARAUMENT_ERROR);
-        }
-        String originalFilename = multipartFile.getOriginalFilename();
-        String postfix = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String fileId = null;
-        String fileName = null;
-        //从SecurityContextHolder中拿到用户信息
+    public Result uploadAvatar(MultipartFile multipartFile) {
+
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
-        fileName = id.toString();
-
-//            fileName = UUID.randomUUID().toString().replace("-", "");
-
-
-        try {
-            fileId = fileStorageService.uploadImgFile(prefix, fileName + postfix, multipartFile.getInputStream());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        String fileName = id.toString();
+        String fileId = fileStorageService.uploadPicture(multipartFile, "avatar", fileName);
         merchantMapper.update(null,new LambdaUpdateWrapper<Merchant>().eq(Merchant::getId,id)
                 .set(StringUtils.isNotBlank(fileId),Merchant::getAvatar,fileId));
         return Result.success(fileId);
@@ -152,7 +134,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         } catch (Exception e) {
             throw new CustomException(AppHttpCodeEnum.OCR_ERRER);
         }
-        String url = uploadPicture(file, "idCard").getData().toString();
+
+        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = user.getLoginVo().getId();
+        String fileNmae =  id.toString();
+        String url = fileStorageService.uploadPicture(file, "idCard", fileNmae);
+
         HashMap<String, String> map = new HashMap<>();
         map.put("idCardUrl",url);
         map.put("idCard",result);

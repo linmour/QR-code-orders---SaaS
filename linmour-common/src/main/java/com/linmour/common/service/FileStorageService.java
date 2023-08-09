@@ -1,6 +1,10 @@
 package com.linmour.common.service;
 
+import com.linmour.common.dtos.Result;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author itheima
@@ -44,4 +48,6 @@ public interface FileStorageService {
      */
     public byte[]  downLoadFile(String pathUrl);
 
+
+    public String uploadPicture(MultipartFile multipartFile, String prefix, String fileName);
 }

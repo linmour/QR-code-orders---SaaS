@@ -3,13 +3,12 @@ package com.linmour.security.filter;
 
 import com.alibaba.fastjson.JSON;
 
+import com.linmour.common.dtos.LoginUser;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.utils.JwtUtil;
 import com.linmour.common.utils.RedisCache;
 import com.linmour.common.utils.WebUtils;
 
-
-import com.linmour.security.pojo.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

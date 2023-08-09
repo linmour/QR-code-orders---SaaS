@@ -7,8 +7,8 @@ import com.linmour.account.pojo.Dto.MenuListDto;
 
 import com.linmour.account.service.MenuService;
 import com.linmour.account.mapper.MenuMapper;
+import com.linmour.common.dtos.LoginUser;
 import com.linmour.common.dtos.Result;
-import com.linmour.security.pojo.LoginUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

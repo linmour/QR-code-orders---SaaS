@@ -1,4 +1,4 @@
-package com.linmour.security.pojo;
+package com.linmour.common.dtos;
 
 import lombok.Data;
 

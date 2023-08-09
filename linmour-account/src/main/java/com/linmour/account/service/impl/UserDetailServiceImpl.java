@@ -6,8 +6,8 @@ import com.linmour.account.convert.LoginVoConvert;
 
 import com.linmour.account.mapper.MerchantMapper;
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.security.pojo.LoginVo;
-import com.linmour.security.pojo.LoginUser;
+import com.linmour.common.dtos.LoginUser;
+import com.linmour.common.dtos.LoginVo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

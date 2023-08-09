@@ -24,9 +24,9 @@ public class MerchantController {
         return Result.success(merchantService.getUserInfo(userId));
     }
 
-    @PostMapping("/upload_picture")
-    public Result uploadPicture(@RequestParam("multipartFile")MultipartFile multipartFile){
-        return merchantService.uploadPicture(multipartFile,"avatar");
+    @PostMapping("/upload_avatar")
+    public Result uploadAvatar(@RequestParam("multipartFile")MultipartFile multipartFile){
+        return merchantService.uploadAvatar(multipartFile);
     }
 
     @PostMapping("/ocr")

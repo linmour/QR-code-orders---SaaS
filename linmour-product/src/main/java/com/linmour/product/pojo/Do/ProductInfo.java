@@ -1,13 +1,15 @@
 package com.linmour.product.pojo.Do;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -15,9 +17,12 @@ import lombok.Data;
  */
 @TableName(value ="product_info")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ProductInfo implements Serializable {
     /**
-     * /*、
+     *
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -59,16 +64,22 @@ public class ProductInfo implements Serializable {
     private String picture;
 
     /**
-     * 
+     * 分类id
      */
-    @TableField(value = "create_time")
-    private Date createTime;
+    @TableField(value = "sort_id")
+    private Long sortId;
 
     /**
      * 
      */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    /**
+     * 
+     */
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     /**
      * 
@@ -79,13 +90,13 @@ public class ProductInfo implements Serializable {
     /**
      * 
      */
-    @TableField(value = "create_by")
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
     private Long createBy;
 
     /**
      * 
      */
-    @TableField(value = "update_by")
+    @TableField(value = "update_by",fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
 
     @TableField(exist = false)

@@ -1,12 +1,12 @@
 package com.linmour.account.convert;
 
 import com.linmour.account.pojo.Do.Merchant;
-import com.linmour.security.pojo.LoginVo;
+import com.linmour.common.dtos.LoginVo;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-27T17:33:27+0800",
+    date = "2023-08-02T14:12:10+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 1.8.0_361 (Oracle Corporation)"
 )
 public class LoginVoConvertImpl implements LoginVoConvert {

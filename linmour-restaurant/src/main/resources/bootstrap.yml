@@ -1,0 +1,14 @@
+server:
+  port: 12803
+spring:
+  application:
+    name: linmour-restaurant
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 43.136.73.159:8848
+      config:
+        server-addr: 43.136.73.159:8848
+        file-extension: yml
+
+

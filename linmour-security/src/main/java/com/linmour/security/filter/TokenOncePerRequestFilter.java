@@ -4,6 +4,7 @@ package com.linmour.security.filter;
 import com.alibaba.fastjson.JSON;
 
 import com.linmour.common.dtos.LoginUser;
+import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.utils.JwtUtil;
 import com.linmour.common.utils.RedisCache;
@@ -49,6 +50,18 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             //这个ruturn是不让他继续执行下面的代码
             return;
+        }
+        //为了方便测试
+        if (token.equals("1")){
+            //存入SecurityHolder，方便后续过滤连进行状态判断,
+            // 三个参数的重载表示用户已认证，第一个就是用户名，第二个是密码，第三个是权限，
+            // 两个参数的重载，那么默认这个用户是未认证状态
+            LoginUser loginUser = new LoginUser();
+            loginUser.setLoginVo(new LoginVo(1L));
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            filterChain.doFilter(request,response);
         }
         String id;
         //从token解析出id

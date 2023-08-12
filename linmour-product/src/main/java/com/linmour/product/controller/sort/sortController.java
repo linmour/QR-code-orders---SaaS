@@ -17,7 +17,8 @@ public class sortController {
     private ProductSortService productSortService;
     @GetMapping("/getProductSort/{shopId}")
     public Result getProductSort(@PathVariable("shopId") Long shopId){
-        return (productSortService.getProductSort(shopId)) ;
+        Result productSort = productSortService.getProductSort(shopId);
+        return (productSort) ;
     }
 
 }

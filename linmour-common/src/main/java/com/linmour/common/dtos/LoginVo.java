@@ -1,10 +1,14 @@
 package com.linmour.common.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginVo implements Serializable {
 
     private Long id;
@@ -13,4 +17,7 @@ public class LoginVo implements Serializable {
     private Integer status;
 
 
+    public LoginVo(Long id) {
+        this.id = id;
+    }
 }

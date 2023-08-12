@@ -10,6 +10,7 @@ import com.linmour.product.mapper.ProductSortMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author linmour
@@ -24,7 +25,8 @@ public class ProductSortServiceImpl extends ServiceImpl<ProductSortMapper, Produ
 
     @Override
     public Result getProductSort(Long shopId) {
-        return Result.success(productSortMapper.selectList(new LambdaQueryWrapper<ProductSort>().eq(ProductSort::getShopId,shopId)));
+        List<ProductSort> productSorts = productSortMapper.selectList(new LambdaQueryWrapper<ProductSort>().eq(ProductSort::getShopId, shopId));
+        return Result.success(productSorts);
     }
 }
 

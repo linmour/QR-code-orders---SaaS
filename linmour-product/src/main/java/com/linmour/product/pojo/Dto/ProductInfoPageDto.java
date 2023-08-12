@@ -1,7 +1,6 @@
 package com.linmour.product.pojo.Dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.linmour.common.dtos.PageParam;
 import lombok.AllArgsConstructor;
@@ -38,10 +37,10 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
 
 
     /**
-     * 是否需要选规格 0不要 1要
+     *
      */
    
-    private Integer spec;
+    private Long specId;
 
     /**
      * 商品状态 0下架 1上架

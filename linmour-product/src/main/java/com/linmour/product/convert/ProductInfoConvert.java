@@ -19,7 +19,7 @@ public interface ProductInfoConvert {
                 .status(dto.getStatus()?1:0)
                 .picture(dto.getPicture())
                 .name(dto.getName())
-                .spec(dto.getSpec())
+                .specId(dto.getSpecId())
                 .sortId(dto.getSortId());
         return productInfoBuilder.build();
     }
@@ -33,7 +33,7 @@ public interface ProductInfoConvert {
             productInfo.name(addProductDto.getName());
             productInfo.shopId(addProductDto.getShopId());
             productInfo.intro(addProductDto.getIntro());
-            productInfo.spec(addProductDto.getSpec());
+            productInfo.specId(addProductDto.getSpecId());
             productInfo.sortId(addProductDto.getSortId());
             return productInfo.build();
         }

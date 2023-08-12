@@ -6,22 +6,15 @@
 
     <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.ProductSpec">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="taste" column="taste" jdbcType="VARCHAR"/>
-            <result property="size" column="size" jdbcType="VARCHAR"/>
+            <result property="valueSpec" column="value_spec" jdbcType="VARCHAR"/>
+            <result property="nonValueSpec" column="non_value_spec" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,taste,size,
+        id,value_spec,non_value_spec,
         create_time,update_time,deleted
     </sql>
-    <delete id="deleteSpec">
-        DELETE c,b
-        FROM product_spec c
-         JOIN r_product_spec b ON c.id = b.spec_id
-         JOIN product_info a ON a.id = b.product_id
-        WHERE a.id = #{id} AND a.spec = 1;
-    </delete>
 </mapper>

@@ -36,7 +36,7 @@ public class AddProductDto implements Serializable {
      * 是否需要选规格 0不要 1要
      */
 
-    private Integer spec;
+    private Long specId;
 
 
     /**
@@ -45,12 +45,8 @@ public class AddProductDto implements Serializable {
 
     private Long sortId;
 
-
-    private List<String> size;
-    private List<BigDecimal> price;
-
-    private List<String> taste;
-
+    private List nonValueList;
+    private List valueList;
     private List<String> urlList;
 
 }

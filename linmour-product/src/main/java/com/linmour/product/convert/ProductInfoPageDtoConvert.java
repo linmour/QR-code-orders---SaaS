@@ -3,7 +3,6 @@ package com.linmour.product.convert;
 
 import com.linmour.product.pojo.Do.ProductInfo;
 import com.linmour.product.pojo.Dto.ProductInfoPageDto;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -40,7 +39,7 @@ public interface ProductInfoPageDtoConvert {
             productInfoPageDto.name(productInfo.getName());
             productInfoPageDto.shopId(productInfo.getShopId());
             productInfoPageDto.intro(productInfo.getIntro());
-            productInfoPageDto.spec(productInfo.getSpec());
+            productInfoPageDto.specId(productInfo.getSpecId());
             productInfoPageDto.status(productInfo.getStatus() == 1 ? true : false);
             productInfoPageDto.picture(productInfo.getPicture());
             productInfoPageDto.sortId(productInfo.getSortId());

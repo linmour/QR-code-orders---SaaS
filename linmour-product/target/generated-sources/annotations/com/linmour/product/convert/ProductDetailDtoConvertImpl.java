@@ -6,7 +6,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-10T20:49:40+0800",
+    date = "2023-08-13T20:57:47+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 1.8.0_361 (Oracle Corporation)"
 )
 public class ProductDetailDtoConvertImpl implements ProductDetailDtoConvert {
@@ -23,7 +23,6 @@ public class ProductDetailDtoConvertImpl implements ProductDetailDtoConvert {
         productDetailDto.name( dto.getName() );
         productDetailDto.shopId( dto.getShopId() );
         productDetailDto.intro( dto.getIntro() );
-        productDetailDto.spec( dto.getSpec() );
         productDetailDto.status( dto.getStatus() );
         productDetailDto.picture( dto.getPicture() );
 

@@ -1,8 +1,6 @@
 package com.linmour.product.controller.product;
 
 import com.linmour.common.dtos.Result;
-import com.linmour.product.convert.ProductInfoPageDtoConvert;
-import com.linmour.product.pojo.Do.ProductInfo;
 import com.linmour.product.pojo.Dto.AddProductDto;
 import com.linmour.product.pojo.Dto.ProductInfoPageDto;
 import com.linmour.product.service.ProductInfoService;

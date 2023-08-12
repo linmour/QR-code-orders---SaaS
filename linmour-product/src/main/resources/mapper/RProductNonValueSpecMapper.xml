@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmour.product.mapper.RProductNonValueSpecMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.RProductNonValueSpec">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="productSpecId" column="product_spec_id" jdbcType="BIGINT"/>
+            <result property="nonValueId" column="non_value_id" jdbcType="BIGINT"/>
+            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_spec_id,non_value_id,
+        deleted
+    </sql>
+</mapper>

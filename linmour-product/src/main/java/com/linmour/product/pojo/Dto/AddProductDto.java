@@ -38,6 +38,8 @@ public class AddProductDto implements Serializable {
 
     private Long specId;
 
+    private BigDecimal price;
+
 
     /**
      * 分类id

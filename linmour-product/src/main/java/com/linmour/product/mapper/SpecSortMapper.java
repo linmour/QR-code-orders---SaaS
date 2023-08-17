@@ -2,6 +2,7 @@ package com.linmour.product.mapper;
 
 import com.linmour.product.pojo.Do.SpecSort;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author linmour
@@ -11,6 +12,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface SpecSortMapper extends BaseMapper<SpecSort> {
 
+    void deleteValue(@Param("productId") Long productId);
+
+    void deleteNonValue(@Param("productId") Long productId);
 }
 
 

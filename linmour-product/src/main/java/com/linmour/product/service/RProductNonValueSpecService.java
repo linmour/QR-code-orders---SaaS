@@ -3,6 +3,8 @@ package com.linmour.product.service;
 import com.linmour.product.pojo.Do.RProductNonValueSpec;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author linmour
 * @description 针对表【r_product_non_value_spec】的数据库操作Service
@@ -10,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RProductNonValueSpecService extends IService<RProductNonValueSpec> {
 
+    public  List<Long> getNonValueId(Long specId) ;
 }

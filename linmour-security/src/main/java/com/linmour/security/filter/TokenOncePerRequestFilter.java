@@ -33,6 +33,8 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
 
     @Resource
     private RedisCache a;
+
+    //注入为空
     public static RedisCache redisCache;
     @PostConstruct
     public void b(){

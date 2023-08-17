@@ -2,6 +2,7 @@ package com.linmour.product.mapper;
 
 import com.linmour.product.pojo.Do.RProductNonValueSpec;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author linmour
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface RProductNonValueSpecMapper extends BaseMapper<RProductNonValueSpec> {
 
+    void deleteNonValue(@Param("productId") Long productId);
 }
 
 

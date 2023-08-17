@@ -1,63 +1,73 @@
 package com.linmour.product.pojo.Dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.linmour.product.pojo.Do.ProductInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class ProductDetailDto implements Serializable {
-
+public class ProductDetailDto  implements  Serializable  {
 
     private Long id;
 
     /**
      * 商品名字
      */
-
+     
     private String name;
-    /**
-     * 店铺id
-     */
 
+    /**
+     *
+     */
+     
     private Long shopId;
 
     /**
      * 商品简介
      */
-
+     
     private String intro;
 
-
     /**
-     * 是否需要选规格 0不要 1要
+     * 0没有规格 有值表示规格id
      */
-
-    private Integer spec;
+     
+    private Long specId;
 
     /**
      * 商品状态 0下架 1上架
      */
-
+     
     private Integer status;
+
+    /**
+     * 分类id
+     */
+     
+    private Long sortId;
 
     /**
      * 商品图
      */
-
+     
     private String picture;
 
     /**
-     * 分类名
+     * 如果商品有规格就显示价格最低的配置
      */
-
+     
+    private BigDecimal price;
     private String sort;
+    private List<NonValueDto> nonValueList;
+    private List<ValueDto> ValueList;
 
 
 }

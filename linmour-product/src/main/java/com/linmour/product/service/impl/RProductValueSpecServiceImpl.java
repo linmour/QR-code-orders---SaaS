@@ -1,10 +1,14 @@
 package com.linmour.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.linmour.product.pojo.Do.RProductValueSpec;
 import com.linmour.product.pojo.Do.RProductValueSpec;
 import com.linmour.product.service.RProductValueSpecService;
 import com.linmour.product.mapper.RProductValueSpecMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -15,6 +19,14 @@ import org.springframework.stereotype.Service;
 public class RProductValueSpecServiceImpl extends ServiceImpl<RProductValueSpecMapper, RProductValueSpec>
     implements RProductValueSpecService{
 
+    @Override
+    public List<Long> getNonValueId(Long specId) {
+        return this.listObjs(
+                new LambdaQueryWrapper<RProductValueSpec>()
+                        .select(RProductValueSpec::getValueSpecId)
+                        .eq(RProductValueSpec::getProductSpecId,specId), o -> Long.valueOf(o.toString()));
+
+    }
 }
 
 

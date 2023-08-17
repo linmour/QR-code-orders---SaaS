@@ -43,6 +43,8 @@ public interface ProductInfoPageDtoConvert {
             productInfoPageDto.status(productInfo.getStatus() == 1 ? true : false);
             productInfoPageDto.picture(productInfo.getPicture());
             productInfoPageDto.sortId(productInfo.getSortId());
+            productInfoPageDto.price(productInfo.getPrice());
+            productInfoPageDto.selectNum(0);
             return productInfoPageDto.build();
         }
     }

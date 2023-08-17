@@ -24,18 +24,5 @@ public interface ProductInfoConvert {
         return productInfoBuilder.build();
     }
 
-    default ProductInfo AddProductDtoToProductInfo(AddProductDto addProductDto){
-        if (addProductDto == null) {
-            return null;
-        } else {
-            ProductInfo.ProductInfoBuilder productInfo = ProductInfo.builder();
-            productInfo.id(addProductDto.getId());
-            productInfo.name(addProductDto.getName());
-            productInfo.shopId(addProductDto.getShopId());
-            productInfo.intro(addProductDto.getIntro());
-            productInfo.specId(addProductDto.getSpecId());
-            productInfo.sortId(addProductDto.getSortId());
-            return productInfo.build();
-        }
-    }
+    ProductInfo AddProductDtoToProductInfo(AddProductDto addProductDto);
 }

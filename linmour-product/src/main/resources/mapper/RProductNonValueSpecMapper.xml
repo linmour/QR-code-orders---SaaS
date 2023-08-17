@@ -15,4 +15,8 @@
         id,product_spec_id,non_value_id,
         deleted
     </sql>
+    <delete id="deleteNonValue">
+        DELETE a,b FROM r_product_non_value_spec as a JOIN non_value_spec as b ON a.non_value_id  =  b.id  WHERE
+            a.product_spec_id = #{productId}
+    </delete>
 </mapper>

@@ -15,6 +15,7 @@
         <module>linmour-product</module>
         <module>linmour-security</module>
         <module>linmour-restaurant</module>
+        <module>linmour-order</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

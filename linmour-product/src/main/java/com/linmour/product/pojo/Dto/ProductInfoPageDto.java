@@ -1,6 +1,7 @@
 package com.linmour.product.pojo.Dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.linmour.common.dtos.PageParam;
 import lombok.AllArgsConstructor;
@@ -9,13 +10,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProductInfoPageDto extends PageParam implements Serializable {
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -35,6 +37,7 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
    
     private String intro;
 
+    private BigDecimal price;
 
     /**
      *
@@ -55,4 +58,7 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
     private String picture;
 
     private Long sortId;
+
+
+    private Integer selectNum;
 }

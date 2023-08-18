@@ -3,19 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
         <groupId>com.linmour</groupId>
         <artifactId>linmour-ScanOrder</artifactId>
         <packaging>pom</packaging>
         <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>linmour-common</module>
-        <module>linmour-account</module>
+        <module>linmour-common-module</module>
+        <module>linmour-account-module</module>
         <module>linmour-gateway</module>
-        <module>linmour-product</module>
+        <module>linmour-product-module</module>
         <module>linmour-security</module>
-        <module>linmour-restaurant</module>
-        <module>linmour-order</module>
+        <module>linmour-order-module</module>
+        <module>linmour-common-module</module>
+        <module>linmour-websocket-server</module>
+
+
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -33,6 +35,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- 依赖包版本管理 -->
+        <rocketmq.version>2.2.3</rocketmq.version>
         <security.version>2.3.9.RELEASE</security.version>
         <validator.version>6.1.5.Final</validator.version>
         <spring.boot.version>2.3.9.RELEASE</spring.boot.version>
@@ -99,7 +102,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
             <dependency>
                 <groupId>org.reflections</groupId>

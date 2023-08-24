@@ -82,8 +82,6 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         UserInfoDto userInfo = getUserInfo(Long.valueOf(UserId));
         map.put("token",jwt);
         map.put("userInfo",userInfo);
-
-
         return Result.success(map);
     }
 
@@ -91,7 +89,6 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     public Result logout(Long id) {
         redisCache.deleteObject(USER_LOGIN_KEY+id);
         return Result.success();
-
     }
 
     @Override

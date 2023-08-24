@@ -25,4 +25,5 @@ public interface ShopService extends IService<Shop> {
      * @return
      */
     Result SonShopList(ShopPageDto dto);
+
 }

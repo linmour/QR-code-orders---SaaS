@@ -23,8 +23,8 @@ public class ProductSortServiceImpl extends ServiceImpl<ProductSortMapper, Produ
     @Resource
     private ProductSortMapper productSortMapper;
     @Override
-    public Result getProductSort(Long shopId) {
-        List<ProductSort> productSorts = productSortMapper.selectList(new LambdaQueryWrapper<ProductSort>().eq(ProductSort::getShopId, shopId));
+    public Result getProductSort() {
+        List<ProductSort> productSorts = productSortMapper.selectList(null);
         return Result.success(productSorts);
     }
 }

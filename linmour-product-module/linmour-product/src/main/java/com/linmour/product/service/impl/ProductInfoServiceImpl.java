@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.common.dtos.LoginUser;
+import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.PageResult;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
@@ -29,6 +30,8 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.linmour.common.utils.SecurityUtils.getShopId;
 
 /**
  * @author linmour
@@ -66,7 +69,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     public Result getProductList(ProductInfoPageDto dto) {
-        List<ProductInfo> productInfos = productInfoMapper.selectList(new LambdaQueryWrapper<ProductInfo>().eq(ProductInfo::getShopId, dto.getShopId())
+        List<ProductInfo> productInfos = productInfoMapper.selectList(new LambdaQueryWrapper<ProductInfo>()
                 .eq(!ObjectUtil.isNull(dto.getSortId()), ProductInfo::getSortId, dto.getSortId()));
         //因为前台的缘故，第一次没传sort值，所以要默认拿到第一个sort
         if (dto.getSortId() == null && productInfos.size() > 0) {
@@ -79,7 +82,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         }
 
-        Page<ProductInfo> productInfoPage = page(new Page<ProductInfo>(dto.getPageNo(), dto.getPageSize()), new LambdaQueryWrapper<ProductInfo>().eq(ProductInfo::getShopId, dto.getShopId())
+        Page<ProductInfo> productInfoPage = page(new Page<ProductInfo>(dto.getPageNo(), dto.getPageSize()), new LambdaQueryWrapper<ProductInfo>()
                 .eq(StringUtils.isNotBlank(dto.getSortId().toString()), ProductInfo::getSortId, dto.getSortId())
         );
         if (ObjectUtil.isNull(productInfoPage.getRecords())) {
@@ -97,7 +100,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     }
 
     @Override
-    public Result uploadProductImg(MultipartFile[] file, String shopId) {
+    public Result uploadProductImg(MultipartFile[] file) {
+        String shopId = getShopId().toString();
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
         List<String> list = new ArrayList<>();
@@ -115,13 +119,17 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         ProductInfo productInfo = productInfoMapper.selectOne(new LambdaQueryWrapper<ProductInfo>().eq(ProductInfo::getId, productId));
         ProductDetailDto productDetailDto = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfo);
         String sort = productInfoMapper.getSort(productId);
+        //判断是否有规格
         if (productInfo.getSpecId() != 0) {
             ProductSpec productSpec = productSpecMapper.selectOne(new LambdaQueryWrapper<ProductSpec>().eq(ProductSpec::getId, productInfo.getSpecId()));
+            //价值规格
             if (productSpec.getValueSpec() == 1) {
                 List<Long> valueId = rProductValueSpecService.getNonValueId(productInfo.getSpecId());
+                //价值规格的父类   大小....
                 List<ValueSpec> valueSpecs = valueSpecMapper.selectBatchIds(valueId);
                 List<Long> sortIdList = valueSpecs.stream().map(ValueSpec::getSortId).distinct().collect(Collectors.toList());
                 List<ValueDto> valueDtoList = new ArrayList<>();
+                //父类下的 子类选项
                 sortIdList.forEach(m -> {
                     String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
                     ValueDto valueDto = new ValueDto();

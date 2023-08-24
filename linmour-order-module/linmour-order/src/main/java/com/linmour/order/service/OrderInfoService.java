@@ -4,6 +4,7 @@ import com.linmour.common.dtos.Result;
 import com.linmour.order.pojo.Do.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
+import com.linmour.order.pojo.Dto.OrderInfoDto;
 import com.linmour.order.pojo.Dto.SubmitOrderDto;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,4 +21,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     Result submitOrder(SubmitOrderDto submitOrderDto);
 
     Result getOrderInfo(Long tableId);
+
+    Result changeOrder(OrderInfoDto orderInfoDto);
 }

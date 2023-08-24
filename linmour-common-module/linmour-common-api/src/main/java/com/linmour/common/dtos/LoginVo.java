@@ -15,6 +15,7 @@ public class LoginVo implements Serializable {
     private String phone;
     private String password;
     private Integer status;
+    private Long shopId;
 
 
     public LoginVo(Long id) {

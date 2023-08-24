@@ -34,16 +34,15 @@ public class RestaurantTable implements Serializable {
     private Integer status;
 
     /**
-     * 0菜没上完 1菜上完
-     */
-    @TableField(value = "serving")
-    private Integer serving;
-
-    /**
      * 
      */
     @TableField(value = "shop_id")
     private Long shopId;
+
+    @TableField(value = "qr_code_url")
+    private String qrCodeUrl;
+
+
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

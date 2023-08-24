@@ -2,6 +2,9 @@ package com.linmour.order.mapper;
 
 import com.linmour.order.pojo.Do.ROrderPreduct;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -10,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.linmour.order.pojo.Do.ROrderPreduct
 */
 public interface ROrderPreductMapper extends BaseMapper<ROrderPreduct> {
+
 
 }
 

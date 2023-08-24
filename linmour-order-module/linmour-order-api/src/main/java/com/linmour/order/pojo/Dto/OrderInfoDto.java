@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.linmour.product.pojo.Dto.ProductDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 这个是一个rocketmq序列化日期类型有问题，这个类没日期类型
@@ -20,7 +23,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderInfoDto implements Serializable {
 
-    private Long id;
+    private String id;
 
     /**
      * 用户id
@@ -86,6 +89,8 @@ public class OrderInfoDto implements Serializable {
      */
     
     private Integer deleted;
+
+
 
 
 }

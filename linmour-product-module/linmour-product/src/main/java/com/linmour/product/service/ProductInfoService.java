@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ProductInfoService extends IService<ProductInfo> {
     Result getProductList(ProductInfoPageDto dto);
     Result changeProduct(ProductInfoPageDto productInfo);
-    Result uploadProductImg(MultipartFile[] file, String shopID);
+    Result uploadProductImg(MultipartFile[] file);
 
     Result getProductDetails(Long productId);
 

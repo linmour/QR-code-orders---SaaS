@@ -19,7 +19,6 @@
     </sql>
     <select id="getMenus" resultMap="BaseResultMap" parameterType="long">
         SELECT b.* FROM system_menu AS b,system_merchant AS a WHERE a.id = #{id} AND b.permissions = a.type
-
     </select>
 
 </mapper>

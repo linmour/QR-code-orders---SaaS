@@ -19,6 +19,7 @@ public class LoginUser implements UserDetails {
 
     private LoginVo loginVo;
 
+
     /**
      * 获取用户的权限列表，返回一个集合，其中每个元素都是用户所拥有的权限
      * @return

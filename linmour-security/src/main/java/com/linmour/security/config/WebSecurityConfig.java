@@ -1,12 +1,10 @@
 package com.linmour.security.config;
- 
+
 
 import com.linmour.security.filter.TokenOncePerRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,10 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.annotation.Resource;
 
 
 @Configuration
@@ -35,12 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     //配置密码加密器
     public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
- 
+
     //配置哪些请求不拦截
     //TODO 将需要Feign的方法前缀都用上api，得到api/select/user/{user_id}这样的路径不受限制
     // 由于api路径是由服务模块自己去调用的，所以gateway不用做路径请求的处理
     @Override
     public void configure(WebSecurity web) throws Exception {
+        System.out.println("*********************************************");
         web.ignoring().antMatchers("/login","/doc.html#/**","/swagger-resources");
     }
 
@@ -50,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("读取配置*****************WHITE");
         http.authorizeRequests()
+                .antMatchers("/websocket/**").permitAll()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/account/merchant/login").anonymous()
                 // 登陆后才能访问

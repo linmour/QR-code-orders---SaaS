@@ -2,7 +2,7 @@ server:
   port: 12800
 spring:
   application:
-    name: linmour-web-gateway
+    name: linmour-gateway
   cloud:
     nacos:
       discovery:

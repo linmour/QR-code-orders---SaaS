@@ -25,7 +25,7 @@ public class OrderInfo implements Serializable {
      * 
      */
     @TableId(value = "id")
-    private Long id;
+    private String id;
 
     /**
      * 用户id
@@ -65,6 +65,10 @@ public class OrderInfo implements Serializable {
      */
     @TableField(value = "remark")
     private String remark;
+
+    @TableField(value = "shop_id")
+    private Long shopId;
+
 
     /**
      * 

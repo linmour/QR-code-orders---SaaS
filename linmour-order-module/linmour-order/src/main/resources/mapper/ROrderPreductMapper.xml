@@ -20,4 +20,5 @@
         create_time,update_time,create_by,
         update_by,deleted
     </sql>
+
 </mapper>

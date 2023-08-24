@@ -27,13 +27,19 @@ public class ROrderPreduct implements Serializable {
 
      */
     @TableField(value = "order_id")
-    private Long orderId;
+    private String orderId;
 
     /**
      * 商品id
      */
     @TableField(value = "product_id")
     private Long productId;
+
+    /**
+     * 购买数量
+     */
+    @TableField(value = "quantity")
+    private Integer quantity;
 
     /**
      * 

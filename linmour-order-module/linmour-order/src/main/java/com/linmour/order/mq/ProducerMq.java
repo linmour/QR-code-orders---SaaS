@@ -40,7 +40,7 @@ public class ProducerMq {
      * 发送同步消息（阻塞当前线程，等待broker响应发送结果，这样不太容易丢失消息）
      * （msgBody也可以是对象，sendResult为返回的发送结果）
      */
-    public void newOrder(OrderInfoDto msgBody) {
+    public void newOrder(Long msgBody) {
         SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
 

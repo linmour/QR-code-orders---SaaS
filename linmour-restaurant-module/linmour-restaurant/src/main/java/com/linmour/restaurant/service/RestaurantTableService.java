@@ -3,6 +3,9 @@ package com.linmour.restaurant.service;
 import com.linmour.common.dtos.Result;
 import com.linmour.restaurant.pojo.Do.RestaurantTable;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.linmour.restaurant.pojo.Dto.RestaurantTableDto;
+
+import java.io.IOException;
 
 /**
 * @author linmour
@@ -11,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RestaurantTableService extends IService<RestaurantTable> {
 
-    Result getTable(Long shopId);
+    Result getTable();
+
+    Result createTable( RestaurantTableDto dto) ;
 }

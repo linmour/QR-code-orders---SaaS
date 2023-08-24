@@ -11,15 +11,19 @@ import com.linmour.account.pojo.Dto.ShopPageDto;
 import com.linmour.account.service.ShopService;
 import com.linmour.account.mapper.ShopMapper;
 import com.linmour.common.dtos.LoginUser;
+import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.PageResult;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 
 /**
 * @author linmour
@@ -64,6 +68,8 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
         List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.shopListToShopPageDtoList(ShopListPage.getRecords());
         return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
     }
+
+
 }
 
 

@@ -15,7 +15,7 @@
         <module>linmour-security</module>
         <module>linmour-order-module</module>
         <module>linmour-common-module</module>
-        <module>linmour-websocket-server</module>
+        <module>linmour-websocket</module>
 
 
     </modules>

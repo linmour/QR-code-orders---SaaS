@@ -47,8 +47,9 @@ public class productController {
     }
 
     @PostMapping("/upload_product")
-    public Result b(@RequestParam("file") MultipartFile[] file,@RequestParam("shopId") String shopId){
-        return productInfoService.uploadProductImg(file,shopId);
+//    ,@RequestParam("shopId") String shopId 接收前端的参数
+    public Result b(@RequestParam("file") MultipartFile[] file){
+        return productInfoService.uploadProductImg(file);
     }
 
 }

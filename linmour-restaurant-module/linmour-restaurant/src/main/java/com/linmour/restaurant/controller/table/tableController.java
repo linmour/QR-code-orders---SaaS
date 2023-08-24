@@ -1,13 +1,15 @@
 package com.linmour.restaurant.controller.table;
 
 import com.linmour.common.dtos.Result;
+import com.linmour.restaurant.pojo.Do.RestaurantTable;
+import com.linmour.restaurant.pojo.Dto.RestaurantTableDto;
 import com.linmour.restaurant.service.RestaurantTableService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurant/table")
@@ -17,7 +19,15 @@ public class tableController {
     private RestaurantTableService restaurantTableService;
 
     @GetMapping("/getTable")
-    public Result getTable(@RequestParam("shopId") Long shopId){
-        return restaurantTableService.getTable(shopId);
+    public Result getTable(){
+        return restaurantTableService.getTable();
     }
+
+    @PostMapping("/createTable")
+    public Result createTable(@RequestBody Map<String,RestaurantTableDto> map)  {
+        RestaurantTableDto dto = map.get("dto");
+        return restaurantTableService.createTable(dto);
+    }
+
+
 }

@@ -8,7 +8,6 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
-            <result property="serving" column="serving" jdbcType="INTEGER"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
     </resultMap>
 

@@ -43,6 +43,7 @@
             <artifactId>rocketmq-spring-boot-starter</artifactId>
             <version>2.2.3</version>
         </dependency>
+
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common-api</artifactId>

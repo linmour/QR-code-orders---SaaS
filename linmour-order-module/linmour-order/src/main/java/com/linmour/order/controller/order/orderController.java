@@ -1,7 +1,6 @@
 package com.linmour.order.controller.order;
 
 import com.linmour.common.dtos.Result;
-import com.linmour.order.pojo.Do.OrderInfo;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.OrderInfoDto;
 import com.linmour.order.pojo.Dto.SubmitOrderDto;

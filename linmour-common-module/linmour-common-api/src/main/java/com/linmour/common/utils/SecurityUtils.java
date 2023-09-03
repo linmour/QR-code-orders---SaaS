@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
 
+    private static Long shopId;
+
     public static Long getUserId(){
         if (SecurityContextHolder.getContext().getAuthentication() == null){
             return 0L;
@@ -20,14 +22,16 @@ public class SecurityUtils {
 
     public static Long getShopId() {
         if (a()){
-            return 0L;
+            return shopId;
         }
-        if (SecurityContextHolder.getContext().getAuthentication() == null){
-            return 0L;
-        }
+
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long id = user.getLoginVo().getShopId();
-        return id;
+        shopId = user.getLoginVo().getShopId();
+        return shopId;
+    }
+
+    public static void setShopId(Long i) {
+        shopId = i;
     }
 
 

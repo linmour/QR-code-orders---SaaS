@@ -78,7 +78,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         OrderInfoDto orderInfoDto = OrderInfoDtoConvert.IN.OrderInfoToOrderInfoDto(orderInfo);
 
         //创建延时队列
-        producerMq.orderPayTimeOut(orderInfoDto, 4);
+
+        producerMq.orderPayTimeOut(orderInfoDto.getId(), 4);
 
         //转为字符串是因为前端会丢失精度
         return Result.success(orderInfo.getId());
@@ -93,7 +94,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 .set(OrderInfo::getPayStatus,PAYMENT));
         //发送给餐厅服务
         OrderInfoDto orderInfoDto = OrderInfoDtoConvert.IN.OrderInfoToOrderInfoDto(orderInfoMapper.selectById(submitOrderDto.getOrderNo()));
-        producerMq.newOrder(orderInfoDto.getTableId());
+        //封装shopId要不然没有id
+        HashMap<String, String> map = new HashMap<>();
+        map.put("tableId",orderInfoDto.getTableId().toString());
+        map.put("shopId",getShopId().toString());
+        producerMq.newOrder(map);
         return null;
     }
 

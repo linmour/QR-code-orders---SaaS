@@ -74,7 +74,6 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
             }
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
             filterChain.doFilter(request,response);
         }else {
 

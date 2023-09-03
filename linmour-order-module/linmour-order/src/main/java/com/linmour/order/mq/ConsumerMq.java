@@ -1,8 +1,6 @@
 package com.linmour.order.mq;
 
-import com.linmour.common.dtos.Result;
 import com.linmour.order.convert.OrderInfoConvert;
-import com.linmour.order.feign.ProductFeign;
 import com.linmour.order.pojo.Do.OrderInfo;
 import com.linmour.order.pojo.Dto.OrderInfoDto;
 import com.linmour.order.service.OrderInfoService;
@@ -27,12 +25,12 @@ public class ConsumerMq {
 
 
     @Service
-    @RocketMQMessageListener(topic = ORDER_PAY_TIMEOUT_TOPIC, consumerGroup = "orderDelay")
-    public class orderPayTimeOut implements RocketMQListener<OrderInfoDto> {
+    @RocketMQMessageListener(topic = ORDER_PAY_TIMEOUT_TOPIC, consumerGroup = "orderPayTimeOut")
+    public class orderPayTimeOut implements RocketMQListener<String> {
         // 监听到消息就会执行此方法
         @Override
-        public void onMessage(OrderInfoDto dto) {
-            OrderInfo orderInfo = OrderInfoConvert.IN.OrderInfoDtoToOrderInfo(dto);
+        public void onMessage(String orderId) {
+            OrderInfo orderInfo = orderInfoService.getById(orderId);
             if (!Objects.equals(orderInfo.getPayStatus(), PAYMENT)){
                 orderInfo.setPayStatus(CANCEL_ORDER);
             }

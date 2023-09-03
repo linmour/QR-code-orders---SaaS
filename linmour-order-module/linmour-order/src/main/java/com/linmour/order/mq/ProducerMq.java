@@ -9,8 +9,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 
-import static com.linmour.order.constants.MqConstant.*;
 
 @Component
 public class ProducerMq {
@@ -28,9 +28,9 @@ public class ProducerMq {
      * 在start版本中 延时消息一共分为18个等级分别为：1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h
      */
 
-    public void orderPayTimeOut(OrderInfoDto msgBody, int delayLevel){
+    public void orderPayTimeOut(String msgBody, int delayLevel){
                                                                                                          // 超时时间    延时等级
-        SendResult result = rocketMQTemplate.syncSend(ORDER_PAY_TIMEOUT_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut,delayLevel);
+        SendResult result = rocketMQTemplate.syncSend("ORDER_PAY_TIMEOUT_TOPIC", MessageBuilder.withPayload(msgBody).build(),messageTimeOut,delayLevel);
         isSuccess(result);
     }
 
@@ -40,11 +40,20 @@ public class ProducerMq {
      * 发送同步消息（阻塞当前线程，等待broker响应发送结果，这样不太容易丢失消息）
      * （msgBody也可以是对象，sendResult为返回的发送结果）
      */
-    public void newOrder(Long msgBody) {
-        SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
+    public void newOrder( HashMap<String, String> msgBody) {
+        SendResult sendResult = rocketMQTemplate.syncSend("NEW_ORDER_TOPIC", MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
 
     }
+
+
+
+
+
+
+
+
+
 
     private static void isSuccess(SendResult result) {
         if (result.getSendStatus() == SendStatus.SEND_OK) {

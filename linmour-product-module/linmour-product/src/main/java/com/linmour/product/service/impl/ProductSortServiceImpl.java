@@ -1,6 +1,5 @@
 package com.linmour.product.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.common.dtos.Result;
 import com.linmour.product.pojo.Do.ProductSort;

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.PageResult;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;

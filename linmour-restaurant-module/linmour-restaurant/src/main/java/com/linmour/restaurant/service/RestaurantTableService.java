@@ -5,8 +5,6 @@ import com.linmour.restaurant.pojo.Do.RestaurantTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.restaurant.pojo.Dto.RestaurantTableDto;
 
-import java.io.IOException;
-
 /**
 * @author linmour
 * @description 针对表【restaurant_table】的数据库操作Service

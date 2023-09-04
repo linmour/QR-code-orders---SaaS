@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,14 +25,15 @@ public class productController {
     }
 
     @PostMapping("/changeProduct")
-    public Result changeProduct(@RequestBody Map<String,ProductInfoPageDto> map){
-        ProductInfoPageDto productInfo = map.get("product");
-        return productInfoService.changeProduct(productInfo);
+    public Result changeProduct(@RequestBody Map map){
+        Integer intValue = (Integer) map.get("id");
+        return productInfoService.changeProduct(Long.valueOf(intValue.intValue()), (Boolean) map.get("status"));
     }
 
-    @GetMapping("/getProductDetails/{productId}")
-    public Result getProductDetails(@PathVariable Long productId) {
-        return (productInfoService.getProductDetails(productId));
+    @GetMapping("/getProductDetails")
+    public Result getProductDetails(@RequestParam("productIds") List<Long> productIds) {
+        productIds.removeIf(id -> id == 0);
+        return (productInfoService.getProductDetails(productIds));
     }
 
     @PostMapping("/addProduct")

@@ -1,11 +1,12 @@
 package com.linmour.product.pojo.Do;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -45,6 +46,10 @@ public class ProductInventory implements Serializable {
     @TableField(value = "shop_id")
     private Long shopId;
 
+    @TableField(value = "product_id")
+    private Long productId;
+
+
     /**
      * 阈值，提示库存不足
      */
@@ -54,25 +59,27 @@ public class ProductInventory implements Serializable {
     /**
      * 
      */
-    @TableField(value = "create_time")
-    private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
-     * 
+     *
      */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     /**
-     * 
+     *
      */
-    @TableField(value = "create_by")
+    @TableField(value = "create_by",fill = FieldFill.INSERT)
     private Long createBy;
 
     /**
-     * 
+     *
      */
-    @TableField(value = "update_by")
+    @TableField(value = "update_by",fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
 
     /**

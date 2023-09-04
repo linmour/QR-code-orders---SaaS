@@ -8,6 +8,8 @@ import com.linmour.product.pojo.Dto.ProductInfoPageDto;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
 * @author linmour
 * @description 针对表【product_info】的数据库操作Service
@@ -19,7 +21,7 @@ public interface ProductInfoService extends IService<ProductInfo> {
     Result changeProduct(ProductInfoPageDto productInfo);
     Result uploadProductImg(MultipartFile[] file);
 
-    Result getProductDetails(Long productId);
+    Result getProductDetails(List<Long> productIds);
 
     Result addProduct(AddProductDto product);
 

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,9 +30,10 @@ public class productController {
         return productInfoService.changeProduct(productInfo);
     }
 
-    @GetMapping("/getProductDetails/{productId}")
-    public Result getProductDetails(@PathVariable Long productId) {
-        return (productInfoService.getProductDetails(productId));
+    @GetMapping("/getProductDetails")
+    public Result getProductDetails(@RequestParam("productIds") List<Long> productIds) {
+        productIds.removeIf(id -> id == 0);
+        return (productInfoService.getProductDetails(productIds));
     }
 
     @PostMapping("/addProduct")

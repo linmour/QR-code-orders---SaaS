@@ -28,7 +28,15 @@
         create_time,update_time,deleted,
         create_by,update_by
     </sql>
-    <select id="getSort" resultType="java.lang.String">
-        SELECT b.sort from product_info a , product_sort b WHERE a.id = #{productId} AND a.sort_id = b.id
+
+
+    <select id="getSort" resultType="java.util.Map">
+        SELECT b.sort, a.id FROM product_info a, product_sort b
+        WHERE a.id IN (
+        <foreach collection="productIds" item="productId" separator=",">
+            #{productId}
+        </foreach>
+        )AND a.sort_id = b.id
     </select>
+
 </mapper>

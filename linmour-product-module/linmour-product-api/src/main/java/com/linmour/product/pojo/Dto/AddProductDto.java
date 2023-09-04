@@ -49,6 +49,7 @@ public class AddProductDto implements Serializable {
 
     private List nonValueList;
     private List valueList;
+    private List<InventoryDto> inventoryList;
     private List<String> urlList;
 
 }

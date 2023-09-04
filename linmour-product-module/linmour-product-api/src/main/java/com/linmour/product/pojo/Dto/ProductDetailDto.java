@@ -63,6 +63,7 @@ public class ProductDetailDto  implements  Serializable  {
     private String sort;
     private List<NonValueDto> nonValueList;
     private List<ValueDto> ValueList;
+    private List<InventoryDto> inventoryList;
 
 
 }

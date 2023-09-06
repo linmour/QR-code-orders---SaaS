@@ -28,14 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //配置密码加密器
     public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
 
-    //配置哪些请求不拦截
-    //TODO 将需要Feign的方法前缀都用上api，得到api/select/user/{user_id}这样的路径不受限制
-    // 由于api路径是由服务模块自己去调用的，所以gateway不用做路径请求的处理
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        System.out.println("*********************************************");
-        web.ignoring().antMatchers("/login","/doc.html#/**","/swagger-resources");
-    }
 
  
     //配置安全策略

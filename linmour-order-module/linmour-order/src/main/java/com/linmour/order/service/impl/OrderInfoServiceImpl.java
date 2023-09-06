@@ -19,6 +19,7 @@ import com.linmour.order.pojo.Dto.OrderDetailDto;
 import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.ROrderPreductService;
 import com.linmour.order.utils.IdGenerateUtil;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +49,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private ProducerMq producerMq;
     @Resource
     private ProductFeign productFeign;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
 
     @Override
@@ -164,6 +167,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         Map<String, Object> obj = new HashMap<>();
         obj.put("orderInfoDtos" ,orderInfoDtos);
         obj.put("orderDetailDtos", orderDetailDtos);
+        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
+            for (Map<String, Object> product : orderDetailDto.getProducts()) {
+                stringRedisTemplate.opsForHash().put(product.get("id").toString(),"name",product.get("name"));
+            }
+
+        }
         return Result.success(obj);
     }
 

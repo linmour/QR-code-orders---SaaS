@@ -230,6 +230,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                 }
             }
         }
+
         return success(productDetailDtos);
 
     }

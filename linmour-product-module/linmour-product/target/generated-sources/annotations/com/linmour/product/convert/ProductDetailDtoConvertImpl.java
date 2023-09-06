@@ -2,32 +2,47 @@ package com.linmour.product.convert;
 
 import com.linmour.product.pojo.Do.ProductInfo;
 import com.linmour.product.pojo.Dto.ProductDetailDto;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-23T19:33:10+0800",
+    date = "2023-09-06T19:36:10+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 1.8.0_361 (Oracle Corporation)"
 )
 public class ProductDetailDtoConvertImpl implements ProductDetailDtoConvert {
 
     @Override
-    public ProductDetailDto ProductInfoToProductDetailDto(ProductInfo dto) {
-        if ( dto == null ) {
+    public List<ProductDetailDto> ProductInfoToProductDetailDto(List<ProductInfo> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<ProductDetailDto> list1 = new ArrayList<ProductDetailDto>( list.size() );
+        for ( ProductInfo productInfo : list ) {
+            list1.add( productInfoToProductDetailDto( productInfo ) );
+        }
+
+        return list1;
+    }
+
+    protected ProductDetailDto productInfoToProductDetailDto(ProductInfo productInfo) {
+        if ( productInfo == null ) {
             return null;
         }
 
         ProductDetailDto.ProductDetailDtoBuilder productDetailDto = ProductDetailDto.builder();
 
-        productDetailDto.id( dto.getId() );
-        productDetailDto.name( dto.getName() );
-        productDetailDto.shopId( dto.getShopId() );
-        productDetailDto.intro( dto.getIntro() );
-        productDetailDto.specId( dto.getSpecId() );
-        productDetailDto.status( dto.getStatus() );
-        productDetailDto.sortId( dto.getSortId() );
-        productDetailDto.picture( dto.getPicture() );
-        productDetailDto.price( dto.getPrice() );
+        productDetailDto.id( productInfo.getId() );
+        productDetailDto.name( productInfo.getName() );
+        productDetailDto.shopId( productInfo.getShopId() );
+        productDetailDto.intro( productInfo.getIntro() );
+        productDetailDto.specId( productInfo.getSpecId() );
+        productDetailDto.status( productInfo.getStatus() );
+        productDetailDto.sortId( productInfo.getSortId() );
+        productDetailDto.picture( productInfo.getPicture() );
+        productDetailDto.price( productInfo.getPrice() );
 
         return productDetailDto.build();
     }

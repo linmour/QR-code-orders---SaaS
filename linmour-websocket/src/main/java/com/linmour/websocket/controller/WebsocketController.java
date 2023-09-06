@@ -30,5 +30,14 @@ public class WebsocketController {
         }
     }
 
+    @RequestMapping("/b")
+    public void c()   {
+        try {
+             sendInfo(orderFeign.getOrderInfo(1L),"1");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

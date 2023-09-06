@@ -24,4 +24,7 @@
         create_time,update_time,create_by,
         update_by,deleted
     </sql>
+    <select id="getInventory" resultType="com.linmour.product.pojo.Do.ProductInventory">
+        SELECT a.* FROM product_inventory a WHERE a.product_id IN (#{productIds})
+    </select>
 </mapper>

@@ -11,12 +11,13 @@ import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import com.linmour.common.service.FileStorageService;
-import com.linmour.product.convert.*;
+import com.linmour.product.convert.ProductDetailDtoConvert;
+import com.linmour.product.convert.ProductInfoConvert;
+import com.linmour.product.convert.ProductInfoPageDtoConvert;
 import com.linmour.product.mapper.*;
 import com.linmour.product.pojo.Do.*;
 import com.linmour.product.pojo.Dto.*;
 import com.linmour.product.service.ProductInfoService;
-import com.linmour.product.service.ProductInventoryService;
 import com.linmour.product.service.RProductNonValueSpecService;
 import com.linmour.product.service.RProductValueSpecService;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,6 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.linmour.common.dtos.Result.success;
 import static com.linmour.common.utils.SecurityUtils.getShopId;
 
 /**
@@ -50,7 +50,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     @Resource
     private NonValueSpecMapper nonValueSpecMapper;
     @Resource
-    private ProductInventoryService productInventoryService;
+    private ProductSortMapper productSortMapper;
     @Resource
     private ProductSpecMapper productSpecMapper;
     @Resource
@@ -65,8 +65,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     private RProductNonValueSpecService rProductNonValueSpecService;
     @Resource
     private RProductValueSpecService rProductValueSpecService;
-    @Resource
-    private ProductInventoryMapper productInventoryMapper;
+
     @Override
     public Result getProductList(ProductInfoPageDto dto) {
         List<ProductInfo> productInfos = productInfoMapper.selectList(new LambdaQueryWrapper<ProductInfo>()
@@ -78,7 +77,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         }
         //这个是新店没有分类会报空指针
         if (dto.getSortId() == null) {
-            return success();
+            return Result.success();
 
         }
 
@@ -89,14 +88,14 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             throw new CustomException(AppHttpCodeEnum.PRODUCT_ERROR);
         }
         List<ProductInfoPageDto> productInfoPageDtos = ProductInfoPageDtoConvert.INSTANCE.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
-        return success(new PageResult<>(productInfoPageDtos, productInfoPage.getTotal()));
+        return Result.success(new PageResult<>(productInfoPageDtos, productInfoPage.getTotal()));
     }
 
     @Override
     public Result changeProduct(ProductInfoPageDto productInfo) {
         ProductInfo productInfo1 = ProductInfoConvert.IN.ProductInfoPageDtoToProductInfo(productInfo);
         productInfoMapper.updateById(productInfo1);
-        return success();
+        return Result.success();
     }
 
     @Override
@@ -110,129 +109,71 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             String url = fileStorageService.uploadPicture(multipartFile, "product", fileName);
             list.add(url);
         }
-        return success(list);
+        return Result.success(list);
     }
 
     @Override
-    public Result getProductDetails(List<Long> productIds) {
-        List<ProductInfo> productInfos = productInfoMapper.selectBatchIds(productIds);
-        List<ProductDetailDto> productDetailDtos = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfos);
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Long productId : productIds) {
-            stringBuilder.append(productId).append(",");
-        }
-        String string = stringBuilder.toString();
-        //这里用了两种处理方式，一个是拼接字符串变成in条件，一个是sql里循环
-        List<ProductInventory> inventory = productInventoryMapper.getInventory(string.substring(0, string.length() - 1));
-        //库存
-        for (ProductDetailDto productDetailDto : productDetailDtos) {
-            ArrayList<InventoryDto> inventoryDtos = new ArrayList<>();
-            for (ProductInventory productInventory : inventory) {
-                if (productDetailDto.getId() == productInventory.getProductId()){
-                    InventoryDto inventoryDto = InventoryDtoConvert.IN.ProductInventoryToInventoryDto(productInventory);
-                    inventoryDtos.add(inventoryDto);
-                }
-            }
-            productDetailDto.setInventoryList(inventoryDtos);
-        }
+    public Result getProductDetails(Long productId) {
+        //商品基本信息
+        ProductInfo productInfo = productInfoMapper.selectOne(new LambdaQueryWrapper<ProductInfo>().eq(ProductInfo::getId, productId));
+        ProductDetailDto productDetailDto = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfo);
+        String sort = productInfoMapper.getSort(productId);
+        //判断是否有规格
+        if (productInfo.getSpecId() != 0) {
+            ProductSpec productSpec = productSpecMapper.selectOne(new LambdaQueryWrapper<ProductSpec>().eq(ProductSpec::getId, productInfo.getSpecId()));
+            //价值规格
+            if (productSpec.getValueSpec() == 1) {
+                List<Long> valueId = rProductValueSpecService.getNonValueId(productInfo.getSpecId());
+                //价值规格的父类   大小....
+                List<ValueSpec> valueSpecs = valueSpecMapper.selectBatchIds(valueId);
+                List<Long> sortIdList = valueSpecs.stream().map(ValueSpec::getSortId).distinct().collect(Collectors.toList());
+                List<ValueDto> valueDtoList = new ArrayList<>();
+                //父类下的 子类选项
+                sortIdList.forEach(m -> {
+                    String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
+                    ValueDto valueDto = new ValueDto();
+                    ArrayList<String> spec = new ArrayList<>();
+                    ArrayList<BigDecimal> price = new ArrayList<>();
+                    valueSpecs.stream().filter(o -> {
+                        return o.getSortId() == m;
+                    }).collect(Collectors.toList()).forEach(p -> {
+                        spec.add(p.getName());
+                        price.add(p.getPrice());
+                    });
 
-        List<Map<String, Object>> sorts = productInfoMapper.getSort(productIds);
-        //找出需要查找规格的
-        List<ProductInfo> productInfoSpec = productInfos.stream().filter(m -> m.getSpecId() != 0).collect(Collectors.toList());
-        if (productInfoSpec.size() == 0) {
-            for (ProductDetailDto productDetailDto : productDetailDtos) {
-                Long dtoId = productDetailDto.getId();
-                for (Map<String, Object> sort : sorts) {
-                    Long sortId = Long.parseLong(sort.get("id").toString());
-                    if (dtoId.equals(sortId)) {
-                        productDetailDto.setSort(sort.get("sort").toString());
-                    }
-                }
-            }
-
-            return success(productDetailDtos);
-        }
-        List<ProductSpec> specs = productSpecMapper.selectList(new LambdaQueryWrapper<ProductSpec>().in(ProductSpec::getId, productInfoSpec.stream().map(ProductInfo::getSpecId).collect(Collectors.toList())));
-        //有价值选项的
-        List<Long> valueSpec = specs.stream().filter(m -> m.getValueSpec() != 0).collect(Collectors.toList()).stream().map(ProductSpec::getId).collect(Collectors.toList());
-        //筛选出需要规格的商品
-        List<ProductInfo> valueSpecFilteredList = productInfos.stream()
-                .filter(info -> valueSpec.contains(info.getSpecId()))
-                .collect(Collectors.toList());
-        //查找每一个规格
-        for (ProductInfo productInfo : valueSpecFilteredList) {
-            List<Long> valueId = rProductValueSpecService.getValueId(productInfo.getSpecId());
-            List<ValueSpec> valueSpecs = valueSpecMapper.selectBatchIds(valueId);
-            List<Long> sortIdList = valueSpecs.stream().map(ValueSpec::getSortId).distinct().collect(Collectors.toList());
-            List<ValueDto> valueDtoList = new ArrayList<>();
-            //父类下的 子类选项
-            sortIdList.forEach(m -> {
-                String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
-                ValueDto valueDto = new ValueDto();
-                ArrayList<String> spec = new ArrayList<>();
-                ArrayList<BigDecimal> price = new ArrayList<>();
-                valueSpecs.stream().filter(o -> {
-                    return o.getSortId() == m;
-                }).collect(Collectors.toList()).forEach(p -> {
-                    spec.add(p.getName());
-                    price.add(p.getPrice());
+                    valueDto.setSpec(spec);
+                    valueDto.setSort(name);
+                    valueDto.setPrice(price);
+                    valueDtoList.add(valueDto);
                 });
+                productDetailDto.setValueList(valueDtoList);
+            }
+            if (productSpec.getNonValueSpec() == 1) {
+                List<Long> nonValueId = rProductNonValueSpecService.getNonValueId(productInfo.getSpecId());
+                List<NonValueSpec> nonValueSpecs = nonValueSpecMapper.selectBatchIds(nonValueId);
+                List<Long> sortIdList = nonValueSpecs.stream().map(NonValueSpec::getSortId).distinct().collect(Collectors.toList());
+                List<NonValueDto> nonValueDtoList = new ArrayList<>();
+                sortIdList.forEach(m -> {
+                    String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
+                    NonValueDto nonValueDto = new NonValueDto();
 
-                valueDto.setSpec(spec);
-                valueDto.setSort(name);
-                valueDto.setPrice(price);
-                valueDtoList.add(valueDto);
-            });
-            ProductDetailDto productDetailDto = productDetailDtos.stream()
-                    .filter(m -> m.getId() == productInfo.getId())
-                    .findFirst()
-                    .orElse(null);
-            productDetailDto.setValueList(valueDtoList);
-        }
+                    ArrayList<String> list = new ArrayList<>();
+                    nonValueSpecs.stream().filter(o -> {
+                        return o.getSortId() == m;
+                    }).collect(Collectors.toList()).forEach(p -> {
+                        list.add(p.getName());
+                    });
 
-
-        List<Long> nonValueSpec = specs.stream().filter(m -> m.getNonValueSpec() != 0).collect(Collectors.toList()).stream().map(ProductSpec::getId).collect(Collectors.toList());
-        List<ProductInfo> nonValueSpecFilteredList = productInfos.stream()
-                .filter(info -> nonValueSpec.contains(info.getSpecId()))
-                .collect(Collectors.toList());
-        for (ProductInfo productInfo : nonValueSpecFilteredList) {
-            List<Long> nonValueId = rProductNonValueSpecService.getNonValueId(productInfo.getSpecId());
-            List<NonValueSpec> nonValueSpecs = nonValueSpecMapper.selectBatchIds(nonValueId);
-            List<Long> sortIdList = nonValueSpecs.stream().map(NonValueSpec::getSortId).distinct().collect(Collectors.toList());
-            List<NonValueDto> nonValueDtoList = new ArrayList<>();
-            sortIdList.forEach(m -> {
-                String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
-                NonValueDto nonValueDto = new NonValueDto();
-
-                ArrayList<String> list = new ArrayList<>();
-                nonValueSpecs.stream().filter(o -> {
-                    return o.getSortId() == m;
-                }).collect(Collectors.toList()).forEach(p -> {
-                    list.add(p.getName());
+                    nonValueDto.setSpec(list);
+                    nonValueDto.setSort(name);
+                    nonValueDtoList.add(nonValueDto);
                 });
-
-                nonValueDto.setSpec(list);
-                nonValueDto.setSort(name);
-                nonValueDtoList.add(nonValueDto);
-            });
-            ProductDetailDto productDetailDto = productDetailDtos.stream()
-                    .filter(m -> m.getId() == productInfo.getId())
-                    .findFirst()
-                    .orElse(null);
-            productDetailDto.setNonValueList(nonValueDtoList);
-        }
-
-
-        for (ProductDetailDto productDetailDto : productDetailDtos) {
-            Long dtoId = productDetailDto.getId();
-            for (Map<String, Object> sort : sorts) {
-                Long sortId = Long.parseLong(sort.get("id").toString());
-                if (dtoId.equals(sortId)) {
-                    productDetailDto.setSort(sort.get("sort").toString());
-                }
+                productDetailDto.setNonValueList(nonValueDtoList);
             }
         }
-        return success(productDetailDtos);
+
+        productDetailDto.setSort(sort);
+        return Result.success(productDetailDto);
     }
 
     @Override
@@ -260,10 +201,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             rProductSpec(nonValueIds, valueIds, productSpecId);
         }
         productInfoService.saveOrUpdate(productInfo);
-        //库存
-        List<ProductInventory> list = ProductInventoryConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(),productInfo.getId());
-        productInventoryService.saveOrUpdateBatch(list);
-        return success();
+        return Result.success();
     }
 
     //关系表
@@ -376,9 +314,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         if (productSpec.getNonValueSpec() == 1) {
             specSortMapper.deleteNonValue(productId);
             rProductNonValueSpecMapper.deleteNonValue(productId);
-        }
-        if (product.getInventoryList().size() != 0){
-            productInventoryService.remove(new LambdaQueryWrapper<ProductInventory>().eq(ProductInventory::getProductId,product.getId()));
         }
 
         //这个有的删除是把deleted变成1

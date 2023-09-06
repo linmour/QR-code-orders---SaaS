@@ -5,12 +5,9 @@ import com.linmour.order.feign.fallback.ProductFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @FeignClient(name = "linmour-product",fallback = ProductFeignFallback.class)
 public interface ProductFeign {
-    @GetMapping("/product/product/getProductDetails")
-    Result getProductDetails(@RequestParam("productIds") List<Long> productIds) ;
+    @GetMapping("/product/product/getProductDetails/{productId}")
+    Result getProductDetails(@PathVariable Long productId) ;
 }

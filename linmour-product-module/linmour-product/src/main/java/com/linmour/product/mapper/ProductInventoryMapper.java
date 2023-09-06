@@ -2,9 +2,6 @@ package com.linmour.product.mapper;
 
 import com.linmour.product.pojo.Do.ProductInventory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
 * @author linmour
@@ -13,7 +10,7 @@ import java.util.List;
 * @Entity com.linmour.product.pojo.Do.ProductInventory
 */
 public interface ProductInventoryMapper extends BaseMapper<ProductInventory> {
-    List<ProductInventory> getInventory(@Param("productIds") String productIds);
+
 }
 
 

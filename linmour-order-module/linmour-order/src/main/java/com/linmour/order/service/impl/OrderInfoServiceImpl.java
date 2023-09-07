@@ -99,6 +99,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         map.put("tableId",orderInfoDto.getTableId().toString());
         map.put("shopId",getShopId().toString());
         producerMq.newOrder(map);
+        return Result.success();
     }
 
     @Override

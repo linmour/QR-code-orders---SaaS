@@ -19,6 +19,7 @@ import com.linmour.order.pojo.Dto.OrderDetailDto;
 import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.ROrderPreductService;
 import com.linmour.order.utils.IdGenerateUtil;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +49,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private ProducerMq producerMq;
     @Resource
     private ProductFeign productFeign;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
 
     @Override
@@ -92,8 +95,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfoMapper.update(null, new LambdaUpdateWrapper<OrderInfo>().eq(OrderInfo::getId, submitOrderDto.getOrderNo())
                 .set(OrderInfo::getPayType, submitOrderDto.getPayType())
                 .set(OrderInfo::getPayStatus,PAYMENT));
+        OrderInfo orderInfo = orderInfoMapper.selectById(submitOrderDto.getOrderNo());
         //发送给餐厅服务
-        OrderInfoDto orderInfoDto = OrderInfoDtoConvert.IN.OrderInfoToOrderInfoDto(orderInfoMapper.selectById(submitOrderDto.getOrderNo()));
+        OrderInfoDto orderInfoDto = OrderInfoDtoConvert.IN.OrderInfoToOrderInfoDto(orderInfo);
         //封装shopId要不然没有id
         HashMap<String, String> map = new HashMap<>();
         map.put("tableId",orderInfoDto.getTableId().toString());
@@ -134,14 +138,17 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderDetailDto.setProductIds(productIds);
         }
         List<Map<String,Object>> a = new ArrayList<>();
-        rOrderPreducts.stream().forEach(m ->{
-            //TODO 通过feign拿到菜品的详细信息,调用的方法可以改进，要不然这样是循环查库
-            Result result = productFeign.getProductDetails(m.getProductId());
-            Map<String,Object> data = (Map<String, Object>) result.getData();
-            //这个data就每个菜品的属性，有需要可以添加
-            data.put("quantity",m.getQuantity());
-            a.add(data);
-        });
+        List<Long> collect = rOrderPreducts.stream().map(ROrderPreduct::getProductId).collect(Collectors.toList());
+        Result result = productFeign.getProductDetails(collect);
+        List<Map<String,Object>> data = (List<Map<String,Object>>) result.getData();
+        for (Map<String, Object> datum : data) {
+            for (ROrderPreduct rOrderPreduct : rOrderPreducts) {
+                if (datum.get("id") == rOrderPreduct.getProductId().toString()){
+                    datum.put("quantity",rOrderPreduct.getQuantity());
+                }
+            }
+            a.add(datum);
+        }
         //根据上面保存的productId来匹配订单中的菜，然后存入
         orderDetailDtos.forEach(n ->{
             List<Map<String,Object>> maps = new ArrayList<>();
@@ -160,6 +167,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         Map<String, Object> obj = new HashMap<>();
         obj.put("orderInfoDtos" ,orderInfoDtos);
         obj.put("orderDetailDtos", orderDetailDtos);
+        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
+            for (Map<String, Object> product : orderDetailDto.getProducts()) {
+                stringRedisTemplate.opsForHash().put(product.get("id").toString(),"name",product.get("name"));
+            }
+
+        }
         return Result.success(obj);
     }
 

@@ -4,6 +4,9 @@ import com.linmour.product.pojo.Do.ProductInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 /**
 * @author linmour
 * @description 针对表【product_info】的数据库操作Mapper
@@ -12,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
 */
 public interface ProductInfoMapper extends BaseMapper<ProductInfo> {
 
-    String getSort(@Param("productId") Long productId);
+    List<Map<String,Object>> getSort(@Param("productIds") List<Long> productIds);
 }
 
 

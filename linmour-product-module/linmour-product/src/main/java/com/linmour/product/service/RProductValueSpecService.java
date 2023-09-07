@@ -12,5 +12,5 @@ import java.util.List;
 */
 public interface RProductValueSpecService extends IService<RProductValueSpec> {
 
-    List<Long> getNonValueId(Long specId);
+    List<Long> getValueId(Long specId);
 }

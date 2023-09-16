@@ -53,8 +53,10 @@ public class ProductInventory implements Serializable {
     /**
      * 阈值，提示库存不足
      */
-    @TableField(value = "Threshold")
+    @TableField(value = "threshold")
     private Integer threshold;
+    @TableField(value = "quantity")
+    private Integer quantity;
 
     /**
      * 

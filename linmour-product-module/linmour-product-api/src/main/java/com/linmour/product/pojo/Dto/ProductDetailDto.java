@@ -31,11 +31,10 @@ public class ProductDetailDto  implements  Serializable  {
      
     private String intro;
 
-    /**
-     * 0没有规格 有值表示规格id
-     */
-     
-    private Long specId;
+    private Byte valueSpec;
+
+
+    private Byte nonValueSpec;
 
     /**
      * 商品状态 0下架 1上架
@@ -62,7 +61,7 @@ public class ProductDetailDto  implements  Serializable  {
     private BigDecimal price;
     private String sort;
     private List<NonValueDto> nonValueList;
-    private List<ValueDto> ValueList;
+    private List<ValueDto> valueList;
     private List<InventoryDto> inventoryList;
 
 

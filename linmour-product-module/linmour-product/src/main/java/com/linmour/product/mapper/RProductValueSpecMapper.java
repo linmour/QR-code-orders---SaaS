@@ -4,6 +4,8 @@ import com.linmour.product.pojo.Do.RProductValueSpec;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * @author linmour
 * @description 针对表【r_product_value_spec】的数据库操作Mapper
@@ -13,6 +15,8 @@ import org.apache.ibatis.annotations.Param;
 public interface RProductValueSpecMapper extends BaseMapper<RProductValueSpec> {
 
     void deleteValue(@Param("productId") Long productId);
+
+    void insertBatchSomeColumn(@Param("list") List<RProductValueSpec> list);
 }
 
 

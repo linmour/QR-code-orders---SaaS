@@ -2,6 +2,7 @@ package com.linmour.product.service.impl;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.nacos.api.config.filter.IFilterConfig;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,8 +27,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.linmour.common.dtos.Result.success;
@@ -52,8 +58,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     private NonValueSpecMapper nonValueSpecMapper;
     @Resource
     private ProductInventoryService productInventoryService;
-    @Resource
-    private ProductSpecMapper productSpecMapper;
+
     @Resource
     private RProductNonValueSpecMapper rProductNonValueSpecMapper;
     @Resource
@@ -72,7 +77,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
 
     @Override
-    public Result getProductList(ProductInfoPageDto dto) {
+        public Result getProductPage(ProductInfoPageDto dto) {
         List<ProductInfo> productInfos = productInfoMapper.selectList(new LambdaQueryWrapper<ProductInfo>()
                 .eq(!ObjectUtil.isNull(dto.getSortId()), ProductInfo::getSortId, dto.getSortId()));
         //因为前台的缘故，第一次没传sort值，所以要默认拿到第一个sort
@@ -97,130 +102,37 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     }
 
     @Override
-    public Result changeProduct(Long id,Boolean status) {
-        productInfoMapper.update(null,new LambdaUpdateWrapper<ProductInfo>().eq(ProductInfo::getId,id).set(ProductInfo::getStatus,status));
+    public Result changeProduct(Long id, Integer status) {
+        productInfoMapper.update(null, new LambdaUpdateWrapper<ProductInfo>().eq(ProductInfo::getId, id).set(ProductInfo::getStatus, status));
         return success();
     }
 
-    @Override
-    public Result uploadProductImg(MultipartFile[] file) {
-        String shopId = getShopId().toString();
-        LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long id = user.getLoginVo().getId();
-        List<String> list = new ArrayList<>();
-        for (MultipartFile multipartFile : file) {
-            String fileName = id.toString() + "/" + shopId + "/" + UUID.randomUUID().toString().replace("-", "");
-            String url = fileStorageService.uploadPicture(multipartFile, "product", fileName);
-            list.add(url);
-        }
-        return success(list);
-    }
 
     @Override
     public Result getProductDetails(List<Long> productIds) {
         List<ProductInfo> productInfos = productInfoMapper.selectBatchIds(productIds);
         List<ProductDetailDto> productDetailDtos = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfos);
+        //拼接查询需要的参数
         StringBuilder stringBuilder = new StringBuilder();
         for (Long productId : productIds) {
             stringBuilder.append(productId).append(",");
         }
         String string = stringBuilder.toString();
+        //库存的操作
         //这里用了两种处理方式，一个是拼接字符串变成in条件，一个是sql里循环
         List<ProductInventory> inventorys = productInventoryMapper.getInventory(string.substring(0, string.length() - 1));
         for (ProductDetailDto productDetailDto : productDetailDtos) {
             List<InventoryDto> inventoryDtos = new ArrayList<>();
             for (ProductInventory inventory : inventorys) {
-                if (productDetailDto.getId() == inventory.getProductId()){
+                if (productDetailDto.getId() == inventory.getProductId()) {
                     inventoryDtos.add(InventoryDtoConvert.IN.InventoryDtoToProductInventory(inventory));
                 }
             }
             productDetailDto.setInventoryList(inventoryDtos);
         }
+
         List<Map<String, Object>> sorts = productInfoMapper.getSort(productIds);
-        //找出需要查找规格的
-        List<ProductInfo> productInfoSpec = productInfos.stream().filter(m -> m.getSpecId() != 0).collect(Collectors.toList());
-        if (productInfoSpec.size() == 0) {
-            for (ProductDetailDto productDetailDto : productDetailDtos) {
-                Long dtoId = productDetailDto.getId();
-                for (Map<String, Object> sort : sorts) {
-                    Long sortId = Long.parseLong(sort.get("id").toString());
-                    if (dtoId.equals(sortId)) {
-                        productDetailDto.setSort(sort.get("sort").toString());
-                    }
-                }
-            }
-            return success(productDetailDtos);
-        }
-        List<ProductSpec> specs = productSpecMapper.selectList(new LambdaQueryWrapper<ProductSpec>().in(ProductSpec::getId, productInfoSpec.stream().map(ProductInfo::getSpecId).collect(Collectors.toList())));
-        //有价值选项的
-        List<Long> valueSpec = specs.stream().filter(m -> m.getValueSpec() != 0).collect(Collectors.toList()).stream().map(ProductSpec::getId).collect(Collectors.toList());
-        //筛选出需要规格的商品
-        List<ProductInfo> valueSpecFilteredList = productInfos.stream()
-                .filter(info -> valueSpec.contains(info.getSpecId()))
-                .collect(Collectors.toList());
-        //查找每一个规格
-        for (ProductInfo productInfo : valueSpecFilteredList) {
-            List<Long> valueId = rProductValueSpecService.getValueId(productInfo.getSpecId());
-            List<ValueSpec> valueSpecs = valueSpecMapper.selectBatchIds(valueId);
-            List<Long> sortIdList = valueSpecs.stream().map(ValueSpec::getSortId).distinct().collect(Collectors.toList());
-            List<ValueDto> valueDtoList = new ArrayList<>();
-            //父类下的 子类选项
-            sortIdList.forEach(m -> {
-                String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
-                ValueDto valueDto = new ValueDto();
-                ArrayList<String> spec = new ArrayList<>();
-                ArrayList<BigDecimal> price = new ArrayList<>();
-                valueSpecs.stream().filter(o -> {
-                    return o.getSortId() == m;
-                }).collect(Collectors.toList()).forEach(p -> {
-                    spec.add(p.getName());
-                    price.add(p.getPrice());
-                });
-
-                valueDto.setSpec(spec);
-                valueDto.setSort(name);
-                valueDto.setPrice(price);
-                valueDtoList.add(valueDto);
-            });
-            ProductDetailDto productDetailDto = productDetailDtos.stream()
-                    .filter(m -> m.getId() == productInfo.getId())
-                    .findFirst()
-                    .orElse(null);
-            productDetailDto.setValueList(valueDtoList);
-        }
-
-        List<Long> nonValueSpec = specs.stream().filter(m -> m.getNonValueSpec() != 0).collect(Collectors.toList()).stream().map(ProductSpec::getId).collect(Collectors.toList());
-        List<ProductInfo> nonValueSpecFilteredList = productInfos.stream()
-                .filter(info -> nonValueSpec.contains(info.getSpecId()))
-                .collect(Collectors.toList());
-        for (ProductInfo productInfo : nonValueSpecFilteredList) {
-            List<Long> nonValueId = rProductNonValueSpecService.getNonValueId(productInfo.getSpecId());
-            List<NonValueSpec> nonValueSpecs = nonValueSpecMapper.selectBatchIds(nonValueId);
-            List<Long> sortIdList = nonValueSpecs.stream().map(NonValueSpec::getSortId).distinct().collect(Collectors.toList());
-            List<NonValueDto> nonValueDtoList = new ArrayList<>();
-            sortIdList.forEach(m -> {
-                String name = specSortMapper.selectOne(new LambdaQueryWrapper<SpecSort>().eq(SpecSort::getId, m)).getName();
-                NonValueDto nonValueDto = new NonValueDto();
-
-                ArrayList<String> list = new ArrayList<>();
-                nonValueSpecs.stream().filter(o -> {
-                    return o.getSortId() == m;
-                }).collect(Collectors.toList()).forEach(p -> {
-                    list.add(p.getName());
-                });
-
-                nonValueDto.setSpec(list);
-                nonValueDto.setSort(name);
-                nonValueDtoList.add(nonValueDto);
-            });
-            ProductDetailDto productDetailDto = productDetailDtos.stream()
-                    .filter(m -> m.getId() == productInfo.getId())
-                    .findFirst()
-                    .orElse(null);
-            productDetailDto.setNonValueList(nonValueDtoList);
-        }
-
-
+        List<ProductInfo> productInfoSpec = productInfos.stream().filter(m -> (m.getNonValueSpec() != 0 && m.getValueSpec() != 0)).collect(Collectors.toList());
         for (ProductDetailDto productDetailDto : productDetailDtos) {
             Long dtoId = productDetailDto.getId();
             for (Map<String, Object> sort : sorts) {
@@ -229,6 +141,97 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                     productDetailDto.setSort(sort.get("sort").toString());
                 }
             }
+        }
+        if (productInfoSpec.size() == 0) {
+            return success(productDetailDtos);
+        }
+        /*
+            [
+                {"sort":"大小","spec":["份","小份"],"price":[5,3]},
+                {"sort":"种类","spec":["乌鸡","普通鸡"],"price":[18,13]}
+            ]
+         */
+
+        //价值选项的商品
+        List<ProductInfo> valueSpecs = productInfos.stream().filter(m -> m.getValueSpec() == 1).collect(Collectors.toList());
+        if (valueSpecs.size() > 0) {
+            //每个商品自己的规格
+            valueSpecs.stream().forEach(m -> {
+
+                //找到自己所对应的规格选项
+                List<Long> valueId = rProductValueSpecService.getValueId(m.getId());
+                //商品的规格选项
+                List<ValueSpec> valueSpecsList = valueSpecMapper.selectBatchIds(valueId);
+                //按sort分类
+                Map<Long, List<ValueSpec>> collect = valueSpecsList.stream().collect(Collectors.groupingBy(ValueSpec::getSortId));
+                List<List<ValueSpec>> result = new ArrayList<>(collect.values());
+                //这个就是上面的 例子 的数组
+                List<ValueDto> valueList = new ArrayList<>();
+                //同一分类的放一起
+                result.stream().forEach(p -> {
+
+                    //这两个就是一个 例子 数组里的spec和price
+                    List<String> specList = new ArrayList<>();
+                    List<BigDecimal> priceList = new ArrayList<>();
+
+                    Long sortId = p.get(0).getSortId();
+                    String sort = specSortMapper.selectById(sortId).getName();
+
+                    p.stream().forEach(i -> {
+                        specList.add(i.getName());
+                        priceList.add(i.getPrice());
+
+                    });
+                    ValueDto valueDto = new ValueDto();
+                    valueDto.setSpec(specList);
+                    valueDto.setPrice(priceList);
+                    valueDto.setSort(sort);
+                    valueList.add(valueDto);
+                });
+
+                ProductDetailDto productDetailDto = productDetailDtos.stream()
+                        .filter(o -> o.getId() == m.getId())
+                        .findFirst()
+                        .orElse(null);
+                productDetailDto.setValueList(valueList);
+            });
+
+        }
+
+
+        //普通选项的商品
+        List<ProductInfo> nonValueSpecs = productInfos.stream().filter(m -> m.getValueSpec() == 1).collect(Collectors.toList());
+        if (nonValueSpecs.size() > 0) {
+            //每个商品自己的规格
+            nonValueSpecs.stream().forEach(m -> {
+                //找到自己所对应的规格选项
+                List<Long> valueId = rProductNonValueSpecService.getNonValueId(m.getId());
+                //商品的规格选项
+                List<NonValueSpec> nonValueSpecsList = nonValueSpecMapper.selectBatchIds(valueId);
+                Map<Long, List<NonValueSpec>> collect = nonValueSpecsList.stream().collect(Collectors.groupingBy(NonValueSpec::getSortId));
+                List<List<NonValueSpec>> result = new ArrayList<>(collect.values());
+                List<NonValueDto> nonValueDtoList = new ArrayList<>();
+                result.stream().forEach(p -> {
+                    List<String> specList = new ArrayList<>();
+                    Long sortId = p.get(0).getSortId();
+                    String sort = specSortMapper.selectById(sortId).getName();
+
+                    p.stream().forEach(i -> {
+                        specList.add(i.getName());
+
+                    });
+                    NonValueDto nonValueDto = new NonValueDto();
+                    nonValueDto.setSpec(specList);
+                    nonValueDto.setSort(sort);
+                    nonValueDtoList.add(nonValueDto);
+                });
+                ProductDetailDto productDetailDto = productDetailDtos.stream()
+                        .filter(o -> o.getId() == m.getId())
+                        .findFirst()
+                        .orElse(null);
+                productDetailDto.setNonValueList(nonValueDtoList);
+            });
+
         }
 
         return success(productDetailDtos);
@@ -247,19 +250,25 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             pictureList = pictureList.substring(0, pictureList.length() - 1);
         }
         productInfo.setPicture(pictureList);
-        if (!(product.getNonValueList().isEmpty() && product.getValueList().isEmpty())) {
-            //插入规格的方法
-            Long productSpecId = productSpecMethod(product);
-            productInfo.setSpecId(productSpecId);
+        //需要规格
+        List<Long> valueIds = null;
+        List<Long> nonValueIds = null;
+        if (!product.getValueList().isEmpty()) {
+            //价值选项
+            valueIds = valueMethod(product.getValueList(), productInfo);
+            productInfo.setValueSpec((byte) 1);
+        }
+        if (!product.getNonValueList().isEmpty()) {
             //todo  这里可以用NonValueDto对象来接收
             //普通选项
-            List<Long> nonValueIds = nonValueMethod(product.getNonValueList());
-            //价值选项
-            List<Long> valueIds = valueMethod(product.getValueList(), productInfo);
-
-            rProductSpec(nonValueIds, valueIds, productSpecId);
+            nonValueIds = nonValueMethod(product.getNonValueList());
+            productInfo.setNonValueSpec((byte) 1);
         }
+
         productInfoService.saveOrUpdate(productInfo);
+
+        rProductSpec(nonValueIds, valueIds, productInfo.getId());
+
         //库存
         List<ProductInventory> list = ProductInventoryConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());
         productInventoryService.saveOrUpdateBatch(list);
@@ -267,31 +276,41 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     }
 
     //关系表
-    private void rProductSpec(List<Long> nonValueIds, List<Long> valueIds, Long productSpecId) {
-        for (Long nonValueId : nonValueIds) {
-            RProductNonValueSpec rProductNonValueSpec = new RProductNonValueSpec();
-            rProductNonValueSpec.setNonValueId(nonValueId);
-            rProductNonValueSpec.setProductSpecId(productSpecId);
-            rProductNonValueSpecMapper.insert(rProductNonValueSpec);
+    private void rProductSpec(List<Long> nonValueIds, List<Long> valueIds, Long productId) {
+        if (nonValueIds != null) {
+            List<RProductNonValueSpec> list = new ArrayList<>();
+            for (Long nonValueId : nonValueIds) {
+                RProductNonValueSpec rProductNonValueSpec = new RProductNonValueSpec();
+                rProductNonValueSpec.setNonValueId(nonValueId);
+                rProductNonValueSpec.setProductId(productId);
+                list.add(rProductNonValueSpec);
+            }
+            rProductNonValueSpecMapper.insertBatchSomeColumn(list);
         }
-        for (Long valueId : valueIds) {
-            RProductValueSpec rProductValueSpec = new RProductValueSpec();
-            rProductValueSpec.setProductSpecId(productSpecId);
-            rProductValueSpec.setValueSpecId(valueId);
-            rProductValueSpecMapper.insert(rProductValueSpec);
+
+        if (valueIds != null) {
+            List<RProductValueSpec> list = new ArrayList<>();
+            for (Long valueId : valueIds) {
+                RProductValueSpec rProductValueSpec = new RProductValueSpec();
+                rProductValueSpec.setProductId(productId);
+                rProductValueSpec.setValueSpecId(valueId);
+                list.add(rProductValueSpec);
+            }
+            rProductValueSpecMapper.insertBatchSomeColumn(list);
+
         }
+
 
     }
 
-    private List<Long> valueMethod(List<HashMap> valueList, ProductInfo productInfo) {
+    private List<Long> valueMethod(List<ValueDto> valueList, ProductInfo productInfo) {
         List<Long> valueIds = new ArrayList<>();
         //找出最小价钱
         valueList.stream().forEach(m -> {
-            List list = getMap(m);
             Long specSortId = specSortMethod(m);
-            for (int i = 0; i < ((List) list.get(0)).size(); i++) {
-                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(((List) list.get(0)).get(i).toString()));
-                String spec = ((List) list.get(1)).get(i).toString();
+            for (int i = 0; i < m.getSpec().size(); i++) {
+                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(m.getPrice().get(i).toString()));
+                String spec = m.getSpec().get(i);
                 ValueSpec valueSpec = new ValueSpec();
                 valueSpec.setSortId(specSortId);
                 valueSpec.setName(spec);
@@ -305,22 +324,13 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     }
 
-    private List<List<String>> getMap(HashMap map) {
-        List a = (ArrayList) map.get("price");
-        List b = (ArrayList) map.get("spec");
 
-        List<List<String>> array = new ArrayList<>();
-        array.add(a);
-        array.add(b);
-        return array;
-    }
-
-    private List<Long> nonValueMethod(List<HashMap> nonValueList) {
+    private List<Long> nonValueMethod(List<NonValueDto> nonValueList) {
         List<Long> nonValueIds = new ArrayList<>();
 
         nonValueList.stream().forEach(m -> {
             Long specSortId = specSortMethod(m);
-            List list = (ArrayList) m.get("spec");
+            List list = m.getSpec();
             for (Object o : list) {
                 NonValueSpec nonValueSpec = new NonValueSpec();
                 nonValueSpec.setSortId(specSortId);
@@ -333,58 +343,62 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         return nonValueIds;
     }
 
-    private Long specSortMethod(Map map) {
+    private <T> Long specSortMethod(T obj) {
         SpecSort specSort = new SpecSort();
-        specSort.setName(map.get("sort").toString());
-        specSortMapper.insert(specSort);
-        return specSort.getId();
+        try {
+            // 使用反射获取字段值
+            Field field = obj.getClass().getDeclaredField("sort");
+            field.setAccessible(true);  // 设置字段可访问
+            Object value = field.get(obj);
+
+            // 设置 SpecSort 的名称属性
+            specSort.setName(value.toString());
+
+            // 执行插入操作
+            specSortMapper.insert(specSort);
+
+            // 返回 SpecSort 的 ID
+            return specSort.getId();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+//        specSort.setName(obj.get);
+//        specSortMapper.insert(specSort);
+//        return specSort.getId();
     }
 
-
-    private Long productSpecMethod(AddProductDto product) {
-        List nonValueList = product.getNonValueList();
-        List valueList = product.getValueList();
-        ProductSpec productSpec = new ProductSpec();
-        if (!nonValueList.isEmpty()) {
-            productSpec.setNonValueSpec(1);
-        } else {
-            productSpec.setNonValueSpec(0);
-        }
-        if (!valueList.isEmpty()) {
-            productSpec.setValueSpec(1);
-        }
-        productSpecMapper.insert(productSpec);
-        return productSpec.getId();
-    }
 
     @Override
     public Result updateProduct(AddProductDto product) {
         Long productId = product.getId();
         ProductInfo productInfo = productInfoMapper.selectById(productId);
-        Long productSpecId = productInfo.getSpecId();
+        Byte valueSpec = productInfo.getValueSpec();
+        Byte nonValueSpec = productInfo.getNonValueSpec();
         //判断原来是否有规格，如果没有就可以直接调用新增接口
-        if (productSpecId == 0) {
+        if (valueSpec == 0 && nonValueSpec == 0) {
             return addProduct(product);
         }
-        //有规格把原来的关系表全删了，然后在用新增接口
-        ProductSpec productSpec = productSpecMapper.selectById(productSpecId);
 
-        if (productSpec.getValueSpec() == 1) {
+        if (valueSpec == 1) {
             specSortMapper.deleteValue(productId);
             rProductValueSpecMapper.deleteValue(productId);
         }
-        if (productSpec.getNonValueSpec() == 1) {
+        if (nonValueSpec == 1) {
             specSortMapper.deleteNonValue(productId);
             rProductNonValueSpecMapper.deleteNonValue(productId);
         }
 
-        //这个有的删除是把deleted变成1
-        productSpecMapper.deleteById(productSpecId);
-        product.setSpecId(0L);
         return addProduct(product);
     }
-}
 
+    @Override
+    public Result getProductList() {
+        List<AppProductDto> convert = AppProductDtoConvert.IN.convert(productInfoMapper.selectList(null));
+        convert.forEach(m -> m.setSelectNum(0));
+        return success( convert );
+    }
+}
 
 
 

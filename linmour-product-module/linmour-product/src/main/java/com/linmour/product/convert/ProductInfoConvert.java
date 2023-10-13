@@ -10,19 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface ProductInfoConvert {
     ProductInfoConvert IN = Mappers.getMapper(ProductInfoConvert.class);
 
-    default ProductInfo ProductInfoPageDtoToProductInfo(ProductInfoPageDto dto){
-        if (dto == null) {
-            return null;
-        }
-        ProductInfo.ProductInfoBuilder productInfoBuilder = ProductInfo.builder();
-        productInfoBuilder.id(dto.getId()).intro(dto.getIntro())
-                .status(dto.getStatus()?1:0)
-                .picture(dto.getPicture())
-                .name(dto.getName())
-                .specId(dto.getSpecId())
-                .sortId(dto.getSortId());
-        return productInfoBuilder.build();
-    }
+    ProductInfo ProductInfoPageDtoToProductInfo(ProductInfoPageDto dto);
 
     ProductInfo AddProductDtoToProductInfo(AddProductDto addProductDto);
 }

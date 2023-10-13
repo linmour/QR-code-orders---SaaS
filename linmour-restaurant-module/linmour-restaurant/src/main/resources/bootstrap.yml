@@ -3,12 +3,22 @@ server:
 spring:
   application:
     name: linmour-restaurant
+  profiles:
+    active: dev
   cloud:
     nacos:
       discovery:
-        server-addr: 43.136.73.159:8848
+        server-addr: @nacos.ip@:@nacos.port@
+        namespace: @nacos.namespace@
       config:
-        server-addr: 43.136.73.159:8848
+        server-addr: @nacos.ip@:@nacos.port@
+        namespace: @nacos.namespace@
         file-extension: yml
-
+        shared-configs:
+          - dataId: redis.yml
+            refresh: true
+          - dataId: minio.yml
+            refresh: true
+          - dataId: rocketmq.yml
+            refresh: true
 

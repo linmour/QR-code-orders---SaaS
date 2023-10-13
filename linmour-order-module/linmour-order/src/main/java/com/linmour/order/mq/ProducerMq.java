@@ -1,6 +1,6 @@
 package com.linmour.order.mq;
 
-import com.linmour.order.pojo.Dto.OrderInfoDto;
+
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+
+import static com.linmour.common.constant.MqConstant.NEW_ORDER_TOPIC;
+import static com.linmour.common.constant.MqConstant.ORDER_PAY_TIMEOUT_TOPIC;
 
 
 @Component
@@ -30,7 +33,7 @@ public class ProducerMq {
 
     public void orderPayTimeOut(String msgBody, int delayLevel){
                                                                                                          // 超时时间    延时等级
-        SendResult result = rocketMQTemplate.syncSend("ORDER_PAY_TIMEOUT_TOPIC", MessageBuilder.withPayload(msgBody).build(),messageTimeOut,delayLevel);
+        SendResult result = rocketMQTemplate.syncSend(ORDER_PAY_TIMEOUT_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut,delayLevel);
         isSuccess(result);
     }
 
@@ -41,7 +44,7 @@ public class ProducerMq {
      * （msgBody也可以是对象，sendResult为返回的发送结果）
      */
     public void newOrder( HashMap<String, String> msgBody) {
-        SendResult sendResult = rocketMQTemplate.syncSend("NEW_ORDER_TOPIC", MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
+        SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
 
     }

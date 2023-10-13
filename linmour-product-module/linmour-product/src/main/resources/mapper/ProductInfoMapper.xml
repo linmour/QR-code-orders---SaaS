@@ -9,7 +9,8 @@
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="intro" column="intro" jdbcType="VARCHAR"/>
-            <result property="spec" column="spec" jdbcType="TINYINT"/>
+            <result property="valueSpec" column="value_spec" jdbcType="TINYINT"/>
+            <result property="nonValueSpec" column="non_value_spec" jdbcType="TINYINT"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="sortId" column="sort_id" jdbcType="BIGINT"/>
             <result property="picture" column="picture" jdbcType="VARCHAR"/>

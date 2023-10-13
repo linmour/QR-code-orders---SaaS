@@ -19,11 +19,11 @@ public class RProductNonValueSpecServiceImpl extends ServiceImpl<RProductNonValu
     implements RProductNonValueSpecService{
 
     @Override
-    public List<Long> getNonValueId(Long specId) {
+    public List<Long> getNonValueId(Long productId) {
         return this.listObjs(
                 new LambdaQueryWrapper<RProductNonValueSpec>()
                         .select(RProductNonValueSpec::getNonValueId)
-                        .eq(RProductNonValueSpec::getProductSpecId,specId), o -> Long.valueOf(o.toString()));
+                        .eq(RProductNonValueSpec::getProductId,productId), o -> Long.valueOf(o.toString()));
 
     }
 }

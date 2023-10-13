@@ -3,12 +3,19 @@ server:
 spring:
   application:
       name: linmour-websocket
+  profiles:
+    active: dev
   cloud:
     nacos:
       discovery:
-        server-addr: 43.136.73.159:8848
+        server-addr: @nacos.ip@:@nacos.port@
+        namespace: @nacos.namespace@
       config:
-        server-addr: 43.136.73.159:8848
+        server-addr: @nacos.ip@:@nacos.port@
+        namespace: @nacos.namespace@
         file-extension: yml
+        shared-configs:
+          - dataId: rocketmq.yml
+            refresh: true
 
 

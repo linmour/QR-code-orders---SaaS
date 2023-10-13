@@ -1,20 +1,16 @@
 package com.linmour.product.pojo.Dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import com.linmour.common.dtos.PageParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class ProductInfoPageDto extends PageParam implements Serializable {
 
@@ -39,17 +35,16 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
 
     private BigDecimal price;
 
-    /**
-     *
-     */
-   
-    private Long specId;
+    private Byte valueSpec;
+
+
+    private Byte nonValueSpec;
 
     /**
      * 商品状态 0下架 1上架
      */
    
-    private Boolean status;
+    private Integer status;
 
     /**
      * 商品图
@@ -60,5 +55,5 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
     private Long sortId;
 
 
-    private Integer selectNum;
+
 }

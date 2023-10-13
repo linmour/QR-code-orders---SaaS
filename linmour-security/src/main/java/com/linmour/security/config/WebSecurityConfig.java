@@ -47,10 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("读取配置*****************WHITE");
         http.authorizeRequests()
                 .antMatchers("/websocket/**").permitAll()
+                .antMatchers("/app/**").permitAll()
                 // 对于登录接口 允许匿名访问
-                .antMatchers("/account/merchant/login").anonymous()
+                .antMatchers("/system/merchant/login").anonymous()
                 // 登陆后才能访问
-                .antMatchers("/account/merchant/logout").authenticated()
+                .antMatchers("/system/merchant/logout").authenticated()
                 // 除上面外的所有请求全部需要认证才能访问
                 .anyRequest().authenticated()
                 .and()

@@ -1,5 +1,6 @@
 package com.linmour.websocket.mq;
 
+import com.alibaba.fastjson.JSONObject;
 import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.pojo.Result;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -10,8 +11,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
+import static com.linmour.common.constant.MqConstant.SYNC_SHOP_CAR_TOPIC;
 import static com.linmour.common.utils.SecurityUtils.setShopId;
+import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.WebSocketServer.sendInfo;
 
 @Component
@@ -35,7 +39,21 @@ public class ConsumerMq {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
 
+    @Service
+    @RocketMQMessageListener(topic = SYNC_SHOP_CAR_TOPIC,consumerGroup = "syncShopCar")
+    public class syncShopCar implements RocketMQListener<List<JSONObject>>{
+
+        @Override
+        public void onMessage(List<JSONObject>  obj) {
+            String fromtableId = (String)(obj.get(0).get("fromtableId"));
+            try {
+                AppSendInfo(obj,fromtableId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

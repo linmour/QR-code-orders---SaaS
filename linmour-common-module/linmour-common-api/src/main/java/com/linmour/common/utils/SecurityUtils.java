@@ -29,6 +29,7 @@ public class SecurityUtils {
         shopId = user.getLoginVo().getShopId();
         return shopId;
     }
+    //todo 做个拦截器给app统一加shopid
 
     public static void setShopId(Long i) {
         shopId = i;

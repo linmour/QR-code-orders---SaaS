@@ -1,7 +1,10 @@
 package com.linmour.websocket.ws;
 
 import com.alibaba.fastjson.JSONObject;
+import com.linmour.order.pojo.Dto.CreateOrderDto;
+import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
+import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.mq.ProducerMq;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +16,13 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.linmour.common.utils.SecurityUtils.setShopId;
 
 @ServerEndpoint(value = "/websocket/table/{tableId}", encoders = WebSocketCustomEncoding.class)
 @Component
@@ -28,12 +34,21 @@ public class AppWebSocketServer {
 
     //注入为空
     public static ProducerMq producerMq;
+
     @PostConstruct
-    public void b(){
+    public void b() {
         producerMq = this.a;
     }
 
+    @Resource
+    private OrderFeign w;
 
+    public static OrderFeign orderFeign;
+
+    @PostConstruct
+    public void m() {
+        orderFeign = w;
+    }
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
@@ -53,9 +68,12 @@ public class AppWebSocketServer {
     private String tableId = "";
 
     /**
-     *  用来标识这个用户需要接收同步的购物车信息
+     * 用来标识这个用户需要接收同步的购物车信息
      */
-    private  boolean flag = true;
+    private boolean flag = true;
+
+    private volatile boolean createOrder = false;
+
 
     /**
      * 连接建立成功调用的方法
@@ -71,11 +89,9 @@ public class AppWebSocketServer {
             List<AppWebSocketServer> serverList = new ArrayList<>();
             serverList.add(this);
             webSocketMap.put(tableId, serverList);
-
         }
-
         try {
-            sendMessage(1);
+            sendMessage("1");
         } catch (IOException e) {
             log.error("用户:" + tableId + ",网络异常!!!!!!");
         }
@@ -92,9 +108,7 @@ public class AppWebSocketServer {
             if (serverList.isEmpty()) {
                 webSocketMap.remove(tableId);
             }
-
         }
-
     }
 
     /**
@@ -104,7 +118,7 @@ public class AppWebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("用户消息:" + tableId + ",报文:" + message);
+
         System.out.println(message);
         //可以群发消息
         //消息保存到数据库、redis
@@ -124,42 +138,73 @@ public class AppWebSocketServer {
                     //记录每一次购物车变化的记录
                     List<JSONObject> objects = recordMap.get(this.tableId);
                     objects.add(jsonObject);
-
-
                 }
                 //第一次扫码的，进行同步购物车
                 else if (jsonObject.containsKey("sync")) {
                     //这个是判断是否有这个桌号，也就是 是否有人点过餐
-                    if (recordMap.containsKey(this.tableId)){
+                    if (recordMap.containsKey(this.tableId)) {
                         List<JSONObject> recordList = recordMap.get(tableId);
                         //指定发送对象
-                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
+                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId) && recordList.size() > 0) {
                             List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
                             for (AppWebSocketServer server : serverList) {
-                                if (server.flag){
+                                if (server.flag) {
                                     server.sendMessage(recordList);
                                 }
                             }
                         }
-                    }else {
+                    } else {
                         ArrayList<JSONObject> objects = new ArrayList<>();
-                        recordMap.put(this.tableId,objects);
+                        recordMap.put(this.tableId, objects);
                     }
                     this.flag = !this.flag;
 
-                }else {
+                } else if (jsonObject.containsKey("createOrder")) {
+                    synchronized (this) {
+
+                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
+                            List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
+
+                            // 使用同块
+                            //有一个为true就说明已经有订单了
+                            if (serverList.stream().anyMatch(m -> m.createOrder)) {
+                                this.sendMessage("已有人提交订单，请稍后");
+
+                                //遍历所有对象，把订单都改为未提交，为了下一次点餐
+                                for (AppWebSocketServer server : serverList) {
+
+                                    server.createOrder = false;
+                                }
+
+                                return;
+                            }
+
+                            List<ShopListDto> shopList = (List<ShopListDto>) jsonObject.get("shopList");
+                            BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
+                            Long tableId = Long.parseLong((String) jsonObject.get("tableId"));
+                            Object shopList1 = ((List<Object>) jsonObject.get("shopList")).get(0);
+                            setShopId(Long.valueOf((((JSONObject) shopList1).get("shopId")).toString()));
+//                            orderFeign.createOrder(new CreateOrderDto(tableId, amount, shopList, ""));
+                            this.createOrder = true;
+                            for (AppWebSocketServer server : serverList) {
+                                //通知情况本地购物车
+                                server.sendMessage("订单创建成功");
+                            }
+
+                        }
+                    }
+
+                } else {
                     //传送给对应tableId用户的websocket
                     if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
                         List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
                         for (AppWebSocketServer server : serverList) {
-                            server.sendMessage(1);
+                            server.sendMessage("1");
                         }
                     } else {
                         log.error("请求的tableId:" + this.tableId + "不在该服务器上");
                     }
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -201,7 +246,7 @@ public class AppWebSocketServer {
      * 发送自定义消息
      *
      * @param message 发送的信息
-     * @param tableId  如果为null默认发送所有
+     * @param tableId 如果为null默认发送所有
      * @throws IOException
      */
     public static void AppSendInfo(Object message, String tableId) throws IOException {

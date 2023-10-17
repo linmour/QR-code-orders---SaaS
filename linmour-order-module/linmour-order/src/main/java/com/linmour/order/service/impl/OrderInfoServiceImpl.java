@@ -55,6 +55,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Override
     public Result createOrder(CreateOrderDto createOrderDto) {
+
         //创建订单基本信息
         String orderId = String.valueOf(IdGenerateUtil.get().nextId());
         OrderInfo orderInfo = new OrderInfo();

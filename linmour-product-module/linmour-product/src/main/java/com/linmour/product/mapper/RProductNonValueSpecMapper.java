@@ -2,7 +2,10 @@ package com.linmour.product.mapper;
 
 import com.linmour.product.pojo.Do.RProductNonValueSpec;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.linmour.product.pojo.Do.RProductValueSpec;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -13,6 +16,8 @@ import org.apache.ibatis.annotations.Param;
 public interface RProductNonValueSpecMapper extends BaseMapper<RProductNonValueSpec> {
 
     void deleteNonValue(@Param("productId") Long productId);
+
+    void insertBatchSomeColumn(@Param("list") List<RProductNonValueSpec> list);
 }
 
 

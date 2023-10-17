@@ -19,11 +19,11 @@ public class RProductValueSpecServiceImpl extends ServiceImpl<RProductValueSpecM
     implements RProductValueSpecService{
 
     @Override
-    public List<Long> getValueId(Long specId) {
+    public List<Long> getValueId(Long productId) {
         return this.listObjs(
                 new LambdaQueryWrapper<RProductValueSpec>()
                         .select(RProductValueSpec::getValueSpecId)
-                        .eq(RProductValueSpec::getProductSpecId,specId), o -> Long.valueOf(o.toString()));
+                        .eq(RProductValueSpec::getProductId,productId), o -> Long.valueOf(o.toString()));
 
     }
 }

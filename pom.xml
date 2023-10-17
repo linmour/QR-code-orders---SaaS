@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     <modules>
         <module>linmour-common-module</module>
-        <module>linmour-account-module</module>
+        <module>linmour-system-module</module>
         <module>linmour-gateway</module>
         <module>linmour-product-module</module>
         <module>linmour-security</module>
@@ -44,6 +44,7 @@
         <lombok.version>1.18.16</lombok.version>
         <mysql.version>5.1.49</mysql.version>
         <mybatis.version>3.5.1</mybatis.version>
+        <mpj.version>1.2.0</mpj.version>
         <mybatis.spring.version>2.0.1</mybatis.spring.version>
         <mybatis.plus.version>3.4.1</mybatis.plus.version>
         <lang3.version>3.5</lang3.version>
@@ -294,7 +295,7 @@
         </resources>
         <testResources>
             <testResource>
-                <directory>src/com.linmour.account.test/resources</directory>
+                <directory>src/system.test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
         </testResources>
@@ -312,5 +313,15 @@
             </snapshots>
         </repository>
     </repositories>
-
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>dev</id>-->
+<!--            <properties>-->
+<!--                <spring.profile>dev</spring.profile>-->
+<!--            </properties>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 </project>

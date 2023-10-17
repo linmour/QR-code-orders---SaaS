@@ -1,5 +1,6 @@
 package com.linmour.product.pojo.Dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,11 @@ public class AddProductDto implements Serializable {
      * 是否需要选规格 0不要 1要
      */
 
-    private Long specId;
+
+    private Byte valueSpec;
+
+
+    private Byte nonValueSpec;
 
     private BigDecimal price;
 
@@ -47,8 +52,8 @@ public class AddProductDto implements Serializable {
 
     private Long sortId;
 
-    private List nonValueList;
-    private List valueList;
+    private List<NonValueDto> nonValueList;
+    private List<ValueDto> valueList;
     private List<InventoryDto> inventoryList;
     private List<String> urlList;
 

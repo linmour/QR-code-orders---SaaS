@@ -17,13 +17,16 @@ import java.util.List;
 */
 @Transactional
 public interface ProductInfoService extends IService<ProductInfo> {
-    Result getProductList(ProductInfoPageDto dto);
-    Result changeProduct(Long id,Boolean status);
-    Result uploadProductImg(MultipartFile[] file);
+    Result getProductPage(ProductInfoPageDto dto);
+    Result changeProduct(Long id,Integer status);
+
 
     Result getProductDetails(List<Long> productIds);
 
     Result addProduct(AddProductDto product);
 
     Result updateProduct(AddProductDto product);
+
+    Result getProductList();
+
 }

@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.RProductNonValueSpec">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="productSpecId" column="product_spec_id" jdbcType="BIGINT"/>
+            <result property="productId" column="product_id" jdbcType="BIGINT"/>
             <result property="nonValueId" column="non_value_id" jdbcType="BIGINT"/>
             <result property="deleted" column="deleted" jdbcType="INTEGER"/>
     </resultMap>
@@ -15,6 +15,7 @@
         id,product_spec_id,non_value_id,
         deleted
     </sql>
+
     <delete id="deleteNonValue">
         DELETE a,b FROM r_product_non_value_spec as a JOIN non_value_spec as b ON a.non_value_id  =  b.id  WHERE
             a.product_spec_id = #{productId}

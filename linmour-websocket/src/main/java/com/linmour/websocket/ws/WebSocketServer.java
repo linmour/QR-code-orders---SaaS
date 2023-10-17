@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 * @Params: WebSocketServer.sendInfo(使用JSON,用户名);
 * @Return
 */
-@ServerEndpoint(value = "/websocket/{userId}",encoders = WebSocketCustomEncoding.class)
+@ServerEndpoint(value = "/websocket/order/{userId}",encoders = WebSocketCustomEncoding.class)
 @Component
 @Slf4j
 public class WebSocketServer {

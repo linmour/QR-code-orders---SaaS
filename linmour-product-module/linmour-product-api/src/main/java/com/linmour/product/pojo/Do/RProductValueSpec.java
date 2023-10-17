@@ -23,8 +23,8 @@ public class RProductValueSpec implements Serializable {
     /**
      * 
      */
-    @TableField(value = "product_spec_id")
-    private Long productSpecId;
+    @TableField(value = "product_id")
+    private Long productId;
 
     /**
      * 

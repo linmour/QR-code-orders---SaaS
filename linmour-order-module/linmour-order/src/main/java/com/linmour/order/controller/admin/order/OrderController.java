@@ -13,16 +13,6 @@ import java.util.Map;
 public class OrderController {
     @Resource
     private OrderInfoService orderInfoService;
-//    @PostMapping("/createOrder")
-//    public Result createOrder(@RequestBody CreateOrderDto createOrderDto){
-//        return orderInfoService.createOrder(createOrderDto);
-//    }
-//
-//    @PostMapping("/submitOrder")
-//    public Result submitOrder(@RequestBody SubmitOrderDto submitOrderDto){
-//        return orderInfoService.submitOrder(submitOrderDto);
-//    }
-
     @GetMapping("/getOrderInfo/{tableId}")
     public Result getOrderInfo(@PathVariable Long tableId){
         return orderInfoService.getOrderInfo(tableId);

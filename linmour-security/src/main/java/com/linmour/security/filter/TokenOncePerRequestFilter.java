@@ -69,6 +69,7 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
             LoginUser loginUser = new LoginUser();
             loginUser.setLoginVo(new LoginVo(1L));
             String shopId = request.getHeader("Shopid");
+            //todo  java.lang.NumberFormatException: For input string: ""
             if (shopId != null){
                 loginUser.getLoginVo().setShopId(Long.valueOf(shopId));
             }

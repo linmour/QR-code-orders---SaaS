@@ -44,10 +44,12 @@ public class AppWebSocketServer {
     private OrderFeign w;
 
     public static OrderFeign orderFeign;
+
     @PostConstruct
-    public void m(){
+    public void m() {
         orderFeign = w;
     }
+
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
      */
@@ -70,9 +72,7 @@ public class AppWebSocketServer {
      */
     private boolean flag = true;
 
-    private boolean createOrder = false;
-
-
+    private volatile boolean createOrder = false;
 
 
     /**
@@ -89,10 +89,9 @@ public class AppWebSocketServer {
             List<AppWebSocketServer> serverList = new ArrayList<>();
             serverList.add(this);
             webSocketMap.put(tableId, serverList);
-
         }
         try {
-            sendMessage(1);
+            sendMessage("1");
         } catch (IOException e) {
             log.error("用户:" + tableId + ",网络异常!!!!!!");
         }
@@ -119,7 +118,7 @@ public class AppWebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("用户消息:" + tableId + ",报文:" + message);
+
         System.out.println(message);
         //可以群发消息
         //消息保存到数据库、redis
@@ -161,19 +160,38 @@ public class AppWebSocketServer {
                     this.flag = !this.flag;
 
                 } else if (jsonObject.containsKey("createOrder")) {
-                    if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
-                        List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
+                    synchronized (this) {
 
-                        //有一个等于true说明已经提交过订单了
-                        if (serverList.stream().anyMatch(m -> m.createOrder)) {
-                            return;
+                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
+                            List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
+
+                            // 使用同块
+                            //有一个为true就说明已经有订单了
+                            if (serverList.stream().anyMatch(m -> m.createOrder)) {
+                                this.sendMessage("已有人提交订单，请稍后");
+
+                                //遍历所有对象，把订单都改为未提交，为了下一次点餐
+                                for (AppWebSocketServer server : serverList) {
+
+                                    server.createOrder = false;
+                                }
+
+                                return;
+                            }
+
+                            List<ShopListDto> shopList = (List<ShopListDto>) jsonObject.get("shopList");
+                            BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
+                            Long tableId = Long.parseLong((String) jsonObject.get("tableId"));
+                            Object shopList1 = ((List<Object>) jsonObject.get("shopList")).get(0);
+                            setShopId(Long.valueOf((((JSONObject) shopList1).get("shopId")).toString()));
+//                            orderFeign.createOrder(new CreateOrderDto(tableId, amount, shopList, ""));
+                            this.createOrder = true;
+                            for (AppWebSocketServer server : serverList) {
+                                //通知情况本地购物车
+                                server.sendMessage("订单创建成功");
+                            }
+
                         }
-                        List<ShopListDto> shopList = (List<ShopListDto>) jsonObject.get("shopList");
-                        BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
-                        Long tableId = Long.parseLong((String) jsonObject.get("tableId"));
-                        Object shopList1 = ((List<Object>) jsonObject.get("shopList")).get(0);
-                        setShopId(Long.valueOf((((JSONObject) shopList1).get("shopId")).toString()));
-                        orderFeign.createOrder(new CreateOrderDto(tableId, amount, shopList, ""));
                     }
 
                 } else {
@@ -181,7 +199,7 @@ public class AppWebSocketServer {
                     if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
                         List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
                         for (AppWebSocketServer server : serverList) {
-                            server.sendMessage(1);
+                            server.sendMessage("1");
                         }
                     } else {
                         log.error("请求的tableId:" + this.tableId + "不在该服务器上");

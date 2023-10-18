@@ -22,6 +22,8 @@ import static com.linmour.websocket.ws.WebSocketServer.sendInfo;
 
 public class ConsumerMq {
 
+
+
     @Resource
     private OrderFeign orderFeign;
 

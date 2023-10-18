@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //处理前端初次扫码同步购物车
 public class SyncHandler extends Handler {
+
     @Override
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject, ConcurrentHashMap<String,

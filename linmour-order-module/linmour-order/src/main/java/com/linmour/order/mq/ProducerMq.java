@@ -46,6 +46,8 @@ public class ProducerMq {
         SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
 
+
+
     }
 
 

@@ -20,6 +20,7 @@ public class ChangeHandler extends Handler {
                               List<JSONObject>> recordMap,
                               AppWebSocketServer webSocke,
                               OrderFeign orderFeign) throws IOException {
+
         if (jsonObject.containsKey("change")) {
             ArrayList<JSONObject> jsonObjects = new ArrayList<>();
             jsonObjects.add(jsonObject);

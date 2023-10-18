@@ -88,6 +88,8 @@ public class AppWebSocketServer {
             List<AppWebSocketServer> serverList = new ArrayList<>();
             serverList.add(this);
             webSocketMap.put(tableId, serverList);
+
+
         }
         try {
             sendMessage("1");

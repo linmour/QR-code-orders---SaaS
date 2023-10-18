@@ -46,10 +46,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Resource
     private ROrderPreductMapper rOrderPreductMapper;
     @Resource
+
     private ProducerMq producerMq;
     @Resource
     private ProductFeign productFeign;
     @Resource
+
     private StringRedisTemplate stringRedisTemplate;
 
 

@@ -5,6 +5,7 @@ import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.pojo.Result;
 
 public class OrderFeignFallback implements OrderFeign  {
+
     @Override
     public Result getOrderInfo(Long tableId) {
         return null;

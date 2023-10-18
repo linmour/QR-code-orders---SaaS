@@ -23,6 +23,7 @@ public class ClearHandler extends Handler{
                 List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
                 //遍历所有对象，把订单都改为未提交，为了下一次点餐
                 serverList.forEach(m -> m.getCreateOrder().set(false));
+
             }
         } else {
             // 无法处理，传递给下一个处理器

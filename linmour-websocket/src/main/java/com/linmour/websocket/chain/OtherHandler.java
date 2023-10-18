@@ -19,6 +19,7 @@ public class OtherHandler extends Handler{
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
                               AppWebSocketServer webSocke,
                               OrderFeign orderFeign) throws IOException {
+
         //传送给对应tableId用户的websocket
         if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
             AppSendInfo("1", webSocke.getTableId());

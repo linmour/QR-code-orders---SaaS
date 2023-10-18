@@ -13,20 +13,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.linmour.common.constant.MqConstant.CREATE_ORDER_TOPIC;
 import static com.linmour.common.constant.MqConstant.SYNC_SHOP_CAR_TOPIC;
 import static com.linmour.common.utils.SecurityUtils.setShopId;
 import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.WebSocketServer.sendInfo;
 
-@Component
+
 public class ConsumerMq {
 
     @Resource
     private OrderFeign orderFeign;
 
     @Service
-    @RocketMQMessageListener(topic = "NEW_ORDER_TOPIC", consumerGroup = "newOrder")
-    public class newOrder implements RocketMQListener<HashMap<String, String>> {
+    @RocketMQMessageListener(topic = CREATE_ORDER_TOPIC, consumerGroup = "createOrder")
+    public class createOrder implements RocketMQListener<HashMap<String, String>> {
         // 监听到消息就会执行此方法
         @Override
         public void onMessage( HashMap<String, String> map) {

@@ -18,7 +18,7 @@ public class AppOrderController {
         return orderInfoService.createOrder(createOrderDto);
     }
 
-    @PostMapping("/submitOrder")
+    @PostMapping("/checkout")
     public Result submitOrder(@RequestBody SubmitOrderDto submitOrderDto){
         return orderInfoService.submitOrder(submitOrderDto);
     }

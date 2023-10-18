@@ -60,14 +60,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         String orderId = String.valueOf(IdGenerateUtil.get().nextId());
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setId(orderId);
-        orderInfo.setPayStatus(2);
         orderInfo.setTableId(createOrderDto.getTableId());
         orderInfo.setPayAmount(createOrderDto.getAmount());
-        orderInfo.setOrderStatus(3);
         orderInfo.setShopId(getShopId());
         orderInfoMapper.insert(orderInfo);
 
-        //订单和点菜关系表
+        //订单和点菜的关系表
         ArrayList<ROrderPreduct> rList = new ArrayList<>();
         createOrderDto.getShopList().forEach(m ->{
             ROrderPreduct rOrderPreduct = new ROrderPreduct();
@@ -79,11 +77,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         rOrderPreductService.saveBatch(rList);
 
         //序列化有问题，只能这么办，LocalTime会报错，直接转为String
+        //发送给餐厅服务
         OrderInfoDto orderInfoDto = OrderInfoDtoConvert.IN.OrderInfoToOrderInfoDto(orderInfo);
-
-        //创建延时队列
-
-        producerMq.orderPayTimeOut(orderInfoDto.getId(), 4);
+        //封装shopId要不然没有id
+        HashMap<String, String> map = new HashMap<>();
+        map.put("tableId",orderInfoDto.getTableId().toString());
+        map.put("shopId",getShopId().toString());
+        producerMq.createOrder(map);
 
         //转为字符串是因为前端会丢失精度
         return Result.success(orderInfo.getId());
@@ -103,7 +103,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         HashMap<String, String> map = new HashMap<>();
         map.put("tableId",orderInfoDto.getTableId().toString());
         map.put("shopId",getShopId().toString());
-        producerMq.newOrder(map);
+//        producerMq.createOrder(map);
         return Result.success();
     }
 

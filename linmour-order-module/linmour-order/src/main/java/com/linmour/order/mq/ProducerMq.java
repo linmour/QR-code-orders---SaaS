@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.HashMap;
 
-import static com.linmour.common.constant.MqConstant.NEW_ORDER_TOPIC;
-import static com.linmour.common.constant.MqConstant.ORDER_PAY_TIMEOUT_TOPIC;
+import static com.linmour.common.constant.MqConstant.*;
 
 
 @Component
@@ -43,17 +42,11 @@ public class ProducerMq {
      * 发送同步消息（阻塞当前线程，等待broker响应发送结果，这样不太容易丢失消息）
      * （msgBody也可以是对象，sendResult为返回的发送结果）
      */
-    public void newOrder( HashMap<String, String> msgBody) {
+    public void createOrder(HashMap<String, String> msgBody) {
         SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
 
     }
-
-
-
-
-
-
 
 
 

@@ -1,11 +1,11 @@
 package com.linmour.websocket.ws;
 
 import com.alibaba.fastjson.JSONObject;
-import com.linmour.order.pojo.Dto.CreateOrderDto;
-import com.linmour.order.pojo.Dto.ShopListDto;
+import com.linmour.websocket.chain.*;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
 import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.mq.ProducerMq;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -16,17 +16,15 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.linmour.common.utils.SecurityUtils.setShopId;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @ServerEndpoint(value = "/websocket/table/{tableId}", encoders = WebSocketCustomEncoding.class)
 @Component
 @Slf4j
+@Data
 public class AppWebSocketServer {
 
     @Resource
@@ -62,6 +60,7 @@ public class AppWebSocketServer {
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
     private Session session;
+
     /**
      * 接收tableId
      */
@@ -70,9 +69,9 @@ public class AppWebSocketServer {
     /**
      * 用来标识这个用户需要接收同步的购物车信息
      */
-    private boolean flag = true;
+    private volatile AtomicBoolean sync = new AtomicBoolean(true);
 
-    private volatile boolean createOrder = false;
+    private volatile AtomicBoolean createOrder = new AtomicBoolean(false);
 
 
     /**
@@ -129,82 +128,16 @@ public class AppWebSocketServer {
                 //追加发送人(防止串改)
                 jsonObject.put("fromtableId", this.tableId);
 
-                //已经扫过码的点餐
-                if (jsonObject.containsKey("change")) {
-                    //todo 考虑一下这种方案的加锁问题
-                    ArrayList<JSONObject> jsonObjects = new ArrayList<>();
-                    jsonObjects.add(jsonObject);
-                    producerMq.syncShopCar(jsonObjects);
-                    //记录每一次购物车变化的记录
-                    List<JSONObject> objects = recordMap.get(this.tableId);
-                    objects.add(jsonObject);
-                }
-                //第一次扫码的，进行同步购物车
-                else if (jsonObject.containsKey("sync")) {
-                    //这个是判断是否有这个桌号，也就是 是否有人点过餐
-                    if (recordMap.containsKey(this.tableId)) {
-                        List<JSONObject> recordList = recordMap.get(tableId);
-                        //指定发送对象
-                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId) && recordList.size() > 0) {
-                            List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
-                            for (AppWebSocketServer server : serverList) {
-                                if (server.flag) {
-                                    server.sendMessage(recordList);
-                                }
-                            }
-                        }
-                    } else {
-                        ArrayList<JSONObject> objects = new ArrayList<>();
-                        recordMap.put(this.tableId, objects);
-                    }
-                    this.flag = !this.flag;
+                //这里采用责任链模式，每一个处理器对应一个前段发过来的请，这里还可以用工厂模式来生成对象
+                ChangeHandler changeHandler = new ChangeHandler();
+                CreateOrderHandler createOrderHandler = new CreateOrderHandler();
+                SyncHandler syncHandler = new SyncHandler();
+                ClearHandler clearHandler = new ClearHandler();
+                OtherHandler otherHandler = new OtherHandler();
 
-                } else if (jsonObject.containsKey("createOrder")) {
-                    synchronized (this) {
+                changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
+                changeHandler.handleRequest(webSocketMap,jsonObject,recordMap,this,orderFeign);
 
-                        if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
-                            List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
-
-                            // 使用同块
-                            //有一个为true就说明已经有订单了
-                            if (serverList.stream().anyMatch(m -> m.createOrder)) {
-                                this.sendMessage("已有人提交订单，请稍后");
-
-                                //遍历所有对象，把订单都改为未提交，为了下一次点餐
-                                for (AppWebSocketServer server : serverList) {
-
-                                    server.createOrder = false;
-                                }
-
-                                return;
-                            }
-
-                            List<ShopListDto> shopList = (List<ShopListDto>) jsonObject.get("shopList");
-                            BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
-                            Long tableId = Long.parseLong((String) jsonObject.get("tableId"));
-                            Object shopList1 = ((List<Object>) jsonObject.get("shopList")).get(0);
-                            setShopId(Long.valueOf((((JSONObject) shopList1).get("shopId")).toString()));
-//                            orderFeign.createOrder(new CreateOrderDto(tableId, amount, shopList, ""));
-                            this.createOrder = true;
-                            for (AppWebSocketServer server : serverList) {
-                                //通知情况本地购物车
-                                server.sendMessage("订单创建成功");
-                            }
-
-                        }
-                    }
-
-                } else {
-                    //传送给对应tableId用户的websocket
-                    if (StringUtils.isNotBlank(this.tableId) && webSocketMap.containsKey(this.tableId)) {
-                        List<AppWebSocketServer> serverList = webSocketMap.get(this.tableId);
-                        for (AppWebSocketServer server : serverList) {
-                            server.sendMessage("1");
-                        }
-                    } else {
-                        log.error("请求的tableId:" + this.tableId + "不在该服务器上");
-                    }
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

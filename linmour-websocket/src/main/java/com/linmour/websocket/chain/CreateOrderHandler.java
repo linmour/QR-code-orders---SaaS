@@ -30,11 +30,8 @@ public class CreateOrderHandler extends Handler{
 
 
         if (jsonObject.containsKey("createOrder")) {
-
             if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
                 List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
-
-
                 //有一个为true就说明已经有订单了
                 if (serverList.stream().anyMatch(m -> m.getCreateOrder().get())) {
                     webSocke.sendMessage("已有人提交订单，请稍后");
@@ -42,7 +39,6 @@ public class CreateOrderHandler extends Handler{
                 }
             }
             synchronized (webSocke) {
-
                 if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
                     List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
                     //有一个为true就说明已经有订单了
@@ -57,7 +53,7 @@ public class CreateOrderHandler extends Handler{
                     //TODO 加个拦截加个shopid
                     setShopId(list.get(0).getShopId());
                     //todo 这过程失败的话，既没有生成订单，用户的购物车也没了
-//                    try {
+                    try {
                         orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, list, ""));
                         //通知清空购物车
                         AppSendInfo("订单创建成功", webSocke.getTableId());
@@ -65,11 +61,11 @@ public class CreateOrderHandler extends Handler{
                         recordMap.get(webSocke.getTableId()).clear();
                         webSocke.getCreateOrder().set(true);
 
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                        //TODO 这个发不了信息
-//                        AppSendInfo("订单提交失败",webSocke.getTableId());
-//                    }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        //TODO 这个发不了信息
+                        AppSendInfo("订单提交失败",webSocke.getTableId());
+                    }
 
                 }
             }

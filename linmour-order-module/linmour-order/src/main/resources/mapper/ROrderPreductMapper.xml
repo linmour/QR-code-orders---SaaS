@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linmour.order.mapper.ROrderPreductMapper">
 
-    <resultMap id="BaseResultMap" type="com.linmour.order.pojo.Do.ROrderPreduct">
+    <resultMap id="BaseResultMap" type="com.linmour.order.pojo.Do.ROrderProduct">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="orderId" column="order_id" jdbcType="BIGINT"/>
             <result property="productId" column="product_id" jdbcType="BIGINT"/>

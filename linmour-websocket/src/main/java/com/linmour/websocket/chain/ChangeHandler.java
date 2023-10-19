@@ -26,7 +26,6 @@ public class ChangeHandler extends Handler {
             ArrayList<JSONObject> jsonObjects = new ArrayList<>();
             jsonObjects.add(jsonObject);
             producerMq.syncShopCar(jsonObjects);
-            AppSendInfo(jsonObjects, webSocke.getTableId());    
             //记录每一次购物车变化的记录
             List<JSONObject> objects = recordMap.get(webSocke.getTableId());
             objects.add(jsonObject);

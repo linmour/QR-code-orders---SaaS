@@ -1,6 +1,7 @@
 package com.linmour.order.mq;
 
 
+import com.linmour.common.dtos.Result;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -42,12 +43,9 @@ public class ProducerMq {
      * 发送同步消息（阻塞当前线程，等待broker响应发送结果，这样不太容易丢失消息）
      * （msgBody也可以是对象，sendResult为返回的发送结果）
      */
-    public void createOrder(HashMap<String, String> msgBody) {
-        SendResult sendResult = rocketMQTemplate.syncSend(NEW_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
+    public void createOrder(Result msgBody) {
+        SendResult sendResult = rocketMQTemplate.syncSend(CREATE_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
         isSuccess(sendResult);
-
-
-
     }
 
 

@@ -1,6 +1,8 @@
 package com.linmour.websocket.chain;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.websocket.feign.OrderFeign;
@@ -49,24 +51,25 @@ public class CreateOrderHandler extends Handler{
                         return;
                     }
 
-                    List<ShopListDto> shopList = (List<ShopListDto>) jsonObject.get("shopList");
                     BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
-                    Object shopList1 = ((List<Object>) jsonObject.get("shopCarList")).get(0);
-                    setShopId(Long.valueOf((((JSONObject) shopList1).get("shopId")).toString()));
+                    JSONArray shopCarList = jsonObject.getJSONArray("shopCarList");
+                    List<ShopListDto> list=shopCarList.toJavaList(ShopListDto.class);
+                    //TODO 加个拦截加个shopid
+                    setShopId(list.get(0).getShopId());
                     //todo 这过程失败的话，既没有生成订单，用户的购物车也没了
-                    try {
-                        orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, (List<ShopListDto>) shopList, ""));
+//                    try {
+                        orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, list, ""));
                         //通知清空购物车
                         AppSendInfo("订单创建成功", webSocke.getTableId());
                         //清空本地的购物记录
                         recordMap.get(webSocke.getTableId()).clear();
                         webSocke.getCreateOrder().set(true);
 
-                    }catch (Exception e){
-                        System.out.println(e);
-                        //TODO 这个发不了信息
-                        AppSendInfo("订单提交失败",webSocke.getTableId());
-                    }
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                        //TODO 这个发不了信息
+//                        AppSendInfo("订单提交失败",webSocke.getTableId());
+//                    }
 
                 }
             }

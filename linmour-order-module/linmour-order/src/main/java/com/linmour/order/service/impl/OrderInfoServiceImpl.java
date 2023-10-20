@@ -6,6 +6,8 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.utils.RedisCache;
 import com.linmour.order.convert.OrderInfoConvert;
@@ -152,59 +154,28 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         //找到相对应的所有菜品id
 
         List<ROrderProduct> rOrderProducts = rOrderPreductMapper.selectList(new LambdaQueryWrapper<ROrderProduct>().eq(ROrderProduct::getOrderId, orderInfo.getId()));
-//        //查询有几个订单
-////        List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
-////        orderInfo.forEach(m -> {
-////            orderDetailDtos.add(new OrderDetailDto(m.getId()));
-////        });
-////        /**
-////         * 这一块是为了按订单分类菜品，主要是根据productId来做的
-////         */
-////        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
-////            List<Long> productIds = new ArrayList();
-////            for (ROrderProduct rOrderProduct : rOrderProducts) {
-////                if (Objects.equals(orderDetailDto.getOrderId(), rOrderProduct.getOrderId())) {
-////                    productIds.add(rOrderProduct.getProductId());
-////                }
-////            }
-////            //这个保存的不返回前端，只是为了能过匹配相应的菜品id,为了避免循环查库
-////            orderDetailDto.setProductIds(productIds);
-////        }
-        List<Map<String, Object>> a = new ArrayList<>();
+
         List<Long> collect = rOrderProducts.stream().map(ROrderProduct::getProductId).collect(Collectors.toList());
         Result result = productFeign.getProductDetails(collect);
         List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
-
-
-
-//        List<Map<String, Object>> data = (List<Map<String, Object>>) result.getData();
-//        for (Map<String, Object> datum : data) {
-//            for (ROrderProduct rOrderProduct : rOrderProducts) {
-//                if (datum.get("id") == rOrderProduct.getProductId().toString()) {
-//                    datum.put("quantity", rOrderProduct.getQuantity());
-//                }
-//            }
-//            a.add(datum);
-//        }
-        //根据上面保存的productId来匹配订单中的菜，然后存入
-//        orderDetailDtos.forEach(n -> {
-//            List<Map<String, Object>> maps = new ArrayList<>();
-//            for (Long productId : n.getProductIds()) {
-//                for (Map<String, Object> map : a) {
-//                    if (String.valueOf(map.get("id")).equals(productId.toString())) {
-//                        maps.add(map);
-//                    }
-//                }
-//                n.setProducts(maps);
-//            }
-//        });
-
-//        List<OrderInfoDto> orderInfoDtos = OrderInfoDtoConvert.IN.OrderInfoListToOrderInfoDtoList(orderInfo);
+        ObjectMapper mapper = new ObjectMapper();
+        List<ProductDetailDto> listNew= mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() { });
+        // 对data1进行修改
+        listNew.stream().forEach(m ->{
+            rOrderProducts.stream().forEach(n ->{
+                if (m.getId() == m.getId()){
+                    m.setQuantity(n.getQuantity());
+                }
+            });
+        });
 
         Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> b = new HashMap<>();
+        List<Map<String, Object>> a = new ArrayList<>();
         obj.put("orderInfoDtos", orderInfo);
-        obj.put("orderDetailDtos", data1);
-
+        b.put("orderDetailDtos", listNew);
+        a.add(b);
+obj.put("order",a);
         return Result.success(obj);
     }
 

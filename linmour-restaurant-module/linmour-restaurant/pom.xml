@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-restaurant-module</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${project}</version>
     </parent>
 
     <artifactId>linmour-restaurant</artifactId>
@@ -21,12 +21,12 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-security</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project}</version>
         </dependency>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-restaurant-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

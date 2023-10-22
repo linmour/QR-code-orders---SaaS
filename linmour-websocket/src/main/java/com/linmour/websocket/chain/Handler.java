@@ -17,15 +17,7 @@ public abstract class Handler {
         return handler;
     }
 
-    public void handleNext(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
-                           JSONObject jsonObject,
-                           ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                           AppWebSocketServer webSocke,
-                           OrderFeign orderFeign) throws IOException {
-        if (nextHandler != null) {
-            nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke, orderFeign);
-        }
-    }
+
 
 
     public abstract void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,

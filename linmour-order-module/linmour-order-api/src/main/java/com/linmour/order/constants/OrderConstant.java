@@ -7,6 +7,8 @@ public class OrderConstant {
     public static final Integer COMPLETED = 1;
     public static final Integer IN_PROGRESS = 2;
     public static final Integer PENDING = 2;
+    public static final String PRODUCT = "product";
+    public static final String TABLE = "table";
 
 
 

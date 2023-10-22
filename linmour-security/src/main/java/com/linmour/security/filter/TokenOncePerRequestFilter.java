@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.linmour.common.exception.enums.AppHttpCodeEnum.NEED_LOGIN;
-import static com.linmour.security.constants.constants.USER_LOGIN_KEY;
+import static com.linmour.security.constants.constant.USER_LOGIN_KEY;
 
 @Component
 public class TokenOncePerRequestFilter extends OncePerRequestFilter {

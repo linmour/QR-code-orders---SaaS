@@ -1,7 +1,6 @@
 package com.linmour.websocket.mq;
 
 import com.alibaba.fastjson.JSONObject;
-import com.linmour.order.pojo.Dto.CreateOrderDto;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -10,10 +9,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
 import java.util.List;
 
-import static com.linmour.common.constant.MqConstant.CREATE_ORDER_TOPIC;
 import static com.linmour.common.constant.MqConstant.SYNC_SHOP_CAR_TOPIC;
 
 

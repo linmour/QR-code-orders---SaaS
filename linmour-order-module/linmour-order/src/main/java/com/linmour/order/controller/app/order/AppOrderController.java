@@ -2,7 +2,7 @@ package com.linmour.order.controller.app.order;
 
 import com.linmour.common.dtos.Result;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
-import com.linmour.order.pojo.Dto.SubmitOrderDto;
+import com.linmour.order.pojo.Dto.CheckoutDto;
 import com.linmour.order.service.OrderInfoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +21,8 @@ public class AppOrderController {
     }
 
     @PostMapping("/checkout")
-    public Result submitOrder(@RequestBody SubmitOrderDto submitOrderDto){
-        return orderInfoService.submitOrder(submitOrderDto);
+    public Result checkout(@RequestBody CheckoutDto checkoutDto){
+        return orderInfoService.checkout(checkoutDto);
     }
 
     @GetMapping("/getOrderInfo/{tableId}")

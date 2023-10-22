@@ -13,8 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.linmour.common.constant.MqConstant.CREATE_ORDER_TOPIC;
-import static com.linmour.common.constant.MqConstant.SYNC_SHOP_CAR_TOPIC;
+import static com.linmour.common.constant.MqConstant.*;
 import static com.linmour.common.utils.SecurityUtils.setShopId;
 import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.WebSocketServer.sendInfo;
@@ -56,6 +55,22 @@ public class ConsumerMq {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    @Service
+    @RocketMQMessageListener(topic = CHECKOUT_TOPIC,consumerGroup = "checkout")
+    public class checkout implements RocketMQListener<String>{
+
+        @Override
+        public void onMessage(String tableId) {
+
+            try {
+                AppSendInfo("没有要结算的订单",tableId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

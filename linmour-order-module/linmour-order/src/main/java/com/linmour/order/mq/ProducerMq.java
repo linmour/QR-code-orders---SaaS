@@ -49,6 +49,12 @@ public class ProducerMq {
     }
 
 
+    public void checkout(String msgBody) {
+        SendResult sendResult = rocketMQTemplate.syncSend(CHECKOUT_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut);
+        isSuccess(sendResult);
+    }
+
+
 
 
     private static void isSuccess(SendResult result) {

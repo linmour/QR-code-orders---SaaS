@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-common-module</artifactId>
-        <version>${project}</version>
+        <version>${linmour.dev}</version>
 
     </parent>
     <packaging>jar</packaging>
@@ -21,7 +21,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -38,12 +37,10 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis.plus.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>${security.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>

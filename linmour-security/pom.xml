@@ -6,9 +6,8 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-ScanOrder</artifactId>
-        <version>${project}</version>
+        <version>${linmour.dev}</version>
     </parent>
-    <packaging>pom</packaging>
 
     <artifactId>linmour-security</artifactId>
 
@@ -19,10 +18,12 @@
     </properties>
 
     <dependencies>
+
+
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common</artifactId>
-            <version>${project}</version>
+            <version>${linmour.dev}</version>
         </dependency>
     </dependencies>
 

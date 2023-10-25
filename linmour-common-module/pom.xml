@@ -6,7 +6,7 @@
     <parent>
         <artifactId>linmour-ScanOrder</artifactId>
         <groupId>com.linmour</groupId>
-        <version>${project}</version>
+        <version>${linmour.dev}</version>
     </parent>
     <modules>
         <module>linmour-common</module>

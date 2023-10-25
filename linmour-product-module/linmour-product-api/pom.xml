@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-product-module</artifactId>
-        <version>${project}</version>
+        <version>${linmour.dev}</version>
     </parent>
 
     <artifactId>linmour-product-api</artifactId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common-api</artifactId>
-            <version>${project}</version>
+            <version>${linmour.dev}</version>
 
         </dependency>
     </dependencies>

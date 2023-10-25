@@ -22,6 +22,7 @@ public class ConsumerMq {
     private OrderInfoService orderInfoService;
 
 
+
     @Service
     @RocketMQMessageListener(topic = ORDER_PAY_TIMEOUT_TOPIC, consumerGroup = "orderPayTimeOut")
     public class orderPayTimeOut implements RocketMQListener<String> {

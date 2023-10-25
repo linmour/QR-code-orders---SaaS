@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 public class ProductFeignFallback implements ProductFeign {
     @Override
+
     public Result getProductDetails(List<Long> productIds) {
         return null;
     }

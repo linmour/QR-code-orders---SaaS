@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-ScanOrder</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${linmour.dev}</version>
     </parent>
 
     <artifactId>linmour-restaurant-module</artifactId>

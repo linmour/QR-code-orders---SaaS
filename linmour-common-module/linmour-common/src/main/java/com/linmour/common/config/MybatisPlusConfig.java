@@ -43,7 +43,7 @@ public class MybatisPlusConfig  {
             public boolean ignoreTable(String tableName) {
                 MappedStatement mappedStatement;
                 //忽略掉这张表
-                String[] tables = {"system_shop", "system_merchant", "system_menu", "system_customer","r_order_preduct",
+                String[] tables = {"system_shop", "system_merchant", "system_menu", "system_customer","r_order_product",
                 "non_value_spec","product_spec","r_product_non_value_spec","r_product_value_spec","spec_sort","value_spec",
                 "system_dict_type","system_dict_data"};
                 for (String table : tables) {

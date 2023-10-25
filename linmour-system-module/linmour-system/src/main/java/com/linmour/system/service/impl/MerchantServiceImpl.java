@@ -35,17 +35,17 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.linmour.security.constants.constants.USER_LOGIN_KEY;
+import static com.linmour.security.constants.constant.USER_LOGIN_KEY;
 
 
 /**
-* @author linmour
-* @description 针对表【system_merchant】的数据库操作Service实现
-* @createDate 2023-07-17 20:05:36
-*/
+ * @author linmour
+ * @description 针对表【system_merchant】的数据库操作Service实现
+ * @createDate 2023-07-17 20:05:36
+ */
 @Service
 public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
-    implements MerchantService {
+        implements MerchantService {
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -59,7 +59,6 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     private Tess4jClient tess4jClient;
 
 
-
     @Override
     public Result login(LoginVo loginVo) {
 
@@ -67,8 +66,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         //这个方法就会调用我们写的UserDetailsService类进行数据库查询，如果返回null说明用户名错误
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
 
-            LoginUser loginUser = (LoginUser)authenticate.getPrincipal();
-        if (loginUser.getLoginVo().getStatus() == 0){
+        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        if (loginUser.getLoginVo().getStatus() == 0) {
             throw new CustomException(AppHttpCodeEnum.ACCOUNT_DISABLE);
         }
         String UserId = loginUser.getLoginVo().getId().toString();
@@ -77,24 +76,24 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         //获取用户信息
 
         //把用户信息存入redis
-        redisCache.setCacheObject(USER_LOGIN_KEY +UserId,loginUser);
+        redisCache.setCacheObject(USER_LOGIN_KEY + UserId, loginUser);
         HashMap<String, Object> map = new HashMap<>();
         UserInfoDto userInfo = getUserInfo(Long.valueOf(UserId));
-        map.put("token",jwt);
-        map.put("userInfo",userInfo);
+        map.put("token", jwt);
+        map.put("userInfo", userInfo);
         return Result.success(map);
     }
 
     @Override
     public Result logout(Long id) {
-        redisCache.deleteObject(USER_LOGIN_KEY+id);
+        redisCache.deleteObject(USER_LOGIN_KEY + id);
         return Result.success();
     }
 
     @Override
     public UserInfoDto getUserInfo(Long userId) {
         Merchant merchant = merchantMapper.selectById(userId);
-        if (ObjectUtil.isNull(merchant)){
+        if (ObjectUtil.isNull(merchant)) {
             throw new CustomException(AppHttpCodeEnum.USERINFO_ERROR);
         }
         UserInfoDto userInfo = UserInfoDtoConvert.INSTANCE.MerchantToUserInfoDto(merchant);
@@ -108,8 +107,8 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         Long id = user.getLoginVo().getId();
         String fileName = id.toString();
         String fileId = fileStorageService.uploadPicture(multipartFile, "avatar", fileName);
-        merchantMapper.update(null,new LambdaUpdateWrapper<Merchant>().eq(Merchant::getId,id)
-                .set(StringUtils.isNotBlank(fileId),Merchant::getAvatar,fileId));
+        merchantMapper.update(null, new LambdaUpdateWrapper<Merchant>().eq(Merchant::getId, id)
+                .set(StringUtils.isNotBlank(fileId), Merchant::getAvatar, fileId));
         return Result.success(fileId);
 
     }
@@ -133,12 +132,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
 
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
-        String fileNmae =  id.toString();
+        String fileNmae = id.toString();
         String url = fileStorageService.uploadPicture(file, "idCard", fileNmae);
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("idCardUrl",url);
-        map.put("idCard",result);
+        map.put("idCardUrl", url);
+        map.put("idCard", result);
 
         return Result.success(map);
 

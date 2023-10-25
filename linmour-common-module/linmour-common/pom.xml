@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-common-module</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${linmour.dev}</version>
 
     </parent>
     <packaging>jar</packaging>
@@ -27,12 +27,10 @@
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
-            <version>7.1.0</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
-            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,7 +73,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
+
         </dependency>
 
         <dependency>
@@ -116,7 +114,6 @@
         <dependency>
             <groupId>icu.mhb</groupId>
             <artifactId>mybatis-plus-join</artifactId>
-            <version>${mpj.version}</version>
         </dependency>
 
         <dependency>
@@ -142,7 +139,7 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${linmour.dev}</version>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,9 @@
 package com.linmour.product.pojo.Dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDetailDto  implements  Serializable  {
 
     private Long id;
@@ -63,6 +67,7 @@ public class ProductDetailDto  implements  Serializable  {
     private List<NonValueDto> nonValueList;
     private List<ValueDto> valueList;
     private List<InventoryDto> inventoryList;
+    private Integer quantity;
 
 
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class SubmitOrderDto implements Serializable {
-    private String orderNo;
+public class CheckoutDto implements Serializable {
+    private String tableId;
     private Integer payType;
 }

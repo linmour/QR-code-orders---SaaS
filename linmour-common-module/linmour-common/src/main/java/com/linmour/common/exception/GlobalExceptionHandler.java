@@ -3,7 +3,9 @@ package com.linmour.common.exception;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,23 +28,23 @@ public class GlobalExceptionHandler {
         return Result.error(AppHttpCodeEnum.SYSTEM_ERROR);
     }
 
-//    //密码错误
-//    @ExceptionHandler(BadCredentialsException.class)
-//    @ResponseBody
-//    public Result exception(BadCredentialsException e){
-//        e.printStackTrace();
-//        log.error("catch exception:{}",e.getMessage());
-//
-//        return Result.error(AppHttpCodeEnum.LOGIN_ERROR);
-//    }
+    //密码错误
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    public Result exception(BadCredentialsException e){
+        e.printStackTrace();
+        log.error("catch exception:{}",e.getMessage());
+
+        return Result.error(AppHttpCodeEnum.LOGIN_ERROR);
+    }
     //请求方式不对
-//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-//    @ResponseBody
-//    public Result exception(HttpRequestMethodNotSupportedException e){
-//        e.printStackTrace();
-//
-//        return Result.error(AppHttpCodeEnum.REQUEST_ERROR);
-//    }
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public Result exception(HttpRequestMethodNotSupportedException e){
+        e.printStackTrace();
+
+        return Result.error(AppHttpCodeEnum.REQUEST_ERROR);
+    }
     //请求参数不对
     @ExceptionHandler(BindException.class)
     @ResponseBody

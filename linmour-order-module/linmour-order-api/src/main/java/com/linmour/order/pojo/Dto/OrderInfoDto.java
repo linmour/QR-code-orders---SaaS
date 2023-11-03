@@ -1,19 +1,11 @@
 package com.linmour.order.pojo.Dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.linmour.product.pojo.Dto.ProductDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * 这个是一个rocketmq序列化日期类型有问题，这个类没日期类型

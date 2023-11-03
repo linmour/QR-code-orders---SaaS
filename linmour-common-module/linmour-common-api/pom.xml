@@ -6,17 +6,11 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-common-module</artifactId>
-        <version>${linmour.dev}</version>
-
+        <version>${revision}</version>
     </parent>
-    <packaging>jar</packaging>
     <artifactId>linmour-common-api</artifactId>
+    <packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

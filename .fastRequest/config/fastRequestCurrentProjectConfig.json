@@ -1,11 +1,35 @@
 {
-	"dataList":[],
-	"envList":[],
+	"dataList":[
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://localhost:12802"
+				}
+			],
+			"name":"linmour-product"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://43.136.73.159:12800"
+				}
+			],
+			"name":"线上"
+		}
+	],
+	"envList":[
+		"dev"
+	],
 	"headerList":[],
 	"maxDescriptionLength":-1,
 	"postScript":"",
 	"preScript":"",
-	"projectList":[],
+	"projectList":[
+		"linmour-product",
+		"线上"
+	],
 	"syncModel":{
 		"branch":"master",
 		"domain":"https://github.com",

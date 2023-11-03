@@ -6,7 +6,7 @@
     <groupId>com.linmour</groupId>
     <artifactId>linmour-ScanOrder</artifactId>
     <packaging>pom</packaging>
-    <version>${linmour.dev}</version>
+    <version>${revision}</version>
     <modules>
         <module>linmour-common-module</module>
         <module>linmour-system-module</module>
@@ -26,16 +26,16 @@
     </parent>
     <properties>
         <!--项目版本-->
-        <linmour.dev>1.2.8.0.1</linmour.dev>
+        <revision>1.2.8.0.1</revision>
         <!-- 项目源码及编译输出的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- 项目编译JDK版本 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- 依赖包版本管理 -->
-        <rocketmq.version>2.2.3</rocketmq.version>
+        <rocketmq.version>2.2.0</rocketmq.version>
         <security.version>2.3.9.RELEASE</security.version>
         <validator.version>6.1.5.Final</validator.version>
         <spring.boot.version>2.3.9.RELEASE</spring.boot.version>
@@ -91,12 +91,9 @@
         <reflections.version>0.10.2</reflections.version>
         <minio.version>7.1.0</minio.version>
         <tess4j.version>4.1.1</tess4j.version>
-        <rocketmq.version>2.2.3</rocketmq.version>
+        <jaxb.version>2.3.0</jaxb.version>
         <maven-plugin.version>2.7.8</maven-plugin.version>
         <!-- docker 配置 -->
-        <docker.registry.url>43.136.73.159</docker.registry.url>
-        <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
-        <docker.namespace>linmour</docker.namespace>
         <dockerfil.version>1.4.13</dockerfil.version>
 
     </properties>
@@ -106,23 +103,38 @@
             <!--子模块-->
             <dependency>
                 <groupId>com.linmour</groupId>
+                <artifactId>linmour-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.linmour</groupId>
+                <artifactId>linmour-system-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.linmour</groupId>
+                <artifactId>linmour-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.linmour</groupId>
                 <artifactId>linmour-common-api</artifactId>
-                <version>${linmour.dev}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.linmour</groupId>
                 <artifactId>linmour-order-api</artifactId>
-                <version>${linmour.dev}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.linmour</groupId>
                 <artifactId>linmour-product-api</artifactId>
-                <version>${linmour.dev}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.linmour</groupId>
                 <artifactId>linmour-restaurant-api</artifactId>
-                <version>${linmour.dev}</version>
+                <version>${revision}</version>
             </dependency>
             <!--日志处理包-->
             <dependency>
@@ -305,6 +317,31 @@
                 <artifactId>mybatis-plus-join</artifactId>
                 <version>${mpj.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -345,7 +382,8 @@
                     <executions>
                         <execution>
                             <id>default</id>
-                            <phase>install</phase>
+<!--                            用package打包才触发构建镜像-->
+                            <phase>package</phase>
                             <goals>
                                 <goal>build</goal>
                                 <!--推送到仓库-->
@@ -366,6 +404,34 @@
                         </buildArgs>
                     </configuration>
                 </plugin>
+<!--                install打包时占位符不替换时可以使用这个插件，也可以用package打包-->
+<!--                <plugin>-->
+<!--                    <groupId>org.codehaus.mojo</groupId>-->
+<!--                    <artifactId>flatten-maven-plugin</artifactId>-->
+<!--                    <version>1.5.0</version>-->
+<!--                    <configuration>-->
+<!--                        &lt;!&ndash; 避免IDE将 .flattened-pom.xml自动识别为功能模块 &ndash;&gt;-->
+<!--                        <flattenedPomFilename>pom-xml-flattened</flattenedPomFilename>-->
+<!--                        <updatePomFile>true</updatePomFile>-->
+<!--                        <flattenMode>resolveCiFriendliesOnly</flattenMode>-->
+<!--                    </configuration>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>flatten</id>-->
+<!--                            <phase>process-resources</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>flatten</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                        <execution>-->
+<!--                            <id>flatten-clean</id>-->
+<!--                            <phase>clean</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>clean</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>

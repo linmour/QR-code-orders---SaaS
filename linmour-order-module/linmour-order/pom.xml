@@ -6,34 +6,27 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-order-module</artifactId>
-        <version>${linmour.dev}</version>
-
+        <version>${revision}</version>
     </parent>
 
     <packaging>jar</packaging>
     <artifactId>linmour-order</artifactId>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-security</artifactId>
-            <version>${linmour.dev}</version>
+<version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>${rocketmq.version}</version>
         </dependency>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-order-api</artifactId>
-            <version>${linmour.dev}</version>
+<version>${revision}</version>
         </dependency>
     </dependencies>
 

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>linmour-ScanOrder</artifactId>
         <groupId>com.linmour</groupId>
-        <version>${linmour.dev}</version>
+        <version>${revision}</version>
     </parent>
     <modules>
         <module>linmour-common</module>
@@ -14,13 +14,6 @@
     </modules>
     <packaging>pom</packaging>
     <artifactId>linmour-common-module</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
-
 
 
 

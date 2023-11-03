@@ -1,5 +1,5 @@
 ## 基础镜像java
-FROM openjdk
+FROM eclipse-temurin:11-jre
 ## 作者是linmour
 MAINTAINER linmour
 ## 就是你上传的jar包的名称。给jar包起个别名

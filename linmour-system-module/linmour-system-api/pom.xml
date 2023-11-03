@@ -6,23 +6,16 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-system-module</artifactId>
-        <version>${linmour.dev}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>linmour-system-api</artifactId>
     <packaging>jar</packaging>
 
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common-api</artifactId>
-            <version>${linmour.dev}</version>
         </dependency>
     </dependencies>
 </project>

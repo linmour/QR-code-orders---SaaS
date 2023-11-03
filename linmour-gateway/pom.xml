@@ -6,16 +6,10 @@
     <parent>
         <groupId>com.linmour</groupId>
         <artifactId>linmour-ScanOrder</artifactId>
-        <version>${linmour.dev}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>linmour-gateway</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -42,8 +36,8 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-
     </dependencies>
+
     <build>
         <filters>
             <filter>../profiles/config-dev.properties</filter>

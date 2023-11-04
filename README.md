@@ -40,6 +40,6 @@
 #### 启动教程
 
 1.  执行sql，创建项目所需要的表
-![在这里插入图片描述](https://img-blog.csdnimg.cn/dd3555b020d944e290cc42ff476a66dd.png)
+![输入图片说明](image.png)
 2.上传nacos配置，把这个压缩包上传到自己的nacos上，并且修改里面的redis、mq、数据库等配置
-![在这里插入图片描述](https://img-blog.csdnimg.cn/c2ad464eec68425ba1a547fdc213e1d3.png)
+![输入图片说明](image1.png)

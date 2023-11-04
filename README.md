@@ -40,6 +40,7 @@
 #### 启动教程
 
 1.  执行sql，创建项目所需要的表
-![输入图片说明](image.png)
+![输入图片说明](.imagessql%E6%96%87%E4%BB%B6.png)
+
 2.上传nacos配置，把这个压缩包上传到自己的nacos上，并且修改里面的redis、mq、数据库等配置
-![输入图片说明](image1.png)
+![输入图片说明](.imagesnacos%E9%85%8D%E7%BD%AE.png)

@@ -44,6 +44,6 @@
 
 2.上传nacos配置，把这个压缩包上传到自己的nacos上，并且修改里面的
 redis、mq、数据库等配置
-![输入图片说明](.images/nacos%E9%85%8D%E7%BD%AE.png)
+<img src=".images/nacos%E9%85%8D%E7%BD%AE.png" alt="InfiniteGraph Logo" width="320">
 
 

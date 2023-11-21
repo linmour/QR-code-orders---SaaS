@@ -10,11 +10,11 @@ import lombok.Data;
 
 /**
  * 
- * @TableName r_order_product
+ * @TableName order_item
  */
-@TableName(value ="r_order_product")
+@TableName(value ="order_item")
 @Data
-public class ROrderProduct implements Serializable {
+public class OrderItem implements Serializable {
     /**
      * 
      */
@@ -39,6 +39,13 @@ public class ROrderProduct implements Serializable {
      */
     @TableField(value = "quantity")
     private Integer quantity;
+
+       /**
+     * 所属商户
+     */
+       @TableField(value = "shop_id")
+       private Long shopId;
+
 
     /**
      * 

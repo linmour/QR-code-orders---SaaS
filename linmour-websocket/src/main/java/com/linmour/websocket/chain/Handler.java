@@ -19,7 +19,6 @@ public abstract class Handler {
 
 
 
-
     public abstract void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                                        JSONObject jsonObject, ConcurrentHashMap<String,
                                        List<JSONObject>> recordMap,

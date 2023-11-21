@@ -17,6 +17,24 @@
 				}
 			],
 			"name":"线上"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://localhost:12804"
+				}
+			],
+			"name":"linmour-order"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://127.0.0.1:12800"
+				}
+			],
+			"name":"gateway"
 		}
 	],
 	"envList":[
@@ -28,7 +46,9 @@
 	"preScript":"",
 	"projectList":[
 		"linmour-product",
-		"线上"
+		"线上",
+		"linmour-order",
+		"gateway"
 	],
 	"syncModel":{
 		"branch":"master",

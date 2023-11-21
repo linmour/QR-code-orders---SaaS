@@ -1,9 +1,9 @@
 package com.linmour.order.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.order.pojo.Do.ROrderProduct;
-import com.linmour.order.service.ROrderProductService;
-import com.linmour.order.mapper.ROrderPreductMapper;
+import com.linmour.order.pojo.Do.OrderItem;
+import com.linmour.order.service.OrderItemService;
+import com.linmour.order.mapper.OrderItemMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2023-08-16 15:25:39
 */
 @Service
-public class ROrderProductServiceImpl extends ServiceImpl<ROrderPreductMapper, ROrderProduct>
-    implements ROrderProductService {
+public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem>
+    implements OrderItemService {
 
 
 }

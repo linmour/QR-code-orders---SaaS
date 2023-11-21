@@ -136,6 +136,11 @@
                 <artifactId>linmour-restaurant-api</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-typehandlers-jsr310</artifactId>
+                <version>1.0.1</version>
+            </dependency>
             <!--日志处理包-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

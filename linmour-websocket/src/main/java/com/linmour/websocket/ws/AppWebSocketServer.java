@@ -1,5 +1,4 @@
 package com.linmour.websocket.ws;
-
 import com.alibaba.fastjson.JSONObject;
 import com.linmour.websocket.chain.*;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.websocket.*;
@@ -130,16 +128,14 @@ public class AppWebSocketServer {
                 //追加发送人(防止串改)
                 jsonObject.put("fromtableId", this.tableId);
 
-                //这里采用责任链模式，每一个处理器对应一个前段发过来的请，这里还可以用工厂模式来生成对象
+                //这里采用责任链模式，每一个处理器对应一个前段发过来的请求，这里还可以用工厂模式来生成对象
                 ChangeHandler changeHandler = new ChangeHandler();
                 CreateOrderHandler createOrderHandler = new CreateOrderHandler();
                 SyncHandler syncHandler = new SyncHandler();
                 ClearHandler clearHandler = new ClearHandler();
                 OtherHandler otherHandler = new OtherHandler();
-
                 changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
-                changeHandler.handleRequest(webSocketMap,jsonObject,recordMap,this,orderFeign);
-
+                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this, orderFeign);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -174,9 +170,7 @@ public class AppWebSocketServer {
     }
 
 
-    /**
-     * 发送自定义消息
-     * */
+
     /**
      * 发送自定义消息
      *

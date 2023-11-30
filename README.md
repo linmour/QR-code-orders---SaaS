@@ -1,6 +1,3 @@
-![输入图片说明](.images/Snipaste_2023-11-30_17-23-17.png)![输入图片说明](.images/Snipaste_2023-11-30_17-22-56.png)
-# linmour点餐（2023-07-17）
-
 #### 介绍
 
 这是一个扫码点餐的平台，分为餐厅后台管理系统（vue）和小程序点餐（uniapp）
@@ -47,6 +44,8 @@
 <img src=".images/nacos%E9%85%8D%E7%BD%AE.png" width="580">
 
 #### 主要功能展示
-![输入图片说明](.images/Snipaste_2023-11-30_17-22-25.png)![输入图片说明](.images/Snipaste_2023-11-30_17-22-37.png)![输入图片说明](.images/Snipaste_2023-11-30_17-23-17.png)
-![输入图片说明](.images/Snipaste_2023-11-30_17-22-37.png)
-![输入图片说明](.images/Snipaste_2023-11-30_17-22-56.png)
+<img src=".images/Snipaste_2023-11-30_17-22-25.png" width="580">
+<img src=".images/Snipaste_2023-11-30_17-22-37.png" width="580">
+<img src=".images/Snipaste_2023-11-30_17-23-17.png" width="580">
+<img src=".images/Snipaste_2023-11-30_17-22-37.png" width="580">
+<img src=".images/Snipaste_2023-11-30_17-22-56.png" width="580">

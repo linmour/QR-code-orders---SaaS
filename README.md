@@ -1,4 +1,4 @@
-
+![输入图片说明](.images/Snipaste_2023-11-30_17-23-17.png)![输入图片说明](.images/Snipaste_2023-11-30_17-22-56.png)
 # linmour点餐（2023-07-17）
 
 #### 介绍
@@ -46,4 +46,7 @@
 数据库等配置
 <img src=".images/nacos%E9%85%8D%E7%BD%AE.png" width="580">
 
-
+#### 主要功能展示
+![输入图片说明](.images/Snipaste_2023-11-30_17-22-25.png)![输入图片说明](.images/Snipaste_2023-11-30_17-22-37.png)![输入图片说明](.images/Snipaste_2023-11-30_17-23-17.png)
+![输入图片说明](.images/Snipaste_2023-11-30_17-22-37.png)
+![输入图片说明](.images/Snipaste_2023-11-30_17-22-56.png)

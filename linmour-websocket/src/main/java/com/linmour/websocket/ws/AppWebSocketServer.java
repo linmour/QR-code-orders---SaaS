@@ -7,6 +7,7 @@ import com.linmour.websocket.mq.ProducerMq;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -25,26 +26,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Data
 public class AppWebSocketServer {
 
-    @Resource
-    private ProducerMq a;
 
-    //注入为空
     public static ProducerMq producerMq;
-
-    @PostConstruct
-    public void b() {
-        producerMq = this.a;
-    }
-
     @Resource
-    private OrderFeign w;
-
-    public static OrderFeign orderFeign;
-
-    @PostConstruct
-    public void m() {
-        orderFeign = w;
+    public void setProducerMq(ProducerMq mq) {
+        producerMq = mq;
     }
+
+
+
+
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
@@ -86,8 +77,6 @@ public class AppWebSocketServer {
             List<AppWebSocketServer> serverList = new ArrayList<>();
             serverList.add(this);
             webSocketMap.put(tableId, serverList);
-
-
         }
         try {
             sendMessage("1");
@@ -135,7 +124,7 @@ public class AppWebSocketServer {
                 ClearHandler clearHandler = new ClearHandler();
                 OtherHandler otherHandler = new OtherHandler();
                 changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
-                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this, orderFeign);
+                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this);
             } catch (Exception e) {
                 e.printStackTrace();
             }

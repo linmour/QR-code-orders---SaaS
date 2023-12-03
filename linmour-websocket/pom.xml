@@ -28,7 +28,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -41,7 +44,7 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-order-api</artifactId>
-<version>${revision}</version>
+            <version>${revision}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.baomidou</groupId>

@@ -2,34 +2,37 @@ package com.linmour.websocket.chain;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.mq.ProducerMq;
-import com.linmour.websocket.pojo.Result;
 import com.linmour.websocket.ws.AppWebSocketServer;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.linmour.common.utils.SecurityUtils.setShopId;
 import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.AppWebSocketServer.producerMq;
 
+@Component
 //处理前端创建订单
 public class CreateOrderHandler extends Handler {
 
+
     @Override
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
-                              JSONObject jsonObject, ConcurrentHashMap<String,
-            List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke,
-                              OrderFeign orderFeign) throws IOException {
+                              JSONObject jsonObject,
+                              ConcurrentHashMap<String, List<JSONObject>> recordMap,
+                              AppWebSocketServer webSocke) throws IOException {
 
 
         if (jsonObject.containsKey("createOrder")) {
@@ -41,7 +44,9 @@ public class CreateOrderHandler extends Handler {
                     return;
                 }
             }
-            synchronized (webSocke) {
+            RLock lock = redissonClient.getLock("lock");
+            lock.lock();
+            try {
                 if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
                     List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
                     //有一个为true就说明已经有订单了
@@ -57,10 +62,10 @@ public class CreateOrderHandler extends Handler {
                     List<ShopListDto> list = shopCarList.toJavaList(ShopListDto.class);
                     //TODO 1.加个拦截加个shopid,2.抛出异常，前端展示
                     try {
-                        if(producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, list, remark,list.get(0).getShopId()))){
+                        if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, list, remark, list.get(0).getShopId()))) {
                             AppSendInfo("订单提交成功", webSocke.getTableId());
 
-                        }else {
+                        } else {
                             AppSendInfo("订单提交失败", webSocke.getTableId());
                         }
 
@@ -70,13 +75,17 @@ public class CreateOrderHandler extends Handler {
                         AppSendInfo("订单提交失败", webSocke.getTableId());
                     }
 
+
                 }
+            }catch (Exception e){
+                lock.unlock();
             }
+
 
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke, orderFeign);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke);
             }
         }
     }

@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName： XxlJobTest
@@ -23,23 +25,30 @@ public class XxlJobTest {
 
     @XxlJob("xxlJobTest")
     public void xxlJobTest(String date) {
-        String command = "python D:\\soft\\datax\\bin\\datax.py D:\\soft\\datax\\job\\linmour_order.json";
-        try {
-            Process process = Runtime.getRuntime().exec(command);
+        List<String> commands  = new ArrayList<>();
 
-            // 获取命令输出
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+        commands.add("python D:\\soft\\datax\\bin\\datax.py D:\\soft\\datax\\job\\linmour_order_info.json");
+        commands.add("python D:\\soft\\datax\\bin\\datax.py D:\\soft\\datax\\job\\linmour_order_item.json");
+        commands.forEach(m -> {
+            try {
+                Process process = Runtime.getRuntime().exec(m);
+
+                // 获取命令输出
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+                // 等待命令执行完成
+                int exitCode = process.waitFor();
+                System.out.println("命令执行完成，退出码：" + exitCode);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
+        });
 
-            // 等待命令执行完成
-            int exitCode = process.waitFor();
-            System.out.println("命令执行完成，退出码：" + exitCode);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
 

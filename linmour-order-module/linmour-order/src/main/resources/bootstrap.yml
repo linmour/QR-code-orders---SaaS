@@ -25,4 +25,9 @@ spring:
           refresh: true
 
 
+seata:
+  tx-service-group: mygroup # 事务分组名称，要和服务端对应
+  service:
+    vgroup-mapping:
+      mygroup: default # key是事务分组名称 value要和服务端的机房名称保持一致
 

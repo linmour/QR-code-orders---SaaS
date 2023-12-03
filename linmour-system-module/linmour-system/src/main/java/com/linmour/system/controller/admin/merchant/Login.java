@@ -14,8 +14,6 @@ public class Login {
     @Resource
     private MerchantService merchantService;
 
-
-
     @PostMapping("/login")
     public Result login(@RequestBody LoginVo loginVo){
         return (merchantService.login(loginVo));

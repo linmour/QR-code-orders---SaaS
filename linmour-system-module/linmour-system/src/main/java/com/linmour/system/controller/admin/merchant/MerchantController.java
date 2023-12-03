@@ -1,6 +1,7 @@
 package com.linmour.system.controller.admin.merchant;
 
 import com.linmour.system.convert.MerchantConvert;
+import com.linmour.system.pojo.Do.Merchant;
 import com.linmour.system.pojo.Dto.UserInfoDto;
 import com.linmour.system.service.MerchantService;
 import com.linmour.common.dtos.Result;
@@ -42,5 +43,11 @@ public class MerchantController {
             }
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/register")
+    public Result register(Merchant merchant){
+
+        return merchantService.register(merchant);
     }
 }

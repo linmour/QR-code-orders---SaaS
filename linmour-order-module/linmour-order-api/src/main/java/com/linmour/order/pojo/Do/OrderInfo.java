@@ -32,9 +32,9 @@ public class OrderInfo implements Serializable {
     /**
      * 用户id
      */
-    @TableField(value = "cus_id")
-    @Column("cus_id")
-    private Long cusId;
+    @TableField(value = "openid")
+    @Column("openid")
+    private String openid;
 
     @TableField(value = "table_id")
     @Column("table_id")

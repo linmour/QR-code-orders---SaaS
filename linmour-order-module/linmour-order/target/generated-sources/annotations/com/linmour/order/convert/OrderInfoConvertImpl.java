@@ -7,7 +7,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-12-03T10:31:28+0800",
+    date = "2023-12-10T14:39:24+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.21 (Amazon.com Inc.)"
 )
 public class OrderInfoConvertImpl implements OrderInfoConvert {
@@ -21,7 +21,6 @@ public class OrderInfoConvertImpl implements OrderInfoConvert {
         OrderInfo orderInfo = new OrderInfo();
 
         orderInfo.setId( orderInfoDto.getId() );
-        orderInfo.setCusId( orderInfoDto.getCusId() );
         orderInfo.setTableId( orderInfoDto.getTableId() );
         orderInfo.setPayType( orderInfoDto.getPayType() );
         orderInfo.setPayStatus( orderInfoDto.getPayStatus() );

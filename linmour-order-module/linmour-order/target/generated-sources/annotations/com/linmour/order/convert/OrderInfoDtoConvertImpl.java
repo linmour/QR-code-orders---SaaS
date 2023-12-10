@@ -9,7 +9,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-12-03T10:31:28+0800",
+    date = "2023-12-10T14:39:24+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.21 (Amazon.com Inc.)"
 )
 public class OrderInfoDtoConvertImpl implements OrderInfoDtoConvert {
@@ -23,7 +23,6 @@ public class OrderInfoDtoConvertImpl implements OrderInfoDtoConvert {
         OrderInfoDto orderInfoDto = new OrderInfoDto();
 
         orderInfoDto.setId( orderInfo.getId() );
-        orderInfoDto.setCusId( orderInfo.getCusId() );
         orderInfoDto.setTableId( orderInfo.getTableId() );
         orderInfoDto.setPayType( orderInfo.getPayType() );
         orderInfoDto.setPayStatus( orderInfo.getPayStatus() );

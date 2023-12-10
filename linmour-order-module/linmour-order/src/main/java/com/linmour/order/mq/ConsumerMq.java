@@ -55,9 +55,9 @@ public class ConsumerMq {
             try{
                 orderInfoService.createOrder(createOrderDto);
             }catch (Exception e){
-                Map<String,Object> map = new HashMap<>();
-                map.put(CREATE_ORDER_TOPIC, createOrderDto);
-                producerMq.error(map);
+//                Map<String,Object> map = new HashMap<>();
+//                map.put(CREATE_ORDER_TOPIC, createOrderDto);
+//                producerMq.error(map);
             }
         }
     }

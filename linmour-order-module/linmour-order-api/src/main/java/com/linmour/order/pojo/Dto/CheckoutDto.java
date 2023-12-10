@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class CheckoutDto implements Serializable {
     private String tableId;
     private Integer payType;
+    private String openid;
 }

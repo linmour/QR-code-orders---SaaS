@@ -30,7 +30,8 @@ public enum AppHttpCodeEnum {
 
     USERINFO_ERROR(1000,"获取用户信息失败"),
     SHOP_ERRPR(1001, "获取店面列表失败"),
-    PRODUCT_ERROR(1002,"商品获取失败");
+    PRODUCT_ERROR(1002,"商品获取失败"),
+    ORDER_ITEM_NOT_NULL(80401,"订单条目不能为空");
 
 
     int code;

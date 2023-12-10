@@ -18,19 +18,19 @@ public class ChangeHandler extends Handler {
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke) throws IOException {
+                              AppWebSocketServer webSocket) throws IOException {
 
         if (jsonObject.containsKey("change")) {
             ArrayList<JSONObject> jsonObjects = new ArrayList<>();
             jsonObjects.add(jsonObject);
             producerMq.syncShopCar(jsonObjects);
             //记录每一次购物车变化的记录
-            List<JSONObject> objects = recordMap.get(webSocke.getTableId());
+            List<JSONObject> objects = recordMap.get(webSocket.getTableId());
             objects.add(jsonObject);
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket);
             }
         }
     }

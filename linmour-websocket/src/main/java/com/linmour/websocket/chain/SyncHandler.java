@@ -19,14 +19,14 @@ public class SyncHandler extends Handler {
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke) throws IOException {
+                              AppWebSocketServer webSocket) throws IOException {
         if (jsonObject.containsKey("sync")) {
             //这个是判断是否有这个桌号，也就是 是否有人点过餐
 
-            List<JSONObject> recordList = recordMap.get(webSocke.getTableId());
+            List<JSONObject> recordList = recordMap.get(webSocket.getTableId());
             //指定发送对象
-            if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId()) && recordList != null) {
-                List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
+            if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId()) && recordList != null) {
+                List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
                 for (AppWebSocketServer server : serverList) {
                     if (server.getSync().get()) {
                         server.sendMessage(recordList);
@@ -35,14 +35,14 @@ public class SyncHandler extends Handler {
                 }
             } else {
                 ArrayList<JSONObject> objects = new ArrayList<>();
-                recordMap.put(webSocke.getTableId(), objects);
+                recordMap.put(webSocket.getTableId(), objects);
             }
-            webSocke.getSync().set(!webSocke.getSync().get());
+            webSocket.getSync().set(!webSocket.getSync().get());
 
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket);
             }
         }
     }

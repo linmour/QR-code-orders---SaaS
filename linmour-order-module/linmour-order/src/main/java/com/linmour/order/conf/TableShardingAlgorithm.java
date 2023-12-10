@@ -22,7 +22,7 @@ public class TableShardingAlgorithm implements ComplexKeysShardingAlgorithm<Stri
             return collection;
 
 
-            String orderId = complexKeysShardingValue.getColumnNameAndShardingValuesMap().get("order_id").stream().toArray().toString();
+            String orderId = complexKeysShardingValue.getColumnNameAndShardingValuesMap().get("order_id").stream().toArray()[0].toString();
             int i = Math.abs(orderId.hashCode()) % 2;
             Collection<String> tables = new ArrayList<>();
             tables.add("order_item_"+i);

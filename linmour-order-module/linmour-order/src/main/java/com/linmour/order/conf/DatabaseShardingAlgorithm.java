@@ -15,7 +15,7 @@ public class DatabaseShardingAlgorithm  implements ComplexKeysShardingAlgorithm<
         if (updateTime != null && updateTime.contains("2999-11-20"))
             return collection;
 
-            String shopId = complexKeysShardingValue.getColumnNameAndShardingValuesMap().get("shop_id").stream().toArray().toString();
+            String shopId = complexKeysShardingValue.getColumnNameAndShardingValuesMap().get("shop_id").stream().toArray()[0].toString();
             int i = Math.abs(shopId.hashCode()) % 2;
             Collection<String> dbs = new ArrayList<>();
             dbs.add("ds"+i);

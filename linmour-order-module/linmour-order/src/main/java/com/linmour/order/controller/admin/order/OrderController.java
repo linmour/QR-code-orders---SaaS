@@ -1,27 +1,27 @@
 package com.linmour.order.controller.admin.order;
 
-import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.linmour.common.dtos.Result;
+import com.linmour.common.utils.RedisCache;
 import com.linmour.order.mapper.OrderItemMapper;
 import com.linmour.order.pojo.Do.OrderInfo;
 import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.OrderInfoDto;
 import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.OrderItemService;
-//import org.springframework.data.cassandra.core.CassandraTemplate;
-//import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.shardingsphere.transaction.annotation.ShardingTransactionType;
 import org.apache.shardingsphere.transaction.core.TransactionType;
+import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +32,12 @@ public class OrderController {
     private OrderInfoService orderInfoService;
     @Resource
     private OrderItemService orderItemService;
-//    @Resource
-//    private CassandraTemplate cassandraTemplate;
+    @Resource
+    private CassandraTemplate cassandraTemplate;
     @Resource
     private OrderItemMapper orderItemMapper;
+    @Resource
+    private RedisCache redisCache;
 
     @GetMapping("/getOrderInfo/{tableId}")
     public Result getOrderInfo(@PathVariable Long tableId) {
@@ -58,9 +60,9 @@ public class OrderController {
         orderInfo.setId("1111");
         orderInfo1.setId("222222222");
         orderInfo2.setId("33333");
-        orderInfo1.setCusId(1L);
-        orderInfo2.setCusId(4L);
-        orderInfo.setCusId(2L);
+        orderInfo1.setOpenid("dsfsd");
+        orderInfo2.setOpenid("4L");
+        orderInfo.setOpenid("2L");
         orderInfo1.setShopId(1L);
         orderInfo2.setShopId(3L);
         orderInfo.setShopId(2L);
@@ -136,6 +138,14 @@ public class OrderController {
         });
         //删除mysql中的数据
         orderItemService.postSql();
+
+    }
+
+    @GetMapping("/e")
+    public void e(){
+        List<Object> cacheList = redisCache.getCacheList("orderItem:1:1");
+
+        List<OrderItem> list = com.alibaba.fastjson.JSONObject.parseArray(JSONObject.toJSONString(cacheList), OrderItem.class);
 
     }
 

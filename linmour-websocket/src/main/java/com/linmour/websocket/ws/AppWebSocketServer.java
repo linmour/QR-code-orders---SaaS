@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -32,8 +33,6 @@ public class AppWebSocketServer {
     public void setProducerMq(ProducerMq mq) {
         producerMq = mq;
     }
-
-
 
 
 
@@ -68,6 +67,7 @@ public class AppWebSocketServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("tableId") String tableId) {
+
         this.session = session;
         this.tableId = tableId;
         if (webSocketMap.containsKey(tableId)) {

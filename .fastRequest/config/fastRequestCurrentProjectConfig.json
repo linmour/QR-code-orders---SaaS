@@ -4,15 +4,6 @@
 			"hostGroup":[
 				{
 					"env":"dev",
-					"url":"http://localhost:12802"
-				}
-			],
-			"name":"linmour-product"
-		},
-		{
-			"hostGroup":[
-				{
-					"env":"dev",
 					"url":"http://43.136.73.159:12800"
 				}
 			],
@@ -22,19 +13,19 @@
 			"hostGroup":[
 				{
 					"env":"dev",
-					"url":"http://localhost:12804"
+					"url":"http://127.0.0.1:12800"
 				}
 			],
-			"name":"linmour-order"
+			"name":"gateway"
 		},
 		{
 			"hostGroup":[
 				{
 					"env":"dev",
-					"url":"http://127.0.0.1:12800"
+					"url":""
 				}
 			],
-			"name":"gateway"
+			"name":"通用"
 		}
 	],
 	"envList":[
@@ -45,10 +36,9 @@
 	"postScript":"",
 	"preScript":"",
 	"projectList":[
-		"linmour-product",
 		"线上",
-		"linmour-order",
-		"gateway"
+		"gateway",
+		"通用"
 	],
 	"syncModel":{
 		"branch":"master",

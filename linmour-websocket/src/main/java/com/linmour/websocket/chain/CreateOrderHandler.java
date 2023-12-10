@@ -10,6 +10,7 @@ import com.linmour.websocket.ws.AppWebSocketServer;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.AppWebSocketServer.producerMq;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
 //处理前端创建订单
@@ -32,60 +34,44 @@ public class CreateOrderHandler extends Handler {
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke) throws IOException {
+                              AppWebSocketServer webSocket) throws IOException {
 
 
         if (jsonObject.containsKey("createOrder")) {
-            if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
-                List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
-                //有一个为true就说明已经有订单了
-                if (serverList.stream().anyMatch(m -> m.getCreateOrder().get())) {
-                    webSocke.sendMessage("已有人提交订单，请稍后");
-                    return;
-                }
-            }
+
             RLock lock = redissonClient.getLock("lock");
+            //todo 极端情况下还是会重复提交
             lock.lock();
             try {
-                if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
-                    List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
+                if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
+                    List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
                     //有一个为true就说明已经有订单了
                     if (serverList.stream().anyMatch(m -> m.getCreateOrder().get())) {
-                        webSocke.sendMessage("已有人提交订单，请稍后");
+                        webSocket.sendMessage("已有人提交订单，请稍后");
                         return;
                     }
-
                     BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
                     String remark = jsonObject.get("remark").toString();
-                    //类型转换
+                    //类型转换:JSONArray转list
                     JSONArray shopCarList = jsonObject.getJSONArray("shopCarList");
                     List<ShopListDto> list = shopCarList.toJavaList(ShopListDto.class);
-                    //TODO 1.加个拦截加个shopid,2.抛出异常，前端展示
-                    try {
-                        if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocke.getTableId()), amount, list, remark, list.get(0).getShopId()))) {
-                            AppSendInfo("订单提交成功", webSocke.getTableId());
+                    //TODO 1.加个拦截加个shopid
 
-                        } else {
-                            AppSendInfo("订单提交失败", webSocke.getTableId());
-                        }
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        AppSendInfo("订单提交失败", webSocke.getTableId());
-                    }
-
-
+                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
+                        AppSendInfo("订单提交成功", webSocket.getTableId());
+                    else
+                        AppSendInfo("订单提交失败", webSocket.getTableId());
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
+                e.printStackTrace();
+                AppSendInfo("订单提交失败", webSocket.getTableId());
+            } finally {
                 lock.unlock();
             }
-
-
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocke);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket);
             }
         }
     }

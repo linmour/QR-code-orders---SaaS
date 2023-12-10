@@ -16,7 +16,6 @@
         <module>linmour-order-module</module>
         <module>linmour-restaurant-module</module>
         <module>linmour-websocket</module>
-        <module>linmour-seata</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->

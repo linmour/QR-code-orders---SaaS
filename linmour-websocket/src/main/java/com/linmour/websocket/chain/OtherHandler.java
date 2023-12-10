@@ -21,13 +21,13 @@ public class OtherHandler extends Handler{
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke) throws IOException {
+                              AppWebSocketServer webSocket) throws IOException {
 
         //传送给对应tableId用户的websocket
-        if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
-            AppSendInfo("1", webSocke.getTableId());
+        if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
+            AppSendInfo("1", webSocket.getTableId());
         } else {
-            System.out.println("请求的tableId:" + webSocke.getTableId() + "不在该服务器上");
+            System.out.println("请求的tableId:" + webSocket.getTableId() + "不在该服务器上");
         }
     }
 }

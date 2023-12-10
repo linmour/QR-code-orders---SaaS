@@ -18,10 +18,10 @@ public class ClearHandler extends Handler{
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocke) throws IOException {
+                              AppWebSocketServer webSocket) throws IOException {
         if (jsonObject.containsKey("clear")) {
-            if (StringUtils.isNotBlank(webSocke.getTableId()) && webSocketMap.containsKey(webSocke.getTableId())) {
-                List<AppWebSocketServer> serverList = webSocketMap.get(webSocke.getTableId());
+            if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
+                List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
                 //遍历所有对象，把订单都改为未提交，为了下一次点餐
                 serverList.forEach(m -> m.getCreateOrder().set(false));
 
@@ -29,7 +29,7 @@ public class ClearHandler extends Handler{
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocke);
+                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocket);
             }
         }
     }

@@ -5,6 +5,9 @@
 项目地址：[餐厅后台管理系统](https://gitee.com/lsclinmour/linmour-scan-order-vue)
 项目地址：[小程序点餐](https://gitee.com/lsclinmour/linmour-scan-order-uniapp)
 
+账号: 1
+密码: 123
+
 #### 演示地址
 
 - 管理后台：
@@ -47,5 +50,4 @@
 <img src=".images/Snipaste_2023-11-30_17-22-25.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-22-37.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-23-17.png" width="580">
-<img src=".images/Snipaste_2023-11-30_17-22-37.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-22-56.png" width="580">

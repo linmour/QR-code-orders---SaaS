@@ -62,7 +62,7 @@ public class CreateOrderHandler extends Handler {
                     setShopId(list.get(0).getShopId());
 //                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
                     Result result = orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId()));
-                    if (result != null){
+                    if (result != null || result.getMsg().equals("出现错误") ){
                         //手动设置id，因为这个没经过token认证没有创建security认证信息，只能手动设置，要不然结果会为null，引发一系列错误
                         setShopId(Long.parseLong(result.getMsg()));
                         result.setMsg("order");

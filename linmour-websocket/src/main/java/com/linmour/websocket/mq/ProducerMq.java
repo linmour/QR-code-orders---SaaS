@@ -26,15 +26,9 @@ public class ProducerMq {
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
-
-
-
     public Boolean syncShopCar(List<JSONObject> msgBody){
         return isSuccess(rocketMQTemplate.syncSend(SYNC_SHOP_CAR_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut));
     }
-
-
-
 
     public Boolean createOrder(CreateOrderDto msgBody){
         return isSuccess(rocketMQTemplate.syncSend(CREATE_ORDER_TOPIC, MessageBuilder.withPayload(msgBody).build(),messageTimeOut));

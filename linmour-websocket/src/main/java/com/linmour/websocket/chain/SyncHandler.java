@@ -19,7 +19,7 @@ public class SyncHandler extends Handler {
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocket) throws IOException {
+                              AppWebSocketServer webSocket,OrderFeign orderFeign) throws IOException {
         if (jsonObject.containsKey("sync")) {
             //这个是判断是否有这个桌号，也就是 是否有人点过餐
 
@@ -42,7 +42,7 @@ public class SyncHandler extends Handler {
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket,orderFeign);
             }
         }
     }

@@ -6,8 +6,7 @@ import com.linmour.order.pojo.Do.OrderInfo;
 import com.linmour.order.pojo.Dto.CheckoutDto;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.OrderInfoDto;
-import org.apache.shardingsphere.transaction.annotation.ShardingTransactionType;
-import org.apache.shardingsphere.transaction.core.TransactionType;
+
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 * @createDate 2023-08-16 15:25:38
 */
 @Transactional(rollbackFor = Exception.class)
-@ShardingTransactionType(TransactionType.BASE)
+//@ShardingTransactionType(TransactionType.BASE)
 public interface OrderInfoService extends IService<OrderInfo> {
 
     Result createOrder(CreateOrderDto createOrderDto);

@@ -18,7 +18,7 @@ public interface OrderFeign {
     @GetMapping("/order/order/getOrderInfo/{tableId}")
     Result getOrderInfo(@PathVariable Long tableId);
 
-    @Async
+
     @PostMapping("/app/order/order/createOrder")
-    CompletableFuture<Result> createOrder(@RequestBody CreateOrderDto createOrderDto);
+    Result createOrder(@RequestBody CreateOrderDto createOrderDto);
 }

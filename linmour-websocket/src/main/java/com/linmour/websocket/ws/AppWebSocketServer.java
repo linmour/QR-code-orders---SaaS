@@ -34,7 +34,11 @@ public class AppWebSocketServer {
         producerMq = mq;
     }
 
-
+    private static OrderFeign orderFeign;
+    @Resource
+    public void setOrderFeign(OrderFeign mq) {
+        orderFeign = mq;
+    }
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
@@ -124,7 +128,7 @@ public class AppWebSocketServer {
                 ClearHandler clearHandler = new ClearHandler();
                 OtherHandler otherHandler = new OtherHandler();
                 changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
-                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this);
+                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this,orderFeign);
             } catch (Exception e) {
                 e.printStackTrace();
             }

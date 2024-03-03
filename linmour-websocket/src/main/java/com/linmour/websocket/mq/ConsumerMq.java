@@ -50,7 +50,6 @@ public class ConsumerMq {
     @Service
     @RocketMQMessageListener(topic = SYNC_SHOP_CAR_TOPIC,consumerGroup = "syncShopCar")
     public class syncShopCar implements RocketMQListener<List<JSONObject>>{
-
         @Override
         public void onMessage(List<JSONObject>  obj) {
             String fromtableId = (String)(obj.get(0).get("fromtableId"));

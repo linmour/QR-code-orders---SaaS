@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 * @Author: 海绵宝宝
 * @Explain: WebSocket
 * @DateTime: 2022/5/29 15:54
-* @Params: WebSocketServer.sendInfo(使用JSON,用户名);
+* @Params: WebSocketServer.sendInfoApi(使用JSON,用户名);
 * @Return
 */
 @ServerEndpoint(value = "/websocket/order/{userId}",encoders = WebSocketCustomEncoding.class)

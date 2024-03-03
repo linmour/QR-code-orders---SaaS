@@ -18,7 +18,7 @@ public class ClearHandler extends Handler{
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocket) throws IOException {
+                              AppWebSocketServer webSocket,OrderFeign orderFeign) throws IOException {
         if (jsonObject.containsKey("clear")) {
             if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
                 List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
@@ -29,7 +29,7 @@ public class ClearHandler extends Handler{
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocket);
+                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocket,orderFeign);
             }
         }
     }

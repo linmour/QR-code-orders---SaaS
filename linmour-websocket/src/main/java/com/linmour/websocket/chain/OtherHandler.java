@@ -21,7 +21,7 @@ public class OtherHandler extends Handler{
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocket) throws IOException {
+                              AppWebSocketServer webSocket,OrderFeign orderFeign) throws IOException {
 
         //传送给对应tableId用户的websocket
         if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {

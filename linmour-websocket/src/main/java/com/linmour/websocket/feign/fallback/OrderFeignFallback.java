@@ -14,7 +14,9 @@ public class OrderFeignFallback implements OrderFeign  {
     }
 
     @Override
-    public CompletableFuture<Result> createOrder(CreateOrderDto createOrderDto) {
+    public Result createOrder(CreateOrderDto createOrderDto) {
         return null;
     }
+
+
 }

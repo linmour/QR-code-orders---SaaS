@@ -6,6 +6,7 @@ import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.mq.ProducerMq;
+import com.linmour.websocket.pojo.Result;
 import com.linmour.websocket.ws.AppWebSocketServer;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
@@ -21,8 +22,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.linmour.common.utils.SecurityUtils.setShopId;
 import static com.linmour.websocket.ws.AppWebSocketServer.AppSendInfo;
 import static com.linmour.websocket.ws.AppWebSocketServer.producerMq;
+import static com.linmour.websocket.ws.WebSocketServer.sendInfo;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
@@ -34,7 +37,7 @@ public class CreateOrderHandler extends Handler {
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocket) throws IOException {
+                              AppWebSocketServer webSocket, OrderFeign orderFeign) throws IOException {
 
 
         if (jsonObject.containsKey("createOrder")) {
@@ -56,11 +59,24 @@ public class CreateOrderHandler extends Handler {
                     JSONArray shopCarList = jsonObject.getJSONArray("shopCarList");
                     List<ShopListDto> list = shopCarList.toJavaList(ShopListDto.class);
                     //TODO 1.加个拦截加个shopid
+                    setShopId(list.get(0).getShopId());
+//                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
+                    Result result = orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId()));
+                    if (result != null){
+                        //手动设置id，因为这个没经过token认证没有创建security认证信息，只能手动设置，要不然结果会为null，引发一系列错误
+                        setShopId(Long.parseLong(result.getMsg()));
+                        result.setMsg("order");
 
-                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
+                        try {
+                            sendInfo(result, "1");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         AppSendInfo("订单提交成功", webSocket.getTableId());
+                          recordMap.get(webSocket.getTableId()).clear();
+                    }
                     else
-                        AppSendInfo("订单提交失败", webSocket.getTableId());
+                    AppSendInfo("订单提交失败", webSocket.getTableId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -71,7 +87,7 @@ public class CreateOrderHandler extends Handler {
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket);
+                nextHandler.handleRequest(webSocketMap, jsonObject, recordMap, webSocket, orderFeign);
             }
         }
     }

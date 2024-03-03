@@ -10,9 +10,7 @@ import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.OrderInfoDto;
 import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.OrderItemService;
-import org.apache.shardingsphere.transaction.annotation.ShardingTransactionType;
-import org.apache.shardingsphere.transaction.core.TransactionType;
-import org.springframework.data.cassandra.core.CassandraTemplate;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +28,10 @@ import java.util.Map;
 public class OrderController {
     @Resource
     private OrderInfoService orderInfoService;
+//    @Resource
+//    private CassandraTemplate cassandraTemplate;
     @Resource
     private OrderItemService orderItemService;
-    @Resource
-    private CassandraTemplate cassandraTemplate;
     @Resource
     private OrderItemMapper orderItemMapper;
     @Resource
@@ -52,7 +50,7 @@ public class OrderController {
 
     @GetMapping("/a")
     @Transactional
-    @ShardingTransactionType(TransactionType.BASE)
+//    @ShardingTransactionType(TransactionType.BASE)
     public void a() {
         OrderInfo orderInfo = new OrderInfo();
         OrderInfo orderInfo1 = new OrderInfo();

@@ -1,10 +1,10 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 43.136.73.159
+ Source Server         : 120.79.7.243
  Source Server Type    : MySQL
  Source Server Version : 50736
- Source Host           : 43.136.73.159:3306
+ Source Host           : 120.79.7.243:3306
  Source Schema         : lsc_product
 
  Target Server Type    : MySQL
@@ -63,12 +63,12 @@ CREATE TABLE `product_info`  (
 -- ----------------------------
 -- Records of product_info
 -- ----------------------------
-INSERT INTO `product_info` VALUES (1, '小春鸡', 1, '好吃', 1, 1, 0, 5, 'http://43.136.73.159:9000/linmourscanorder/product/1/1/e76dfa62585049bba88a7f802e121118.jpg', 32.00, '2023-09-17 17:53:52', '2023-09-17 17:53:52', 0, 1, 1);
-INSERT INTO `product_info` VALUES (3, '1', 1, '111', 0, 0, 1, 1, 'http://43.136.73.159:9000/linmourscanorder/product/1/1/51b9dcf6c7a74c9baef30fd26d7de803.jpg,http://43.136.73.159:9000/linmourscanorder/product/1/1/da25aa04ae4b4f4582316e4e350ca6b4.png,http://43.136.73.159:9000/linmourscanorder/product/1/1/93b172bff7174fd2b08cc49dca8ed927.png,http://43.136.73.159:9000/linmourscanorder/product/1/1/ec498ffae0704fe1a050e28e1962e356.jpg', 1111.00, '2023-10-14 15:48:21', '2023-10-14 15:48:21', 0, 1, 1);
+INSERT INTO `product_info` VALUES (1, '小春鸡', 1, '好吃', 1, 1, 0, 5, 'http://120.79.7.243:9000/linmourscanorder/product/1/1/e76dfa62585049bba88a7f802e121118.jpg', 32.00, '2023-09-17 17:53:52', '2023-09-17 17:53:52', 0, 1, 1);
+INSERT INTO `product_info` VALUES (3, '1', 1, '111', 0, 0, 1, 1, 'http://120.79.7.243:9000/linmourscanorder/product/1/1/51b9dcf6c7a74c9baef30fd26d7de803.jpg,http://120.79.7.243:9000/linmourscanorder/product/1/1/da25aa04ae4b4f4582316e4e350ca6b4.png,http://120.79.7.243:9000/linmourscanorder/product/1/1/93b172bff7174fd2b08cc49dca8ed927.png,http://120.79.7.243:9000/linmourscanorder/product/1/1/ec498ffae0704fe1a050e28e1962e356.jpg', 1111.00, '2023-10-14 15:48:21', '2023-10-14 15:48:21', 0, 1, 1);
 INSERT INTO `product_info` VALUES (4, '2', 1, '22', 0, 0, 1, 2, '', 22.00, '2023-10-14 15:57:42', '2023-10-14 15:57:42', 0, 1, 1);
-INSERT INTO `product_info` VALUES (5, '3', 1, '22', 0, 0, 1, 3, 'http://43.136.73.159:9000/linmourscanorder/product/1/1/d0851fe988a24e9aa735a37c25aef84d.jpg', 22.00, '2023-10-14 15:59:18', '2023-10-15 08:22:45', 0, 1, 1);
-INSERT INTO `product_info` VALUES (6, '4', 1, '66', 0, 0, 1, 4, 'http://43.136.73.159:9000/linmourscanorder/product/1/1/3bf40d69f6ab48438e6f1799d8b88e40.png', 66.00, '2023-10-14 16:30:55', '2023-10-15 08:23:08', 0, 1, 1);
-INSERT INTO `product_info` VALUES (7, '5', 1, '66', 0, 0, 1, 5, 'http://43.136.73.159:9000/linmourscanorder/product/1/1/b4ab47dd30494e51a32e2d78eaa1acf8.jpg,http://43.136.73.159:9000/linmourscanorder/product/1/1/436392d1d00a440eaf2ab9d92a40f4af.jpg,http://43.136.73.159:9000/linmourscanorder/product/1/1/56d49d573321430ca646976e8ac21ccb.png', 666.00, '2023-10-14 16:33:04', '2023-10-14 16:33:04', 0, 1, 1);
+INSERT INTO `product_info` VALUES (5, '3', 1, '22', 0, 0, 1, 3, 'http://120.79.7.243:9000/linmourscanorder/product/1/1/d0851fe988a24e9aa735a37c25aef84d.jpg', 22.00, '2023-10-14 15:59:18', '2023-10-15 08:22:45', 0, 1, 1);
+INSERT INTO `product_info` VALUES (6, '4', 1, '66', 0, 0, 1, 4, 'http://120.79.7.243:9000/linmourscanorder/product/1/1/3bf40d69f6ab48438e6f1799d8b88e40.png', 66.00, '2023-10-14 16:30:55', '2023-10-15 08:23:08', 0, 1, 1);
+INSERT INTO `product_info` VALUES (7, '5', 1, '66', 0, 0, 1, 5, 'http://120.79.7.243:9000/linmourscanorder/product/1/1/b4ab47dd30494e51a32e2d78eaa1acf8.jpg,http://120.79.7.243:9000/linmourscanorder/product/1/1/436392d1d00a440eaf2ab9d92a40f4af.jpg,http://120.79.7.243:9000/linmourscanorder/product/1/1/56d49d573321430ca646976e8ac21ccb.png', 666.00, '2023-10-14 16:33:04', '2023-10-14 16:33:04', 0, 1, 1);
 
 -- ----------------------------
 -- Table structure for product_inventory

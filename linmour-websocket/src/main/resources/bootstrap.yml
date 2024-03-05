@@ -17,5 +17,7 @@ spring:
         shared-configs:
           - dataId: rocketmq.yml
             refresh: true
+          - data-id: redis.yml
+            refresh: true
 
 

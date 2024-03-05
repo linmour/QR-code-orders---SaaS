@@ -5,22 +5,24 @@
 <mapper namespace="com.linmour.order.mapper.OrderInfoMapper">
 
     <resultMap id="BaseResultMap" type="com.linmour.order.pojo.Do.OrderInfo">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="cusId" column="cus_id" jdbcType="INTEGER"/>
-            <result property="payType" column="pay_type" jdbcType="INTEGER"/>
-            <result property="payStatus" column="pay_status" jdbcType="INTEGER"/>
-            <result property="payAmount" column="pay_amount" jdbcType="TIMESTAMP"/>
-            <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
-            <result property="remark" column="remark" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
-            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="cusId" column="cus_id" jdbcType="INTEGER"/>
+        <result property="payType" column="pay_type" jdbcType="INTEGER"/>
+        <result property="payStatus" column="pay_status" jdbcType="INTEGER"/>
+        <result property="payAmount" column="pay_amount" jdbcType="TIMESTAMP"/>
+        <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,cus_id,pay_type,
+        id
+        ,cus_id,pay_type,shop_id,
         pay_status,pay_amount,order_status,
         remark,create_time,update_time,
         create_by,update_by,deleted

@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/websocket/**").permitAll()
                 .antMatchers("/app/**").permitAll()
+                .antMatchers("/file/**").permitAll()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/system/merchant/login").anonymous()
                 // 登陆后才能访问

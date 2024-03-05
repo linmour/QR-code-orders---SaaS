@@ -90,14 +90,16 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
             }
             LoginUser user = JSON.toJavaObject( redisCache.getCacheObject(USER_LOGIN_KEY+id), LoginUser.class);
             String shopId = request.getHeader("Shopid");
-            if (shopId != null){
+            if (shopId != null && !Objects.isNull(user)){
                 user.getLoginVo().setShopId(Long.valueOf(shopId));
+
             }
             if (Objects.isNull(user)){
                 Result result = Result.error(NEED_LOGIN);
                 WebUtils.renderString(response, JSON.toJSONString(result));
                 return;
             }
+
 
             //存入SecurityHolder，方便后续过滤连进行状态判断,
             // 三个参数的重载表示用户已认证，第一个就是用户名，第二个是密码，第三个是权限，

@@ -9,6 +9,8 @@ public class OrderConstant {
     public static final Integer PENDING = 2;
     public static final String PRODUCT = "product";
     public static final String TABLE = "table";
+    public static final String ORDERINFO = "orderInfo";
+    public static final String ORDER_ITEM = "orderItem";
 
 
 

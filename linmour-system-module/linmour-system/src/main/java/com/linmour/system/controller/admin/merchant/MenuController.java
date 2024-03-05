@@ -1,7 +1,7 @@
 package com.linmour.system.controller.admin.merchant;
 
-import com.linmour.system.service.MenuService;
 import com.linmour.common.dtos.Result;
+import com.linmour.system.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

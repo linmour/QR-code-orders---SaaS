@@ -1,11 +1,11 @@
 package com.linmour.system.controller.admin.merchant;
 
-import com.linmour.system.convert.MerchantConvert;
-import com.linmour.system.pojo.Dto.UserInfoDto;
-import com.linmour.system.service.MerchantService;
 import com.linmour.common.dtos.Result;
 import com.linmour.common.exception.CustomException;
 import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.system.convert.MerchantConvert;
+import com.linmour.system.pojo.Dto.UserInfoDto;
+import com.linmour.system.service.MerchantService;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

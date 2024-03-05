@@ -11,4 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ProductSortService extends IService<ProductSort> {
     Result getProductSort();
+
+    void createProductSort(ProductSort productSort);
 }

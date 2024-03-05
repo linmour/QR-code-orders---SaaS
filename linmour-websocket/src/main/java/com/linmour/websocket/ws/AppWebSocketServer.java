@@ -1,5 +1,4 @@
 package com.linmour.websocket.ws;
-
 import com.alibaba.fastjson.JSONObject;
 import com.linmour.websocket.chain.*;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
@@ -8,8 +7,9 @@ import com.linmour.websocket.mq.ProducerMq;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.websocket.*;
@@ -27,25 +27,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Data
 public class AppWebSocketServer {
 
-    @Resource
-    private ProducerMq a;
 
-    //注入为空
     public static ProducerMq producerMq;
-
-    @PostConstruct
-    public void b() {
-        producerMq = this.a;
+    @Resource
+    public void setProducerMq(ProducerMq mq) {
+        producerMq = mq;
     }
 
+    private static OrderFeign orderFeign;
     @Resource
-    private OrderFeign w;
-
-    public static OrderFeign orderFeign;
-
-    @PostConstruct
-    public void m() {
-        orderFeign = w;
+    public void setOrderFeign(OrderFeign mq) {
+        orderFeign = mq;
     }
 
     /**
@@ -79,6 +71,7 @@ public class AppWebSocketServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("tableId") String tableId) {
+
         this.session = session;
         this.tableId = tableId;
         if (webSocketMap.containsKey(tableId)) {
@@ -88,8 +81,6 @@ public class AppWebSocketServer {
             List<AppWebSocketServer> serverList = new ArrayList<>();
             serverList.add(this);
             webSocketMap.put(tableId, serverList);
-
-
         }
         try {
             sendMessage("1");
@@ -130,16 +121,14 @@ public class AppWebSocketServer {
                 //追加发送人(防止串改)
                 jsonObject.put("fromtableId", this.tableId);
 
-                //这里采用责任链模式，每一个处理器对应一个前段发过来的请，这里还可以用工厂模式来生成对象
+                //这里采用责任链模式，每一个处理器对应一个前段发过来的请求，这里还可以用工厂模式来生成对象
                 ChangeHandler changeHandler = new ChangeHandler();
                 CreateOrderHandler createOrderHandler = new CreateOrderHandler();
                 SyncHandler syncHandler = new SyncHandler();
                 ClearHandler clearHandler = new ClearHandler();
                 OtherHandler otherHandler = new OtherHandler();
-
                 changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
-                changeHandler.handleRequest(webSocketMap,jsonObject,recordMap,this,orderFeign);
-
+                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this,orderFeign);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -174,9 +163,7 @@ public class AppWebSocketServer {
     }
 
 
-    /**
-     * 发送自定义消息
-     * */
+
     /**
      * 发送自定义消息
      *

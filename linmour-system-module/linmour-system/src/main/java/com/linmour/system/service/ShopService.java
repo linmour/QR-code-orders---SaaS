@@ -26,4 +26,5 @@ public interface ShopService extends IService<Shop> {
      */
     Result SonShopList(ShopPageDto dto);
 
+    Result register(Shop shop);
 }

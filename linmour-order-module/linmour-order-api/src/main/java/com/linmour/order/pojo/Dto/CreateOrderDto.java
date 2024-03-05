@@ -17,4 +17,5 @@ public class CreateOrderDto implements Serializable {
     private BigDecimal amount;
     private List<ShopListDto> shopList;
     private String remark;
+    private Long shopId;
 }

@@ -15,6 +15,7 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-common</artifactId>
+            <version>1.2.8.0.1</version>
         </dependency>
     </dependencies>
 

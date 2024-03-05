@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -31,6 +32,8 @@ import java.util.List;
 @Service
 public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
     implements ShopService {
+    @Resource
+    private ShopMapper shopMapper;
 
     @Override
     public Result shopList(ShopPageDto dto) {
@@ -65,6 +68,12 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop>
 
         List<ShopPageDto> shopPageDtos = ShopListDtoConvert.INSTANCE.shopListToShopPageDtoList(ShopListPage.getRecords());
         return Result.success(new PageResult<>(shopPageDtos,ShopListPage.getTotal()));
+    }
+
+    @Override
+    public Result register(Shop shop) {
+        shopMapper.insert(shop);
+        return Result.success();
     }
 
 

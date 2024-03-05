@@ -1,9 +1,9 @@
 package com.linmour.system.controller.admin.merchant;
 
 
-import com.linmour.system.service.MerchantService;
 import com.linmour.common.dtos.LoginVo;
 import com.linmour.common.dtos.Result;
+import com.linmour.system.service.MerchantService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -1,10 +1,10 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 43.136.73.159
+ Source Server         : 120.79.7.243
  Source Server Type    : MySQL
  Source Server Version : 50736
- Source Host           : 43.136.73.159:3306
+ Source Host           : 120.79.7.243:3306
  Source Schema         : lsc_restaurant
 
  Target Server Type    : MySQL
@@ -33,9 +33,9 @@ CREATE TABLE `restaurant_table`  (
 -- ----------------------------
 -- Records of restaurant_table
 -- ----------------------------
-INSERT INTO `restaurant_table` VALUES (1, '1号桌', 0, 1, 'http://43.136.73.159:9000/linmourscanorder/QR/1/1/1/1.png');
-INSERT INTO `restaurant_table` VALUES (2, '2号桌', 0, 1, 'http://43.136.73.159:9000/linmourscanorder/QR/1/1/2/2.png');
-INSERT INTO `restaurant_table` VALUES (3, '3号桌', 0, 1, 'http://43.136.73.159:9000/linmourscanorder/QR/1/1/3/3.png');
-INSERT INTO `restaurant_table` VALUES (4, '4号桌', 0, 1, 'http://43.136.73.159:9000/linmourscanorder/QR/1/1/4/4.png');
+INSERT INTO `restaurant_table` VALUES (1, '1号桌', 0, 1, 'http://120.79.7.243:9000/linmourscanorder/QR/1/1/1/1.png');
+INSERT INTO `restaurant_table` VALUES (2, '2号桌', 0, 1, 'http://120.79.7.243:9000/linmourscanorder/QR/1/1/2/2.png');
+INSERT INTO `restaurant_table` VALUES (3, '3号桌', 0, 1, 'http://120.79.7.243:9000/linmourscanorder/QR/1/1/3/3.png');
+INSERT INTO `restaurant_table` VALUES (4, '4号桌', 0, 1, 'http://120.79.7.243:9000/linmourscanorder/QR/1/1/4/4.png');
 
 SET FOREIGN_KEY_CHECKS = 1;

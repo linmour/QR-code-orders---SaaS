@@ -143,6 +143,12 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
 
     }
 
+    @Override
+    public Result register(Merchant merchant) {
+        merchantMapper.insert(merchant);
+        return Result.success();
+    }
+
 
 }
 

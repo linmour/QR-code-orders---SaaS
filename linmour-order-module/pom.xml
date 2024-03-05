@@ -13,7 +13,7 @@
         <module>linmour-order-api</module>
     </modules>
     <artifactId>linmour-order-module</artifactId>
-    <packaging>pom</packaging>
 
+    <packaging>pom</packaging>
 
 </project>

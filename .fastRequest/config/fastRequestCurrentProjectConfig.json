@@ -26,6 +26,15 @@
 				}
 			],
 			"name":"通用"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://localhost:12803"
+				}
+			],
+			"name":"linmour-restaurant"
 		}
 	],
 	"envList":[
@@ -38,7 +47,8 @@
 	"projectList":[
 		"线上",
 		"gateway",
-		"通用"
+		"通用",
+		"linmour-restaurant"
 	],
 	"syncModel":{
 		"branch":"master",

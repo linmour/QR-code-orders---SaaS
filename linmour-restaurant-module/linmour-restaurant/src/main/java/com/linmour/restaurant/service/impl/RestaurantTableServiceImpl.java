@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static com.linmour.common.utils.SecurityUtils.getShopId;
@@ -54,7 +56,7 @@ public class RestaurantTableServiceImpl extends ServiceImpl<RestaurantTableMappe
     }
 
     @Override
-    public Result createTable(RestaurantTableDto dto )  {
+    public Result createTable(RestaurantTableDto dto ) {
         JsonNode json = Unirest.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx2728606f5f2b4621&secret=9ecbe72e173907443e9742803a980533").asJson().getBody();
 
         if(json.toString().contains("errcode")){
@@ -74,14 +76,25 @@ public class RestaurantTableServiceImpl extends ServiceImpl<RestaurantTableMappe
         body.put("width", dto.getSize());
         body.put("check_path", false);
         body.put("env_version", "trial");
+        body.put("page", "pages/order/order");
         String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+ token;
         //获取二维码
         byte[] data = Unirest.post(url).body(body.toJSONString(1)).asBytes().getBody();
         //构建上传MyMultipartFile所需的参数
         MyMultipartFile myMultipartFile = new MyMultipartFile("", "temp.png", "image/png", data);
             //哪个人/哪家店/哪个座位
-        String qrUrl = fileStorageService.uploadPicture(myMultipartFile, "QR/" + getUserId() + "/" + getShopId() + "/" + tabldId, tabldId.toString());
-        restaurantTable.setQrCodeUrl(qrUrl);
+//        String qrUrl = fileStorageService.uploadPicture(myMultipartFile, "QR/" + getUserId() + "/" + getShopId() + "/" + tabldId, tabldId.toString());
+        String path = "QR/user_" + getUserId() + "/shop_" + getShopId() +"/" + tabldId + ".png";
+        File directory = new File("D:/b/" + path).getParentFile();
+        if (!directory.exists()){
+            directory.mkdirs();
+        }
+        try {
+            myMultipartFile.transferTo(new File("D:/b/" + path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        restaurantTable.setQrCodeUrl("http://127.0.0.1:12800/file/"+path);
         restaurantTableMapper.updateById(restaurantTable);
         return Result.success();
     }

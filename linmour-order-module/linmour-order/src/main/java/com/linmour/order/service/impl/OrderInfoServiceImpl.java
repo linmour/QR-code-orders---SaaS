@@ -178,16 +178,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         });
 
 
-//        Map<String, Object> b = new HashMap<>();
-//        b.put("orderDetailDtos", listNew);
-//        List<Map<String, Object>> a = new ArrayList<>();
-//        a.add(b);
-//
-//        Map<String, Object> obj = new HashMap<>();
-//        obj.put("orderInfoDtos", orderInfo);
-//        obj.put("order", a);
-
-
         //推送到mq，由webstock推送给餐厅订单来了
         Result<Object> result1 = new Result<>();
         //为了方便拿到shopid

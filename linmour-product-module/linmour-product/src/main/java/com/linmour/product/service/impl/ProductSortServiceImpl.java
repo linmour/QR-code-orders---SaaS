@@ -6,6 +6,7 @@ import com.linmour.product.pojo.Do.ProductSort;
 import com.linmour.product.service.ProductSortService;
 import com.linmour.product.mapper.ProductSortMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,6 +26,11 @@ public class ProductSortServiceImpl extends ServiceImpl<ProductSortMapper, Produ
     public Result getProductSort() {
         List<ProductSort> productSorts = productSortMapper.selectList(null);
         return Result.success(productSorts);
+    }
+
+    @Override
+    public void createProductSort(ProductSort productSort) {
+        productSortMapper.insert(productSort);
     }
 }
 

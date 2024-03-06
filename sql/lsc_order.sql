@@ -1,10 +1,8 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 120.79.7.243
  Source Server Type    : MySQL
  Source Server Version : 50736
- Source Host           : 120.79.7.243:3306
  Source Schema         : lsc_order
 
  Target Server Type    : MySQL

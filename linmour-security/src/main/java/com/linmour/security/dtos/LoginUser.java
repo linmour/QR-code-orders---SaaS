@@ -1,4 +1,4 @@
-package com.linmour.common.dtos;
+package com.linmour.security.dtos;
 
 
 import lombok.AllArgsConstructor;

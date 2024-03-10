@@ -1,43 +1,32 @@
 package com.linmour.product.service.impl;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.nacos.api.config.filter.IFilterConfig;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.PageResult;
-import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.CustomException;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.security.dtos.PageResult;
+import com.linmour.security.dtos.Result;
+import com.linmour.security.exception.CustomException;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import com.linmour.common.service.FileStorageService;
 import com.linmour.product.convert.*;
 import com.linmour.product.mapper.*;
 import com.linmour.product.pojo.Do.*;
 import com.linmour.product.pojo.Dto.*;
-import com.linmour.product.service.ProductInfoService;
-import com.linmour.product.service.ProductInventoryService;
-import com.linmour.product.service.RProductNonValueSpecService;
-import com.linmour.product.service.RProductValueSpecService;
+import com.linmour.product.service.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.linmour.common.dtos.Result.success;
-import static com.linmour.common.utils.SecurityUtils.getShopId;
+import static com.linmour.security.dtos.Result.success;
 
 /**
  * @author linmour
@@ -74,10 +63,11 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Resource
     private ProductInventoryMapper productInventoryMapper;
-
+@Resource
+private ProductSortService productSortService;
 
     @Override
-        public Result getProductPage(ProductInfoPageDto dto) {
+    public Result getProductPage(ProductInfoPageDto dto) {
         List<ProductInfo> productInfos = productInfoMapper.selectList(new LambdaQueryWrapper<ProductInfo>()
                 .eq(!ObjectUtil.isNull(dto.getSortId()), ProductInfo::getSortId, dto.getSortId()));
         //因为前台的缘故，第一次没传sort值，所以要默认拿到第一个sort
@@ -102,14 +92,13 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     }
 
     @Override
-    public Result changeProduct(Long id, Integer status) {
+    public void changeProduct(Long id, Integer status) {
         productInfoMapper.update(null, new LambdaUpdateWrapper<ProductInfo>().eq(ProductInfo::getId, id).set(ProductInfo::getStatus, status));
-        return success();
     }
 
 
     @Override
-    public Result getProductDetails(List<Long> productIds) {
+    public List<ProductDetailDto> getProductDetails(List<Long> productIds) {
         List<ProductInfo> productInfos = productInfoMapper.selectBatchIds(productIds);
         List<ProductDetailDto> productDetailDtos = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfos);
         //拼接查询需要的参数
@@ -143,7 +132,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             }
         }
         if (productInfoSpec.size() == 0) {
-            return success(productDetailDtos);
+            return productDetailDtos;
         }
         /*
             [
@@ -161,7 +150,9 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                 //找到自己所对应的规格选项
                 List<Long> valueId = rProductValueSpecService.getValueId(m.getId());
                 //商品的规格选项
-                List<ValueSpec> valueSpecsList = valueSpecMapper.selectBatchIds(valueId);
+                List<ValueSpec> valueSpecsList = new ArrayList<>();
+                if (valueId.size() > 0)
+                    valueSpecsList = valueSpecMapper.selectBatchIds(valueId);
                 //按sort分类
                 Map<Long, List<ValueSpec>> collect = valueSpecsList.stream().collect(Collectors.groupingBy(ValueSpec::getSortId));
                 List<List<ValueSpec>> result = new ArrayList<>(collect.values());
@@ -207,7 +198,9 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                 //找到自己所对应的规格选项
                 List<Long> valueId = rProductNonValueSpecService.getNonValueId(m.getId());
                 //商品的规格选项
-                List<NonValueSpec> nonValueSpecsList = nonValueSpecMapper.selectBatchIds(valueId);
+                List<NonValueSpec> nonValueSpecsList = new ArrayList<>();
+                if (valueId.size() > 0)
+                    nonValueSpecsList = nonValueSpecMapper.selectBatchIds(valueId);
                 Map<Long, List<NonValueSpec>> collect = nonValueSpecsList.stream().collect(Collectors.groupingBy(NonValueSpec::getSortId));
                 List<List<NonValueSpec>> result = new ArrayList<>(collect.values());
                 List<NonValueDto> nonValueDtoList = new ArrayList<>();
@@ -234,12 +227,12 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         }
 
-        return success(productDetailDtos);
+        return productDetailDtos;
 
     }
 
     @Override
-    public Result addProduct(AddProductDto product) {
+    public void addProduct(AddProductDto product) {
         ProductInfo productInfo = ProductInfoConvert.IN.AddProductDtoToProductInfo(product);
         //图片
         String pictureList = "";
@@ -272,7 +265,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         //库存
         List<ProductInventory> list = ProductInventoryConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());
         productInventoryService.saveOrUpdateBatch(list);
-        return success();
     }
 
     //关系表
@@ -370,14 +362,14 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
 
     @Override
-    public Result updateProduct(AddProductDto product) {
+    public void updateProduct(AddProductDto product) {
         Long productId = product.getId();
         ProductInfo productInfo = productInfoMapper.selectById(productId);
         Byte valueSpec = productInfo.getValueSpec();
         Byte nonValueSpec = productInfo.getNonValueSpec();
         //判断原来是否有规格，如果没有就可以直接调用新增接口
         if (valueSpec == 0 && nonValueSpec == 0) {
-            return addProduct(product);
+             addProduct(product);
         }
 
         if (valueSpec == 1) {
@@ -389,14 +381,24 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             rProductNonValueSpecMapper.deleteNonValue(productId);
         }
 
-        return addProduct(product);
+         addProduct(product);
     }
 
     @Override
-    public Result getProductList() {
-        List<AppProductDto> convert = AppProductDtoConvert.IN.convert(productInfoMapper.selectList(null));
-        convert.forEach(m -> m.setSelectNum(0));
-        return success( convert );
+    public List<AppProductSort>  getProductList() {
+        List<AppProductSort> sorts = AppProductSortConvert.IN.convert(productSortService.getProductSort());
+        List<AppProductDto> productDtos = AppProductDtoConvert.IN.convert(productInfoMapper.selectList(null));
+        productDtos.forEach(m -> m.setSelectNum(0));
+        sorts.forEach(m ->{
+            List<AppProductDto> appProductDtos = new ArrayList<>();
+            productDtos.forEach(n ->{
+                if (m.getId() == n.getSortId())
+                    appProductDtos.add(n);
+            });
+            m.setList(appProductDtos);
+
+        });
+        return sorts;
     }
 }
 

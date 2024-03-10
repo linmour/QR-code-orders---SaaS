@@ -1,12 +1,10 @@
 package com.linmour.product.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.common.dtos.Result;
 import com.linmour.product.pojo.Do.ProductSort;
 import com.linmour.product.service.ProductSortService;
 import com.linmour.product.mapper.ProductSortMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,9 +21,9 @@ public class ProductSortServiceImpl extends ServiceImpl<ProductSortMapper, Produ
     @Resource
     private ProductSortMapper productSortMapper;
     @Override
-    public Result getProductSort() {
+    public List<ProductSort> getProductSort() {
         List<ProductSort> productSorts = productSortMapper.selectList(null);
-        return Result.success(productSorts);
+        return productSorts;
     }
 
     @Override

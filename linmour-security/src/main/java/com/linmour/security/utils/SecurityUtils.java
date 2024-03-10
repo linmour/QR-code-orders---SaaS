@@ -1,9 +1,7 @@
-package com.linmour.common.utils;
+package com.linmour.security.utils;
 
 
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.LoginVo;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.linmour.security.dtos.LoginUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {

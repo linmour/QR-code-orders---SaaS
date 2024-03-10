@@ -1,5 +1,6 @@
-package com.linmour.websocket.pojo;
+package com.linmour.security.dtos;
 
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import lombok.Data;
 import lombok.ToString;
 
@@ -60,6 +61,15 @@ public class Result<T> {
         response.setData(data);
         response.setMsg(msg);
         return response;
+    }
+
+    public static Result error(AppHttpCodeEnum enums){
+        return setExceptionEnum(enums);
+    }
+
+
+    public static Result setExceptionEnum(AppHttpCodeEnum enums){
+        return success(enums.getCode(),enums.getMsg());
     }
 
 

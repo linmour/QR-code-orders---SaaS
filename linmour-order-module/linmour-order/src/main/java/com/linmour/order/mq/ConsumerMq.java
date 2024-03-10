@@ -10,13 +10,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-import static com.linmour.common.constant.MqConstant.CREATE_ORDER_TOPIC;
-import static com.linmour.common.constant.MqConstant.ORDER_PAY_TIMEOUT_TOPIC;
-import static com.linmour.common.utils.SecurityUtils.setShopId;
+import static com.linmour.security.constant.MqConstant.CREATE_ORDER_TOPIC;
+import static com.linmour.security.constant.MqConstant.ORDER_PAY_TIMEOUT_TOPIC;
+import static com.linmour.security.utils.SecurityUtils.setShopId;
 import static com.linmour.order.constants.OrderConstant.CANCEL_ORDER;
 import static com.linmour.order.constants.OrderConstant.PAYMENT;
 

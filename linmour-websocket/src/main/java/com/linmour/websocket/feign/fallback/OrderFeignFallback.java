@@ -1,10 +1,8 @@
 package com.linmour.websocket.feign.fallback;
 
 import com.linmour.order.pojo.Dto.CreateOrderDto;
+import com.linmour.security.dtos.Result;
 import com.linmour.websocket.feign.OrderFeign;
-import com.linmour.websocket.pojo.Result;
-
-import java.util.concurrent.CompletableFuture;
 
 public class OrderFeignFallback implements OrderFeign  {
 

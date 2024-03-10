@@ -2,7 +2,7 @@ package com.linmour.restaurant.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.common.service.FileStorageService;
 import com.linmour.restaurant.covert.TableConvert;
 import com.linmour.restaurant.mapper.RestaurantTableMapper;
@@ -21,8 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.linmour.common.utils.SecurityUtils.getShopId;
-import static com.linmour.common.utils.SecurityUtils.getUserId;
+import static com.linmour.security.utils.SecurityUtils.getShopId;
+import static com.linmour.security.utils.SecurityUtils.getUserId;
 
 /**
  * @author linmour
@@ -76,7 +76,7 @@ public class RestaurantTableServiceImpl extends ServiceImpl<RestaurantTableMappe
         body.put("width", dto.getSize());
         body.put("check_path", false);
         body.put("env_version", "trial");
-        body.put("page", "pages/order/order");
+        body.put("page", "pages/menu/menu");
         String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+ token;
         //获取二维码
         byte[] data = Unirest.post(url).body(body.toJSONString(1)).asBytes().getBody();

@@ -1,6 +1,6 @@
 package com.linmour.order.controller.app.order;
 
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.CheckoutDto;
 import com.linmour.order.service.OrderInfoService;

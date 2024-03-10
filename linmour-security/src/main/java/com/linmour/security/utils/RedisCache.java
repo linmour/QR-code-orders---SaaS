@@ -1,4 +1,4 @@
-package com.linmour.common.utils;
+package com.linmour.security.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;

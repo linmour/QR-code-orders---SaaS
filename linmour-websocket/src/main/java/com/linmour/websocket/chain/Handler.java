@@ -2,14 +2,12 @@ package com.linmour.websocket.chain;
 
 import com.alibaba.fastjson.JSONObject;
 import com.linmour.websocket.feign.OrderFeign;
-import com.linmour.websocket.mq.ProducerMq;
 import com.linmour.websocket.ws.AppWebSocketServer;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,5 +36,5 @@ public abstract class Handler {
     public abstract void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                                        JSONObject jsonObject,
                                        ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                                       AppWebSocketServer webSocket,OrderFeign orderFeign) throws IOException;
+                                       AppWebSocketServer webSocket, OrderFeign orderFeign, Session session) throws IOException;
 }

@@ -1,9 +1,9 @@
 package com.linmour.system.service.impl;
 
 import cn.hutool.core.lang.UUID;
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.Result;
 import com.linmour.common.service.FileStorageService;
+import com.linmour.security.dtos.LoginUser;
+import com.linmour.security.dtos.Result;
 import com.linmour.system.service.UploadService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.linmour.common.dtos.Result.success;
-import static com.linmour.common.utils.SecurityUtils.getShopId;
+import static com.linmour.security.dtos.Result.success;
+import static com.linmour.security.utils.SecurityUtils.getShopId;
 
 @Service
 public class UploadServiceImpl implements UploadService {

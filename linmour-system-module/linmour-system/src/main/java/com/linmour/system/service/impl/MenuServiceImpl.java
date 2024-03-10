@@ -1,14 +1,15 @@
 package com.linmour.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.linmour.security.dtos.LoginUser;
 import com.linmour.system.convert.MenuListDtoConvert;
 import com.linmour.system.mapper.MenuMapper;
 import com.linmour.system.pojo.Do.Menu;
 import com.linmour.system.pojo.Dto.MenuListDto;
 
 import com.linmour.system.service.MenuService;
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.Result;
+
+import com.linmour.security.dtos.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.linmour.common.utils;
+package com.linmour.security.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

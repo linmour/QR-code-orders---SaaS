@@ -1,12 +1,13 @@
 package com.linmour.product.service;
 
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.product.pojo.Do.ProductInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.product.pojo.Dto.AddProductDto;
+import com.linmour.product.pojo.Dto.AppProductSort;
+import com.linmour.product.pojo.Dto.ProductDetailDto;
 import com.linmour.product.pojo.Dto.ProductInfoPageDto;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,15 +19,15 @@ import java.util.List;
 @Transactional
 public interface ProductInfoService extends IService<ProductInfo> {
     Result getProductPage(ProductInfoPageDto dto);
-    Result changeProduct(Long id,Integer status);
+    void changeProduct(Long id,Integer status);
 
 
-    Result getProductDetails(List<Long> productIds);
+    List<ProductDetailDto> getProductDetails(List<Long> productIds);
 
-    Result addProduct(AddProductDto product);
+    void addProduct(AddProductDto product);
 
-    Result updateProduct(AddProductDto product);
+    void updateProduct(AddProductDto product);
 
-    Result getProductList();
+    List<AppProductSort>  getProductList();
 
 }

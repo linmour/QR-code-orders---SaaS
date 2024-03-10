@@ -1,4 +1,4 @@
-package com.linmour.common.dtos;
+package com.linmour.security.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

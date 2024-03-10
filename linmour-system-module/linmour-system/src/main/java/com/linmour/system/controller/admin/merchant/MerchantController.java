@@ -1,8 +1,10 @@
 package com.linmour.system.controller.admin.merchant;
 
-import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.CustomException;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.security.dtos.Result;
+
+
+import com.linmour.security.exception.CustomException;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.pojo.Dto.UserInfoDto;
 import com.linmour.system.service.MerchantService;

@@ -1,6 +1,6 @@
 package com.linmour.product.controller.app.sort;
 
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.product.service.ProductSortService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +16,7 @@ public class AppSortController {
     private ProductSortService productSortService;
     @GetMapping("/getProductSort")
     public Result getProductSort(){
-        Result productSort = productSortService.getProductSort();
-        return (productSort) ;
+        return Result.success(productSortService.getProductSort() );
     }
 
 }

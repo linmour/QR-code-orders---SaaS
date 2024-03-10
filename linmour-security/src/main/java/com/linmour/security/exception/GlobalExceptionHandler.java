@@ -1,7 +1,7 @@
-package com.linmour.common.exception;
+package com.linmour.security.exception;
 
-import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.security.dtos.Result;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;

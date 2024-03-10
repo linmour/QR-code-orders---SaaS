@@ -3,7 +3,7 @@ package com.linmour.system.service;
 import com.linmour.system.pojo.Do.Shop;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.system.pojo.Dto.ShopPageDto;
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 
 /**
 * @author linmour

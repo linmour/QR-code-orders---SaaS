@@ -1,6 +1,6 @@
 package com.linmour.system.controller.admin.shop;
 
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.system.pojo.Dto.ShopPageDto;
 import com.linmour.system.service.ShopService;
 import org.springframework.web.bind.annotation.GetMapping;

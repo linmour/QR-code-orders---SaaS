@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.linmour.common.dtos.Result;
-import com.linmour.common.utils.RedisCache;
+import com.linmour.security.dtos.Result;
+import com.linmour.security.utils.RedisCache;
 import com.linmour.order.convert.OrderInfoConvert;
 import com.linmour.order.feign.ProductFeign;
 import com.linmour.order.mapper.OrderInfoMapper;
@@ -35,8 +35,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.linmour.common.exception.enums.AppHttpCodeEnum.ORDER_ITEM_NOT_NULL;
-import static com.linmour.common.utils.SecurityUtils.getShopId;
+import static com.linmour.security.exception.enums.AppHttpCodeEnum.ORDER_ITEM_NOT_NULL;
+import static com.linmour.security.utils.SecurityUtils.getShopId;
 import static com.linmour.order.constants.OrderConstant.*;
 
 
@@ -107,7 +107,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderId(orderId);
             orderItem.setProductId(m.getId());
-            orderItem.setQuantity(m.getSelectNum());
+            orderItem.setQuantity(m.getNumber());
             orderItem.setShopId(getShopId());
             rList.add(orderItem);
         });

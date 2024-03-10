@@ -2,8 +2,8 @@ package com.linmour.order.controller.admin.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.linmour.common.dtos.Result;
-import com.linmour.common.utils.RedisCache;
+import com.linmour.security.dtos.Result;
+import com.linmour.security.utils.RedisCache;
 import com.linmour.order.mapper.OrderItemMapper;
 import com.linmour.order.pojo.Do.OrderInfo;
 import com.linmour.order.pojo.Do.OrderItem;

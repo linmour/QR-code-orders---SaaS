@@ -15,8 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.linmour</groupId>
-            <artifactId>linmour-security</artifactId>
-            <version>${revision}</version>
+            <artifactId>linmour-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.linmour</groupId>

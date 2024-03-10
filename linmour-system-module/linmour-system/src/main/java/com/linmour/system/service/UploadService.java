@@ -1,7 +1,6 @@
 package com.linmour.system.service;
 
-import com.linmour.common.dtos.Result;
-import org.springframework.stereotype.Service;
+import com.linmour.security.dtos.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UploadService {

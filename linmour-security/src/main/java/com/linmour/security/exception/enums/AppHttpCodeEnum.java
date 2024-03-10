@@ -1,4 +1,4 @@
-package com.linmour.common.exception.enums;
+package com.linmour.security.exception.enums;
 
 public enum AppHttpCodeEnum {
     SUCCESS(200,"操作成功"),

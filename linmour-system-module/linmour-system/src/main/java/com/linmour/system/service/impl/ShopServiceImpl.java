@@ -4,17 +4,18 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.linmour.security.dtos.PageResult;
 import com.linmour.system.convert.ShopListDtoConvert;
 import com.linmour.system.mapper.ShopMapper;
 import com.linmour.system.pojo.Do.Shop;
 import com.linmour.system.pojo.Dto.ShopPageDto;
 
 import com.linmour.system.service.ShopService;
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.PageResult;
-import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.CustomException;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.security.dtos.LoginUser;
+
+import com.linmour.security.dtos.Result;
+import com.linmour.security.exception.CustomException;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

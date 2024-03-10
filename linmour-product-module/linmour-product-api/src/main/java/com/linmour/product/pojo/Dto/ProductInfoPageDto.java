@@ -1,7 +1,7 @@
 package com.linmour.product.pojo.Dto;
 
 
-import com.linmour.common.dtos.PageParam;
+import com.linmour.security.dtos.PageParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

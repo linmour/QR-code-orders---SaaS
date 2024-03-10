@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.linmour.common.utils.SecurityUtils.getShopId;
+import static com.linmour.security.utils.SecurityUtils.getShopId;
 
 @Mapper
 public interface ProductInventoryConvert {

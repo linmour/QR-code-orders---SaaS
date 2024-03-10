@@ -1,4 +1,4 @@
-package com.linmour.common.utils;
+package com.linmour.security.utils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

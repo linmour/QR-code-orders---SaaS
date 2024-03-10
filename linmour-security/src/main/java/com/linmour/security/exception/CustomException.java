@@ -1,6 +1,7 @@
-package com.linmour.common.exception;
+package com.linmour.security.exception;
 
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 
 public class CustomException extends RuntimeException {
 

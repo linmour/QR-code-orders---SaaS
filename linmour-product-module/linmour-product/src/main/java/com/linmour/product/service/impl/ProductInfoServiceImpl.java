@@ -87,7 +87,7 @@ private ProductSortService productSortService;
         if (ObjectUtil.isNull(productInfoPage.getRecords())) {
             throw new CustomException(AppHttpCodeEnum.PRODUCT_ERROR);
         }
-        List<ProductInfoPageDto> productInfoPageDtos = ProductInfoPageDtoConvert.INSTANCE.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
+        List<ProductInfoPageDto> productInfoPageDtos = ProductInfoConvert.IN.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
         return success(new PageResult<>(productInfoPageDtos, productInfoPage.getTotal()));
     }
 
@@ -100,7 +100,7 @@ private ProductSortService productSortService;
     @Override
     public List<ProductDetailDto> getProductDetails(List<Long> productIds) {
         List<ProductInfo> productInfos = productInfoMapper.selectBatchIds(productIds);
-        List<ProductDetailDto> productDetailDtos = ProductDetailDtoConvert.IN.ProductInfoToProductDetailDto(productInfos);
+        List<ProductDetailDto> productDetailDtos = ProductInfoConvert.IN.ProductInfoToProductDetailDto(productInfos);
         //拼接查询需要的参数
         StringBuilder stringBuilder = new StringBuilder();
         for (Long productId : productIds) {
@@ -114,7 +114,7 @@ private ProductSortService productSortService;
             List<InventoryDto> inventoryDtos = new ArrayList<>();
             for (ProductInventory inventory : inventorys) {
                 if (productDetailDto.getId() == inventory.getProductId()) {
-                    inventoryDtos.add(InventoryDtoConvert.IN.InventoryDtoToProductInventory(inventory));
+                    inventoryDtos.add(ProductInfoConvert.IN.InventoryDtoToProductInventory(inventory));
                 }
             }
             productDetailDto.setInventoryList(inventoryDtos);
@@ -263,7 +263,7 @@ private ProductSortService productSortService;
         rProductSpec(nonValueIds, valueIds, productInfo.getId());
 
         //库存
-        List<ProductInventory> list = ProductInventoryConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());
+        List<ProductInventory> list = ProductInfoConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());
         productInventoryService.saveOrUpdateBatch(list);
     }
 
@@ -386,8 +386,8 @@ private ProductSortService productSortService;
 
     @Override
     public List<AppProductSort>  getProductList() {
-        List<AppProductSort> sorts = AppProductSortConvert.IN.convert(productSortService.getProductSort());
-        List<AppProductDto> productDtos = AppProductDtoConvert.IN.convert(productInfoMapper.selectList(null));
+        List<AppProductSort> sorts = ProductInfoConvert.IN.convert(productSortService.getProductSort());
+        List<AppProductDto> productDtos = ProductInfoConvert.IN.convertProductInfo(productInfoMapper.selectList(null));
         productDtos.forEach(m -> m.setSelectNum(0));
         sorts.forEach(m ->{
             List<AppProductDto> appProductDtos = new ArrayList<>();

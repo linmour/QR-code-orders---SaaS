@@ -4,8 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.linmour.security.dtos.LoginUser;
 import com.linmour.security.dtos.LoginVo;
-import com.linmour.system.convert.LoginVoConvert;
 
+import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.mapper.MerchantMapper;
 import com.linmour.system.pojo.Do.Merchant;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +31,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (ObjectUtil.isNull(merchant)) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        LoginVo merchant1 = LoginVoConvert.INSTANCE.MerchantToLoginVo(merchant);
+        LoginVo merchant1 = MerchantConvert.IN.MerchantToLoginVo(merchant);
         UserDetails loginUser = new LoginUser(merchant1);
         return loginUser;
     }

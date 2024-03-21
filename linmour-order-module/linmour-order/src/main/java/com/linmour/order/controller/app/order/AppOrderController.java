@@ -1,5 +1,6 @@
 package com.linmour.order.controller.app.order;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.CheckoutDto;
@@ -15,22 +16,31 @@ public class AppOrderController {
 
 
     private OrderInfoService orderInfoService;
+
     @PostMapping("/createOrder")
-    public Result createOrder(@RequestBody CreateOrderDto createOrderDto){
+    public Result createOrder(@RequestBody CreateOrderDto createOrderDto) {
         return orderInfoService.createOrder(createOrderDto);
     }
 
     @PostMapping("/checkout")
-    public Result checkout(@RequestBody CheckoutDto checkoutDto){
+    public Result checkout(@RequestBody CheckoutDto checkoutDto) {
         return orderInfoService.checkout(checkoutDto);
     }
 
-    @GetMapping("/getOrderInfo/{tableId}")
-    public Result getOrderInfo(@PathVariable Long tableId){
-        return orderInfoService.getOrderInfo(tableId);
+    @GetMapping("/GetHistoryOrderList/{tableId}")
+    public Result GetHistoryOrderList(@PathVariable Long tableId) {
+        return Result.success(orderInfoService.GetHistoryOrderList(tableId));
     }
 
+    @GetMapping("/GetCurrentOrderInfo/{orderId}")
+    public Result getCurrentOrderInfo(@PathVariable Long orderId) {
+        return Result.success(orderInfoService.GetCurrentOrderInfo(orderId));
+    }
 
+    @GetMapping("/GetOrderInfoDetail/{orderId}")
+    public Result GetOrderInfoDetail(@PathVariable Long orderId) {
+        return Result.success(orderInfoService.GetOrderInfoDetail(orderId));
+    }
 
 
 }

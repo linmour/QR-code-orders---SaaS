@@ -37,9 +37,9 @@ public class OrderController {
     @Resource
     private RedisCache redisCache;
 
-    @GetMapping("/getOrderInfo/{tableId}")
+    @GetMapping("/GetCurrentOrderInfo/{tableId}")
     public Result getOrderInfo(@PathVariable Long tableId) {
-        return orderInfoService.getOrderInfo(tableId);
+        return Result.success(orderInfoService.GetCurrentOrderInfo(tableId));
     }
 
     @PostMapping("/changeOrder")

@@ -12,7 +12,7 @@ import com.linmour.security.exception.CustomException;
 import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import com.linmour.security.utils.JwtUtil;
 import com.linmour.security.utils.RedisCache;
-import com.linmour.system.convert.UserInfoDtoConvert;
+import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.mapper.MerchantMapper;
 import com.linmour.system.pojo.Do.Merchant;
 import com.linmour.system.pojo.Dto.UserInfoDto;
@@ -94,7 +94,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         if (ObjectUtil.isNull(merchant)) {
             throw new CustomException(AppHttpCodeEnum.USERINFO_ERROR);
         }
-        UserInfoDto userInfo = UserInfoDtoConvert.INSTANCE.MerchantToUserInfoDto(merchant);
+        UserInfoDto userInfo = MerchantConvert.IN.MerchantToUserInfoDto(merchant);
         return userInfo;
     }
 

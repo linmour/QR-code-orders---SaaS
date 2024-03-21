@@ -37,7 +37,7 @@ public class MerchantController {
         UserInfoDto userInfo = map.get("userInfo");
 
         try {
-            return Result.success(merchantService.updateById(MerchantConvert.INSTANCE.userInfoDtoToMerchant(userInfo)));
+            return Result.success(merchantService.updateById(MerchantConvert.IN.userInfoDtoToMerchant(userInfo)));
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException){
                 throw new CustomException(AppHttpCodeEnum.PHONENUMBER_EXIST);

@@ -45,7 +45,7 @@ public class CreateOrderHandler extends Handler {
                         webSocket.sendMessage("已有人提交订单，请稍后");
                         return;
                     }
-                    BigDecimal amount = new BigDecimal((Integer) jsonObject.get("amount"));
+                    BigDecimal amount = new BigDecimal(jsonObject.get("amount").toString());
                     String remark = jsonObject.get("remark").toString();
                     //类型转换:JSONArray转list
                     JSONArray shopCarList = jsonObject.getJSONArray("shopCarList");

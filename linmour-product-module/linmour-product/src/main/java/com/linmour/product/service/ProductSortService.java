@@ -1,8 +1,9 @@
 package com.linmour.product.service;
 
-import com.linmour.common.dtos.Result;
 import com.linmour.product.pojo.Do.ProductSort;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -10,7 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-08-12 18:34:04
 */
 public interface ProductSortService extends IService<ProductSort> {
-    Result getProductSort();
+    List<ProductSort> getProductSort();
 
     void createProductSort(ProductSort productSort);
 }

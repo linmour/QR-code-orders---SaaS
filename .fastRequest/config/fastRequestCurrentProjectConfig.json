@@ -35,6 +35,24 @@
 				}
 			],
 			"name":"linmour-restaurant"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://localhost:12802"
+				}
+			],
+			"name":"linmour-product"
+		},
+		{
+			"hostGroup":[
+				{
+					"env":"dev",
+					"url":"http://localhost:12804"
+				}
+			],
+			"name":"linmour-order"
 		}
 	],
 	"envList":[
@@ -48,7 +66,9 @@
 		"线上",
 		"gateway",
 		"通用",
-		"linmour-restaurant"
+		"linmour-restaurant",
+		"linmour-product",
+		"linmour-order"
 	],
 	"syncModel":{
 		"branch":"master",

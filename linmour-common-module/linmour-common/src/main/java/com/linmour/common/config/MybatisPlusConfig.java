@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import static com.linmour.common.utils.SecurityUtils.getShopId;
+import static com.linmour.security.utils.SecurityUtils.getShopId;
+
 
 @Configuration
 @Component

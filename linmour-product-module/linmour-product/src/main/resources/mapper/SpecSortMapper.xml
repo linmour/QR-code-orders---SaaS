@@ -15,10 +15,10 @@
     </sql>
     <delete id="deleteValue">
         DELETE c FROM r_product_value_spec as a JOIN value_spec as b ON a.value_spec_id  =  b.id JOIN spec_sort as c ON c.id = b.sort_id WHERE
-            a.product_spec_id = #{productId}
+            a.product_id = #{productId}
     </delete>
     <delete id="deleteNonValue">
         DELETE c FROM r_product_non_value_spec as a JOIN non_value_spec as b ON a.non_value_id  =  b.id JOIN spec_sort as c ON c.id = b.sort_id WHERE
-            a.product_spec_id = #{productId}
+            a.product_id = #{productId}
     </delete>
 </mapper>

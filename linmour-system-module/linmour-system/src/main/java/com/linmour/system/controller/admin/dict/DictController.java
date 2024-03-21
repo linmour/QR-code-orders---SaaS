@@ -1,6 +1,7 @@
 package com.linmour.system.controller.admin.dict;
 
-import com.linmour.common.dtos.Result;
+
+import com.linmour.security.dtos.Result;
 import com.linmour.system.service.DictTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

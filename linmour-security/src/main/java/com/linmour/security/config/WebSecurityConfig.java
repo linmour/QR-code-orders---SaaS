@@ -46,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("读取配置*****************WHITE");
         http.authorizeRequests()
-                .antMatchers("/websocket/**").permitAll()
                 .antMatchers("/app/**").permitAll()
+                .antMatchers("/websocket/**").permitAll()
                 .antMatchers("/file/**").permitAll()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/system/merchant/login").anonymous()

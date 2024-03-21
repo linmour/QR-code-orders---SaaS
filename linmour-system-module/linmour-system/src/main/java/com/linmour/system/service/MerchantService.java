@@ -5,8 +5,8 @@ import com.linmour.system.pojo.Do.Merchant;
 
 
 import com.linmour.system.pojo.Dto.UserInfoDto;
-import com.linmour.common.dtos.LoginVo;
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.LoginVo;
+import com.linmour.security.dtos.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

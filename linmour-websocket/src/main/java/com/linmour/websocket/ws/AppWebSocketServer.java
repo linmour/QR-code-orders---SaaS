@@ -1,16 +1,15 @@
 package com.linmour.websocket.ws;
+
 import com.alibaba.fastjson.JSONObject;
 import com.linmour.websocket.chain.*;
+import com.linmour.websocket.config.WebSocketConfig;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
 import com.linmour.websocket.feign.OrderFeign;
-import com.linmour.websocket.mq.ProducerMq;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.redisson.api.RedissonClient;
-import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.stereotype.Component;
-import javax.annotation.PostConstruct;
+
 import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -21,20 +20,17 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@ServerEndpoint(value = "/websocket/table/{tableId}", encoders = WebSocketCustomEncoding.class)
+import static com.linmour.security.utils.SecurityUtils.setShopId;
+
+@ServerEndpoint(value = "/websocket/shop/{shopId}/table/{tableId}", encoders = WebSocketCustomEncoding.class)
 @Component
 @Slf4j
 @Data
 public class AppWebSocketServer {
 
 
-    public static ProducerMq producerMq;
-    @Resource
-    public void setProducerMq(ProducerMq mq) {
-        producerMq = mq;
-    }
-
     private static OrderFeign orderFeign;
+
     @Resource
     public void setOrderFeign(OrderFeign mq) {
         orderFeign = mq;
@@ -58,6 +54,8 @@ public class AppWebSocketServer {
      */
     private String tableId = "";
 
+
+
     /**
      * 用来标识这个用户需要接收同步的购物车信息
      */
@@ -70,8 +68,8 @@ public class AppWebSocketServer {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("tableId") String tableId) {
-
+    public void onOpen(Session session, @PathParam("tableId") String tableId,@PathParam("shopId") String shopId) {
+        setShopId(Long.valueOf(shopId));
         this.session = session;
         this.tableId = tableId;
         if (webSocketMap.containsKey(tableId)) {
@@ -111,7 +109,7 @@ public class AppWebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session) {
 
-        System.out.println(message);
+            System.out.println("收到信息" +message);
         //可以群发消息
         //消息保存到数据库、redis
         if (StringUtils.isNotBlank(message)) {
@@ -128,7 +126,7 @@ public class AppWebSocketServer {
                 ClearHandler clearHandler = new ClearHandler();
                 OtherHandler otherHandler = new OtherHandler();
                 changeHandler.addNextHandler(syncHandler).addNextHandler(createOrderHandler).addNextHandler(clearHandler).addNextHandler(otherHandler);
-                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this,orderFeign);
+                changeHandler.handleRequest(webSocketMap, jsonObject, recordMap, this, orderFeign, session);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,12 +154,13 @@ public class AppWebSocketServer {
             try {
                 //同步发送信息
                 this.session.getBasicRemote().sendObject(message);
+                System.out.println("发送消息成功："+ message);
+
             } catch (Exception e) {
                 log.error("服务器推送失败:" + e.getMessage());
             }
         }
     }
-
 
 
     /**
@@ -171,7 +170,7 @@ public class AppWebSocketServer {
      * @param tableId 如果为null默认发送所有
      * @throws IOException
      */
-    public static void AppSendInfo(Object message, String tableId) throws IOException {
+    public static void AppSendInfo(Object message, String tableId, String sessionId, boolean me) throws IOException {
         if (StringUtils.isEmpty(tableId)) {
             // 向所有用户发送信息
             for (List<AppWebSocketServer> serverList : webSocketMap.values()) {
@@ -179,12 +178,29 @@ public class AppWebSocketServer {
                     server.sendMessage(message);
                 }
             }
+            //某一桌
         } else if (webSocketMap.containsKey(tableId)) {
-            // 发送给指定用户信息
             List<AppWebSocketServer> serverList = webSocketMap.get(tableId);
-            for (AppWebSocketServer server : serverList) {
-                server.sendMessage(message);
+            //某一个人
+            if (sessionId != null) {
+                //为true说明只发给自己
+                if (me) {
+                    for (AppWebSocketServer server : serverList) {
+                        if (server.getSession().getId().equals(sessionId))
+                            server.sendMessage(message);
+                    }
+                } else {
+                    for (AppWebSocketServer server : serverList) {
+                        if (!(server.getSession().getId().equals(sessionId)))
+                            server.sendMessage(message);
+                    }
+                }
+            } else {
+                for (AppWebSocketServer server : serverList) {
+                    server.sendMessage(message);
+                }
             }
+
         } else {
             log.error("请求的tableId:" + tableId + "不在该服务器上");
         }

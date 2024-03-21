@@ -1,14 +1,15 @@
 package com.linmour.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.system.convert.MenuListDtoConvert;
+import com.linmour.security.dtos.LoginUser;
+import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.mapper.MenuMapper;
 import com.linmour.system.pojo.Do.Menu;
 import com.linmour.system.pojo.Dto.MenuListDto;
 
 import com.linmour.system.service.MenuService;
-import com.linmour.common.dtos.LoginUser;
-import com.linmour.common.dtos.Result;
+
+import com.linmour.security.dtos.Result;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
     @Override
     public Result getMenus() {
         Long id = ((LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getLoginVo().getId();
-        List<MenuListDto> menus = MenuListDtoConvert.IN.MenuToMenuList(menuMapper.getMenus(id));
+        List<MenuListDto> menus = MerchantConvert.IN.MenuToMenuList(menuMapper.getMenus(id));
         menus.stream().filter(m->m.getParentId().equals(0))
                 .map(m->m.setChildren(getChildrens(m,menus)))
                 .collect(Collectors.toList());

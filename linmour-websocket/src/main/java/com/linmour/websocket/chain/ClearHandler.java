@@ -6,6 +6,7 @@ import com.linmour.websocket.ws.AppWebSocketServer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +19,7 @@ public class ClearHandler extends Handler{
     public void handleRequest(ConcurrentHashMap<String, List<AppWebSocketServer>> webSocketMap,
                               JSONObject jsonObject,
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
-                              AppWebSocketServer webSocket,OrderFeign orderFeign) throws IOException {
+                              AppWebSocketServer webSocket, OrderFeign orderFeign, Session session) throws IOException {
         if (jsonObject.containsKey("clear")) {
             if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
                 List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
@@ -29,7 +30,7 @@ public class ClearHandler extends Handler{
         } else {
             // 无法处理，传递给下一个处理器
             if (nextHandler != null) {
-                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocket,orderFeign);
+                nextHandler.handleRequest(webSocketMap,jsonObject,recordMap,webSocket,orderFeign,session);
             }
         }
     }

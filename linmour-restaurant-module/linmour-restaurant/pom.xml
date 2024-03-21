@@ -14,15 +14,15 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>com.linmour</groupId>
-            <artifactId>linmour-security</artifactId>
+            <artifactId>linmour-common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-restaurant-api</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -44,7 +44,7 @@
         <lombok.version>1.18.16</lombok.version>
         <mysql.version>5.1.49</mysql.version>
         <mybatis.version>3.5.1</mybatis.version>
-        <rediss.version>3.17.7</rediss.version>
+        <rediss.version>3.16.8</rediss.version>
         <mpj.version>1.2.0</mpj.version>
         <mybatis.spring.version>2.0.1</mybatis.spring.version>
         <mybatis.plus.version>3.4.1</mybatis.plus.version>

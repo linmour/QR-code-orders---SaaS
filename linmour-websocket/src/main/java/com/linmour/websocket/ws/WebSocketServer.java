@@ -2,6 +2,7 @@ package com.linmour.websocket.ws;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.linmour.websocket.config.WebSocketConfig;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 * @Params: WebSocketServer.sendInfoApi(使用JSON,用户名);
 * @Return
 */
-@ServerEndpoint(value = "/websocket/order/{userId}",encoders = WebSocketCustomEncoding.class)
+@ServerEndpoint(value = "/websocket/order/{userId}",encoders = WebSocketCustomEncoding.class,configurator = WebSocketConfig.class)
 @Component
 @Slf4j
 public class WebSocketServer {

@@ -2,7 +2,7 @@ package com.linmour.common.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 
-import com.linmour.common.utils.SecurityUtils;
+import com.linmour.security.utils.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;

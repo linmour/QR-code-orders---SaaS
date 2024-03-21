@@ -2,7 +2,7 @@ package com.linmour.system.pojo.Dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.linmour.common.dtos.PageParam;
+import com.linmour.security.dtos.PageParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

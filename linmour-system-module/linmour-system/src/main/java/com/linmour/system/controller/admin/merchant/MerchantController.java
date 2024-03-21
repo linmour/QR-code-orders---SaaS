@@ -1,8 +1,10 @@
 package com.linmour.system.controller.admin.merchant;
 
-import com.linmour.common.dtos.Result;
-import com.linmour.common.exception.CustomException;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
+import com.linmour.security.dtos.Result;
+
+
+import com.linmour.security.exception.CustomException;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.pojo.Dto.UserInfoDto;
 import com.linmour.system.service.MerchantService;
@@ -35,7 +37,7 @@ public class MerchantController {
         UserInfoDto userInfo = map.get("userInfo");
 
         try {
-            return Result.success(merchantService.updateById(MerchantConvert.INSTANCE.userInfoDtoToMerchant(userInfo)));
+            return Result.success(merchantService.updateById(MerchantConvert.IN.userInfoDtoToMerchant(userInfo)));
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException){
                 throw new CustomException(AppHttpCodeEnum.PHONENUMBER_EXIST);

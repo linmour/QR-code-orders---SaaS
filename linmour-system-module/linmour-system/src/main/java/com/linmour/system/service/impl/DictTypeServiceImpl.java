@@ -7,7 +7,7 @@ import com.linmour.system.mapper.DictTypeMapper;
 import com.linmour.system.pojo.Do.DictData;
 import com.linmour.system.pojo.Do.DictType;
 import com.linmour.system.service.DictTypeService;
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

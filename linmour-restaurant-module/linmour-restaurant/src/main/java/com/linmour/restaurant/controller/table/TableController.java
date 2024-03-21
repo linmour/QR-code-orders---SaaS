@@ -1,6 +1,6 @@
 package com.linmour.restaurant.controller.table;
 
-import com.linmour.common.dtos.Result;
+import com.linmour.security.dtos.Result;
 import com.linmour.restaurant.pojo.Do.RestaurantTable;
 import com.linmour.restaurant.pojo.Dto.RestaurantTableDto;
 import com.linmour.restaurant.service.RestaurantTableService;

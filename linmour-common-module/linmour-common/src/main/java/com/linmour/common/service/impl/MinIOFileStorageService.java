@@ -3,9 +3,9 @@ package com.linmour.common.service.impl;
 
 import com.linmour.common.config.MinIOConfig;
 import com.linmour.common.config.MinIOConfigProperties;
-import com.linmour.common.exception.CustomException;
-import com.linmour.common.exception.enums.AppHttpCodeEnum;
 import com.linmour.common.service.FileStorageService;
+import com.linmour.security.exception.CustomException;
+import com.linmour.security.exception.enums.AppHttpCodeEnum;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;

@@ -36,20 +36,12 @@ public class ProductController {
         return Result.success(productInfoService.getProductDetails(productIds));
     }
 
-    @PostMapping("/addProduct")
-    public Result addProduct(@RequestBody Map<String, AddProductDto> map){
+    @PostMapping("/saveOrUpdateProduct")
+    public Result saveOrUpdateProduct(@RequestBody Map<String, AddProductDto> map){
         AddProductDto product = map.get("product");
-        productInfoService.addProduct(product);
+        productInfoService.saveOrUpdateProduct(product);
         return Result.success();
     }
-
-    @PostMapping("/updateProduct")
-    public Result updateProduct(@RequestBody Map<String, AddProductDto> map){
-        AddProductDto product = map.get("product");
-        productInfoService.updateProduct(product);
-        return Result.success();
-    }
-
 
 }
 

@@ -11,5 +11,5 @@ import java.util.List;
 public class OrderAllDto {
     private  OrderInfo orderInfo;
 
-    private List<ProductDetailDto>  ProductDetailDtos;
+    private List<OrderItem>  orderItems;
 }

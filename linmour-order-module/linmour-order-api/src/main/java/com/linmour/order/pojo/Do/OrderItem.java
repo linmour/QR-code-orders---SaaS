@@ -2,46 +2,65 @@ package com.linmour.order.pojo.Do;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.linmour.product.pojo.Dto.ProductSortAndOption;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @TableName order_item
  */
 @TableName(value = "order_item")
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderItem implements Serializable {
     /**
      *
      */
-    @TableId(value = "id", type = IdType.AUTO)
+
     private Long id;
 
     /**
-     * 订单id
+     * 商品名字
      */
-    @TableField(value = "order_id")
-    private String orderId;
+
+    private String name;
 
     /**
-     * 商品id
+     *
      */
-    @TableField(value = "product_id")
+
+    private Long shopId;
+
     private Long productId;
 
     /**
-     * 购买数量
+     * 分类id
      */
-    @TableField(value = "quantity")
-    private Integer quantity;
+
+    private Long sortId;
 
     /**
-     * 所属商户
+     * 商品图
      */
-    @TableField(value = "shop_id")
-    private Long shopId;
+
+    private String picture;
+
+    /**
+     * 如果商品有规格就显示价格最低的配置
+     */
+
+    private BigDecimal price;
+    private String sort;
+
+    private String propsText;
+
+    private Integer quantity;
+    private String orderId;
 
 
     /**

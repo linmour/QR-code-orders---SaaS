@@ -1,6 +1,8 @@
 package com.linmour.product.pojo.Dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.linmour.product.pojo.Do.ProductSpecSort;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddProductDto implements Serializable {
     private Long id;
 
@@ -33,16 +36,6 @@ public class AddProductDto implements Serializable {
     private String intro;
 
 
-    /**
-     * 是否需要选规格 0不要 1要
-     */
-
-
-    private Byte valueSpec;
-
-
-    private Byte nonValueSpec;
-
     private BigDecimal price;
 
 
@@ -52,9 +45,9 @@ public class AddProductDto implements Serializable {
 
     private Long sortId;
 
-    private List<NonValueDto> nonValueList;
-    private List<ValueDto> valueList;
+    private List<ProductSortAndOption> specSortAndOption;
+
     private List<InventoryDto> inventoryList;
-    private List<String> urlList;
+    private String picture;
 
 }

@@ -43,14 +43,7 @@ public class ProductInfo implements Serializable {
     @TableField(value = "intro")
     private String intro;
 
-    /**
-     * 0没有规格 有值表示规格id
-     */
-    @TableField(value = "value_spec")
-    private Byte valueSpec;
 
-    @TableField(value = "non_value_spec")
-    private Byte nonValueSpec;
     /**
      * 商品状态 0下架 1上架
      */

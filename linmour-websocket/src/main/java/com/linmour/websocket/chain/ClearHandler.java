@@ -21,6 +21,8 @@ public class ClearHandler extends Handler{
                               ConcurrentHashMap<String, List<JSONObject>> recordMap,
                               AppWebSocketServer webSocket, OrderFeign orderFeign, Session session) throws IOException {
         if (jsonObject.containsKey("clear")) {
+            //情况订单记录
+            recordMap.clear();
             if (StringUtils.isNotBlank(webSocket.getTableId()) && webSocketMap.containsKey(webSocket.getTableId())) {
                 List<AppWebSocketServer> serverList = webSocketMap.get(webSocket.getTableId());
                 //遍历所有对象，把订单都改为未提交，为了下一次点餐

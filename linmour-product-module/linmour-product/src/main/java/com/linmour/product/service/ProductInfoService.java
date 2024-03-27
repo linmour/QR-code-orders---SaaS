@@ -12,22 +12,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
-* @author linmour
-* @description 针对表【product_info】的数据库操作Service
-* @createDate 2023-08-12 18:34:04
-*/
+ * @author linmour
+ * @description 针对表【product_info】的数据库操作Service
+ * @createDate 2023-08-12 18:34:04
+ */
 @Transactional
 public interface ProductInfoService extends IService<ProductInfo> {
     Result getProductPage(ProductInfoPageDto dto);
-    void changeProduct(Long id,Integer status);
 
+    void changeProduct(Long id, Integer status);
 
+    /*
+    获取商品的内容
+     */
     List<ProductDetailDto> getProductDetails(List<Long> productIds);
 
-    void addProduct(AddProductDto product);
+    void saveOrUpdateProduct(AddProductDto product);
 
-    void updateProduct(AddProductDto product);
 
-    List<AppProductSort>  getProductList();
+    List<AppProductSort> getProductList();
 
 }

@@ -2,6 +2,7 @@ package com.linmour.websocket.chain;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.security.dtos.Result;
@@ -48,8 +49,8 @@ public class CreateOrderHandler extends Handler {
                     BigDecimal amount = new BigDecimal(jsonObject.get("amount").toString());
                     String remark = jsonObject.get("remark").toString();
                     //类型转换:JSONArray转list
-                    JSONArray shopCarList = jsonObject.getJSONArray("shopCarList");
-                    List<ShopListDto> list = shopCarList.toJavaList(ShopListDto.class);
+                    JSONArray orderItem = jsonObject.getJSONArray("orderItem");
+                    List<OrderItem> list = orderItem.toJavaList(OrderItem.class);
 //                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
                     Result result = orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, getShopId()));
                     String a = "本桌订单提交成功";

@@ -3,15 +3,15 @@
 
  Source Server         : 120.79.7.243
  Source Server Type    : MySQL
- Source Server Version : 50736
+ Source Server Version : 50744
  Source Host           : 120.79.7.243:3306
  Source Schema         : lsc_system
 
  Target Server Type    : MySQL
- Target Server Version : 50736
+ Target Server Version : 50744
  File Encoding         : 65001
 
- Date: 03/11/2023 22:11:56
+ Date: 27/03/2024 10:04:49
 */
 
 SET NAMES utf8mb4;
@@ -22,20 +22,25 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `system_customer`;
 CREATE TABLE `system_customer`  (
-  `id` tinyint(4) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '顾客的用户名',
-  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像',
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `nick_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '顾客的用户名',
+  `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '微信唯一id',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像',
   `login_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录ip',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `deleted` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_customer
 -- ----------------------------
+INSERT INTO `system_customer` VALUES (2, '用户y_Lx0', 'oIhII43o-BEydV8TmNDRTvFy_Lx0', '', NULL, '2024-03-14 13:02:22', '2024-03-14 13:02:22', 0);
+INSERT INTO `system_customer` VALUES (3, '用户P8-sM', 'oIhII4_aRTUHdyE9OSkSdHcP8-sM', '', NULL, '2024-03-14 20:17:58', '2024-03-14 20:17:58', 0);
+INSERT INTO `system_customer` VALUES (4, '用户kYnXM', 'oIhII411hhggKLvDw_M197lkYnXM', '', NULL, '2024-03-14 21:21:25', '2024-03-14 21:21:25', 0);
+INSERT INTO `system_customer` VALUES (5, '用户JdHco', 'oIhII46hIRmemaTtHvBWyRJJdHco', '', NULL, '2024-03-14 22:29:43', '2024-03-14 22:29:43', 0);
+INSERT INTO `system_customer` VALUES (6, '用户6w1c0', 'oIhII4_CRpCw6LibCSNiVeP6w1c0', '', NULL, '2024-03-14 22:46:18', '2024-03-14 22:46:18', 0);
 
 -- ----------------------------
 -- Table structure for system_dict_data
@@ -151,7 +156,7 @@ CREATE TABLE `system_merchant`  (
   `id_card` varchar(25) CHARACTER SET armscii8 COLLATE armscii8_general_ci NOT NULL COMMENT '身份证',
   `sex` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '性别  0女 1男',
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '账号状态 0停用 1正常',
-  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对应menu表的permissions',
+  `type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '2' COMMENT '对应menu表的permissions',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
   `login_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '最后登录ip',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -164,7 +169,7 @@ CREATE TABLE `system_merchant`  (
 -- ----------------------------
 -- Records of system_merchant
 -- ----------------------------
-INSERT INTO `system_merchant` VALUES (1, '林某', '1', '$2a$10$4i/zO70zlfBBP8slBhP2ROTj5eC0hZ76k7ohWbDyygbQydEL2aq1e', 'http://127.0.0.1:9000/linmourscanorder/idCard/1.png', '350181200401281869', 1, 1, '2', 'http://127.0.0.1:9000/linmourscanorder/avatar/1.jpeg', NULL, '2023-07-18 04:58:28', '2023-10-14 12:48:00', 0);
+INSERT INTO `system_merchant` VALUES (1, '林某', '1', '$2a$10$4i/zO70zlfBBP8slBhP2ROTj5eC0hZ76k7ohWbDyygbQydEL2aq1e', 'http://43.136.73.159:9000/linmourscanorder/idCard/1.png', '350181200401281853', 1, 1, '2', 'http://42.136.73.159:9000/linmourscanorder/avatar/1.jpeg', NULL, '2023-07-18 04:58:28', '2023-10-14 12:48:00', 0);
 INSERT INTO `system_merchant` VALUES (2, '1', '2', '$2a$10$4i/zO70zlfBBP8slBhP2ROTj5eC0hZ76k7ohWbDyygbQydEL2aq1e', '', '1', 1, 1, '1', '1', NULL, '2023-07-22 04:10:51', '2023-07-22 04:10:51', 0);
 
 -- ----------------------------

@@ -35,10 +35,7 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
 
     private BigDecimal price;
 
-    private Byte valueSpec;
 
-
-    private Byte nonValueSpec;
 
     /**
      * 商品状态 0下架 1上架

@@ -65,7 +65,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Override
     public Result createOrder(CreateOrderDto createOrderDto) {
-        if (createOrderDto.getShopList().isEmpty())
+        if (createOrderDto.getOrderItems().isEmpty())
             return Result.error(ORDER_ITEM_NOT_NULL);
         OrderInfo orderInfo = new OrderInfo();
         String orderId;
@@ -99,93 +99,86 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderInfo.setRemark(redisCache.getHashValue(orderInfoKey, "remark").toString());
         }
 
-
-        //订单条目表
-        List<OrderItem> rList = new ArrayList<>();
-        createOrderDto.getShopList().forEach(m -> {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderId(orderId);
-            orderItem.setProductId(m.getId());
-            orderItem.setQuantity(m.getNumber());
-            orderItem.setShopId(getShopId());
-            orderItem.setId(m.getId());
-            rList.add(orderItem);
+        //添加新点的菜
+        List<OrderItem> rList = createOrderDto.getOrderItems();
+        rList.forEach(m -> {
+            m.setOrderId(orderId);
+            m.setShopId(getShopId());
         });
-        redisCache.setCacheList(orderItemKey, rList);
+
 
         // ------------------------- 获取商品详细信息返回给商家端---------------------------------
         //获取这次订单的商品id
-        List<Long> collect = rList.stream().map(OrderItem::getProductId).collect(Collectors.toList());
+        List<Long> productIds = rList.stream().map(OrderItem::getProductId).collect(Collectors.toList());
         //拿到缓存里的所有id
-        Set<Long> productIds = redisCache.getAllHashKeys(productKey).stream()
+        Set<Long> cacheProductIds = redisCache.getAllHashKeys(productKey).stream()
                 .map(Long::parseLong)
                 .collect(Collectors.toSet());
 
         List<String> includedList = new ArrayList<>();
         List<Long> excludedList = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
-        List<ProductDetailDto> productDetailDtos1 = new ArrayList<>();
-        List<ProductDetailDto> listNew = new ArrayList<>();
+        List<OrderItem> cacheProductList = new ArrayList<>();
 
         //缓存不为空
-        if (!ObjectUtil.isEmpty(productIds)) {
-            Map<Boolean, List<Long>> partitionedMap = collect.stream()
-                    .collect(Collectors.partitioningBy(productIds::contains));
+        if (!ObjectUtil.isEmpty(cacheProductIds)) {
+            Map<Boolean, List<Long>> partitionedMap = productIds.stream()
+                    .collect(Collectors.partitioningBy(cacheProductIds::contains));
             //在缓存中的id
             includedList = partitionedMap.get(true).stream().map(String::valueOf).collect(Collectors.toList());
             //不在缓存中的id
             excludedList = partitionedMap.get(false);
             List<String> product = redisCache.getHashFields(productKey, includedList);
-            productDetailDtos1 = mapper.convertValue(product, new TypeReference<List<ProductDetailDto>>() {
+            cacheProductList = mapper.convertValue(product, new TypeReference<List<OrderItem>>() {
             });
 
-        } else if (ObjectUtil.isEmpty(productIds)) {
+        } else if (ObjectUtil.isEmpty(cacheProductIds)) {
             //查找缓存没有的
-            Result result = productFeign.getProductDetails(collect);
+            Result result = productFeign.getProductDetails(productIds);
             List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
-            listNew = mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() {
+            cacheProductList = mapper.convertValue(data1, new TypeReference<List<OrderItem>>() {
             });
             //封装存入缓存的数据
-            Map<String, ProductDetailDto> entries = new HashMap<>();
-            listNew.forEach(m -> {
+            Map<String, OrderItem> entries = new HashMap<>();
+            cacheProductList.forEach(m -> {
                 entries.put(m.getId().toString(), m);
             });
             //存入缓存
             redisCache.setHashValues(productKey, entries);
         }
+
         if (!ObjectUtil.isEmpty(excludedList)) {
             //查找缓存没有的
             Result result = productFeign.getProductDetails(excludedList);
             List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
-            listNew.addAll(mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() {
+            rList.addAll(mapper.convertValue(data1, new TypeReference<List<OrderItem>>() {
             }));
             //封装存入缓存的数据
-            Map<String, ProductDetailDto> entries = new HashMap<>();
-            listNew.forEach(m -> {
-                entries.put(m.getId().toString(), m);
+            Map<String, OrderItem> entries = new HashMap<>();
+            rList.forEach(m -> {
+                entries.put(m.getProductId().toString(), m);
             });
             //存入缓存
             redisCache.setHashValues(productKey, entries);
         }
-        listNew.addAll(productDetailDtos1);
-        // 对data1进行修改
-        listNew.forEach(m -> {
-            rList.forEach(n -> {
-                if (Objects.equals(m.getId(), n.getProductId())) {
-                    m.setQuantity(n.getQuantity());
+        cacheProductList.forEach(n -> {
+            rList.forEach(m -> {
+                if (n.getId().equals(m.getProductId())) {
+                    m.setSort(n.getSort());
+                    m.setSortId(n.getSortId());
+                    BeanUtil.copyProperties(m,new OrderItem());
                 }
             });
         });
-
 
         //推送到mq，由webstock推送给餐厅订单来了
         Result<Object> result1 = new Result<>();
         //为了方便拿到shopid
         result1.setMsg(getShopId().toString());
-        SeatOrderDto seatOrderDto = new SeatOrderDto(orderInfo.getId(), orderInfo.getPayAmount().toString(), orderInfo.getTableId().toString(), listNew);
+        SeatOrderDto seatOrderDto = new SeatOrderDto(orderInfo.getId(), orderInfo.getPayAmount().toString(), orderInfo.getTableId().toString(), rList);
         result1.setData(seatOrderDto);
 //            producerMq.orderCreationCompleted(result1);
-
+        redisCache.setCacheList(orderItemKey, rList);
 
         return result1;
 
@@ -252,23 +245,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         //找到相对应的所有菜品id
         List<Object> cacheList = redisCache.getCacheList(orderItemKey);
         List<OrderItem> orderItems = JSONObject.parseArray(JSONObject.toJSONString(cacheList), OrderItem.class);
-
-        List<Long> collect = orderItems.stream().map(OrderItem::getProductId).collect(Collectors.toList());
-        Result result = productFeign.getProductDetails(collect);
-        List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
-        ObjectMapper mapper = new ObjectMapper();
-        List<ProductDetailDto> listNew = mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() {
-        });
-        // 对data1进行修改
-        listNew.forEach(m -> {
-            orderItems.forEach(n -> {
-                if (m.getId().equals(n.getId())) {
-                    m.setQuantity(n.getQuantity());
-                }
-            });
-        });
+//        List<ProductDetailDto> listNew = OrderInfoConvert.IN.cover(orderItems);
+//        List<Long> collect = orderItems.stream().map(OrderItem::getProductId).collect(Collectors.toList());
+//        Result result = productFeign.getProductDetails(collect);
+//        List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
+//        ObjectMapper mapper = new ObjectMapper();
+//        List<ProductDetailDto> listNew = mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() {
+//        });
+//        // 对data1进行修改
+//        listNew.forEach(m -> {
+//            orderItems.forEach(n -> {
+//                if (m.getId().equals(n.getId())) {
+//                    if (m.getQuantity() != null)
+//                    m.setQuantity(m.getQuantity() + n.getQuantity());
+//                    else
+//                        m.setQuantity( n.getQuantity());
+//
+//                }
+//            });
+//        });
         orderAllDto.setOrderInfo(orderInfo);
-        orderAllDto.setProductDetailDtos(listNew);
+        orderAllDto.setOrderItems(orderItems);
         return orderAllDto;
     }
 
@@ -293,21 +290,21 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             OrderAllDto orderAllDto = new OrderAllDto();
             //这一桌的菜
             List<OrderItem> list = orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderId, m.getId()));
-            List<Long> collect = list.stream().map(OrderItem::getProductId).collect(Collectors.toList());
+            List<Long> collect = list.stream().map(OrderItem::getId).collect(Collectors.toList());
             Result result = productFeign.getProductDetails(collect);
-            List<ProductDetailDto> data1 = (ArrayList<ProductDetailDto>) result.getData();
-            List<ProductDetailDto> listNew = mapper.convertValue(data1, new TypeReference<List<ProductDetailDto>>() {
+            List<OrderItem> data1 = (ArrayList<OrderItem>) result.getData();
+            List<OrderItem> listNew = mapper.convertValue(data1, new TypeReference<List<OrderItem>>() {
             });
             // 对data1进行修改
-            listNew.forEach(i -> {
-                list.forEach(n -> {
-                    if (i.getId().equals(n.getId())) {
-                        i.setQuantity(n.getQuantity());
-                    }
-                });
-            });
+//            listNew.forEach(i -> {
+//                list.forEach(n -> {
+//                    if (i.get.equals(n.getId())) {
+//                        i.setQuantity(n.getQuantity());
+//                    }
+//                });
+//            });
             orderAllDto.setOrderInfo(m);
-            orderAllDto.setProductDetailDtos(listNew);
+            orderAllDto.setOrderItems(listNew);
             orderAllDtos.add(orderAllDto);
         });
         Collections.reverse(orderAllDtos);
@@ -317,30 +314,29 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Override
     public OrderAllDto GetOrderInfoDetail(Long orderId) {
         OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
-        String id = orderInfo.getId();
-        List<OrderItem> list = orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderId, id));
-        List<Long> collect = list.stream().map(OrderItem::getProductId).collect(Collectors.toList());
-        Result result = productFeign.getProductDetails(collect);
-        List<ProductDetailDto> data1 = new ArrayList<>();
-        if (result.getData() instanceof List) {
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) result.getData();
-            for (Map<String, Object> map : dataList) {
-                // 进行逐个转换
-                ObjectMapper mapper = new ObjectMapper();
-                ProductDetailDto productDetailDto = mapper.convertValue(map, ProductDetailDto.class);
-                data1.add(productDetailDto);
-            }
-        }
-        list.forEach(m -> {
-            data1.forEach(n -> {
-                if (m.getProductId().equals(n.getId())) {
-                    n.setQuantity(m.getQuantity());
-                }
-            });
-        });
+        List<OrderItem> list = orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderId, orderId));
+//        List<Long> collect = list.stream().map(OrderItem::getProductId).collect(Collectors.toList());
+//        Result result = productFeign.getProductDetails(collect);
+//        List<OrderItem> data1 = new ArrayList<>();
+//        if (result.getData() instanceof List) {
+//            List<Map<String, Object>> dataList = (List<Map<String, Object>>) result.getData();
+//            for (Map<String, Object> map : dataList) {
+//                // 进行逐个转换
+//                ObjectMapper mapper = new ObjectMapper();
+//                OrderItem orderItem = mapper.convertValue(map, OrderItem.class);
+//                data1.add(orderItem);
+//            }
+//        }
+//        list.forEach(m -> {
+//            data1.forEach(n -> {
+//                if (m.getId().equals(n.getId())) {
+//                    n.setQuantity(m.getQuantity());
+//                }
+//            });
+//        });
         OrderAllDto orderAllDto = new OrderAllDto();
         orderAllDto.setOrderInfo(orderInfo);
-        orderAllDto.setProductDetailDtos(data1);
+        orderAllDto.setOrderItems(list);
         return orderAllDto;
     }
 }

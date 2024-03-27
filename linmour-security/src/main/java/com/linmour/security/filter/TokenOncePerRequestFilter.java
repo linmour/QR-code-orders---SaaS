@@ -72,7 +72,7 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
                     id = JwtUtil.parseJWT(token).getSubject();
                 } catch (Exception e) {
                     //这有两种情况，1.token时间过了，2.token不合法，这里不能直接抛异常，因为异常处理针对的是controller,这里是过滤器
-                    Result result = Result.error(String.valueOf(NEED_LOGIN));
+                    Result result = Result.error(NEED_LOGIN);
                     WebUtils.renderString(response, JSON.toJSONString(result));
                     return;
                 }
@@ -81,7 +81,7 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
                     user.getLoginVo().setShopId(Long.valueOf(shopId));
 
                 if (Objects.isNull(user)) {
-                    Result result = Result.error(String.valueOf(NEED_LOGIN));
+                    Result result = Result.error(NEED_LOGIN);
                     WebUtils.renderString(response, JSON.toJSONString(result));
                     return;
                 }

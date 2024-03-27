@@ -1,15 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
+ Source Server         : 120.79.7.243
  Source Server Type    : MySQL
- Source Server Version : 50736
+ Source Server Version : 50744
+ Source Host           : 120.79.7.243:3306
  Source Schema         : lsc_order
 
  Target Server Type    : MySQL
- Target Server Version : 50736
+ Target Server Version : 50744
  File Encoding         : 65001
 
- Date: 03/11/2023 22:12:23
+ Date: 27/03/2024 10:03:33
 */
 
 SET NAMES utf8mb4;
@@ -21,31 +23,61 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info`  (
   `id` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cus_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户id，没注册为默认用户0表示',
-  `table_id` bigint(20) NOT NULL COMMENT '桌号',
-  `pay_type` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '支付方式 1支付宝 2微信 3积分..',
-  `pay_status` int(10) UNSIGNED NOT NULL DEFAULT 2 COMMENT '支付状态 1已支付 2未支付 3已取消',
-  `pay_amount` decimal(10, 2) NOT NULL COMMENT '支付金额',
-  `order_status` int(10) UNSIGNED NOT NULL DEFAULT 3 COMMENT '订单状态 1已完成 2进行中 3待处理',
+  `openid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '微信唯一id',
+  `table_id` bigint(20) NULL DEFAULT NULL COMMENT '桌号',
+  `pay_type` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '支付方式 1支付宝 2微信 3积分 4线下',
+  `pay_status` int(10) UNSIGNED NULL DEFAULT 2 COMMENT '支付状态 1已支付 2未支付 3已取消',
+  `pay_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '支付金额',
+  `order_status` int(10) UNSIGNED NULL DEFAULT 3 COMMENT '订单状态 1已完成 2进行中 3待处理',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
-  `shop_id` bigint(20) UNSIGNED NOT NULL,
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `create_by` bigint(20) NOT NULL,
-  `update_by` bigint(20) NOT NULL,
-  `deleted` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `shop_id` bigint(20) UNSIGNED NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_by` bigint(20) NULL DEFAULT NULL,
+  `update_by` bigint(20) NULL DEFAULT NULL,
+  `deleted` tinyint(3) UNSIGNED NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order_info
 -- ----------------------------
-INSERT INTO `order_info` VALUES ('1715903496005353472', 0, 1, NULL, 2, 9010.00, 3, '', 1, '2023-10-22 09:30:48', '2023-10-22 10:08:59', 1, 1, 0);
-INSERT INTO `order_info` VALUES ('1715903715296149504', 0, 2, NULL, 2, 5424.00, 3, '', 1, '2023-10-22 09:31:40', '2023-10-22 09:36:03', 1, 1, 0);
-INSERT INTO `order_info` VALUES ('1715924276684521472', 0, 1, 1, 1, 6724.00, 3, '', 1, '2023-10-22 10:53:23', '2023-10-22 10:53:33', 1, 1, 0);
-INSERT INTO `order_info` VALUES ('1715924756605173760', 0, 1, 1, 1, 666.00, 3, '', 1, '2023-10-22 10:55:17', '2023-10-22 10:55:17', 1, 1, 0);
-INSERT INTO `order_info` VALUES ('1715929654855991296', 0, 1, 1, 1, 666.00, 3, '', 1, '2023-10-22 11:14:45', '2023-10-22 11:14:45', 1, 1, 0);
-INSERT INTO `order_info` VALUES ('1715966004997128192', 0, 2, NULL, 2, 1998.00, 3, '', 1, '2023-10-22 13:39:11', '2023-10-22 13:40:02', 1, 1, 0);
+INSERT INTO `order_info` VALUES ('1772654011485257728', 'oIhII43o-BEydV8TmNDRTvFy_Lx0', 2, 4, 1, 90.00, 3, '', 1, '2024-03-27 00:00:44', '2024-03-27 00:00:44', 1, 1, 0);
+INSERT INTO `order_info` VALUES ('1772658180719902720', 'oIhII43o-BEydV8TmNDRTvFy_Lx0', 2, 4, 1, 50.00, 3, '', 1, '2024-03-27 00:14:13', '2024-03-27 00:14:13', 1, 1, 0);
+
+-- ----------------------------
+-- Table structure for order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `order_item`;
+CREATE TABLE `order_item`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `order_id` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单id',
+  `quantity` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '数量',
+  `picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sort_id` bigint(20) NULL DEFAULT NULL,
+  `props_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sort` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `price` decimal(10, 2) NULL DEFAULT NULL,
+  `product_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '商品id',
+  `shop_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '所属商户',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_by` bigint(20) UNSIGNED NULL DEFAULT NULL,
+  `update_by` bigint(20) UNSIGNED NULL DEFAULT NULL,
+  `deleted` int(10) UNSIGNED NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1772658322948833286 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of order_item
+-- ----------------------------
+INSERT INTO `order_item` VALUES (1772654952921972737, '汉堡', '1772654011485257728', 1, NULL, 1, NULL, '主食', 18.00, 3, 1, '2024-03-27 00:00:50', '2024-03-27 00:00:50', 1, 1, 0);
+INSERT INTO `order_item` VALUES (1772654952921972738, '薯条', '1772654011485257728', 1, NULL, 2, NULL, '饮品', 22.00, 4, 1, '2024-03-27 00:00:50', '2024-03-27 00:00:50', 1, 1, 0);
+INSERT INTO `order_item` VALUES (1772658322948833282, '汉堡', '1772658180719902720', 1, NULL, 1, NULL, '主食', 18.00, 3, 1, '2024-03-27 00:14:13', '2024-03-27 00:14:13', 1, 1, 0);
+INSERT INTO `order_item` VALUES (1772658322948833283, '薯条', '1772658180719902720', 1, NULL, 2, NULL, '饮品', 22.00, 4, 1, '2024-03-27 00:14:13', '2024-03-27 00:14:13', 1, 1, 0);
+INSERT INTO `order_item` VALUES (1772658322948833284, '芬达', '1772658180719902720', 1, NULL, 2, '小瓶,樱桃', '饮品', 3.00, 15, 1, '2024-03-27 00:14:13', '2024-03-27 00:14:13', 1, 1, 0);
+INSERT INTO `order_item` VALUES (1772658322948833285, '芬达', '1772658180719902720', 1, NULL, 2, '大瓶,苹果', '饮品', 7.00, 15, 1, '2024-03-27 00:14:13', '2024-03-27 00:14:13', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for order_sale
@@ -53,7 +85,7 @@ INSERT INTO `order_info` VALUES ('1715966004997128192', 0, 2, NULL, 2, 1998.00, 
 DROP TABLE IF EXISTS `order_sale`;
 CREATE TABLE `order_sale`  (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `cus_id` bigint(20) UNSIGNED NOT NULL COMMENT '顾客id',
+  `openid` bigint(20) UNSIGNED NOT NULL COMMENT '微信唯一id',
   `sale_date` datetime NOT NULL COMMENT '销售日期',
   `sale_quantity` int(10) UNSIGNED NOT NULL COMMENT '销售数量',
   `shop_id` bigint(20) UNSIGNED NOT NULL COMMENT '所属店铺',
@@ -71,60 +103,22 @@ CREATE TABLE `order_sale`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for order_item
+-- Table structure for undo_log
 -- ----------------------------
-DROP TABLE IF EXISTS `order_item`;
-CREATE TABLE `order_item`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_id` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '订单id\r\n',
-  `quantity` int(10) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL COMMENT '商品id',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `create_by` bigint(20) UNSIGNED NOT NULL,
-  `update_by` bigint(20) UNSIGNED NOT NULL,
-  `deleted` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `undo_log`;
+CREATE TABLE `undo_log`  (
+  `branch_id` bigint(20) NOT NULL COMMENT '分支事务ID',
+  `xid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '全局事务ID',
+  `context` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '上下文',
+  `rollback_info` longblob NOT NULL COMMENT '回滚信息',
+  `log_status` int(11) NOT NULL COMMENT '状态，0正常，1全局已完成',
+  `log_created` datetime(6) NOT NULL COMMENT '创建时间',
+  `log_modified` datetime(6) NOT NULL COMMENT '修改时间',
+  UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'AT transaction mode undo table' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of order_item
+-- Records of undo_log
 -- ----------------------------
-INSERT INTO `order_item` VALUES (1, '1715903496005353472', 1, 7, '2023-10-22 09:30:48', '2023-10-22 09:30:48', 1, 1, 0);
-INSERT INTO `order_item` VALUES (2, '1715903496005353472', 2, 1, '2023-10-22 09:30:48', '2023-10-22 09:30:48', 1, 1, 0);
-INSERT INTO `order_item` VALUES (3, '1715903496005353472', 1, 7, '2023-10-22 09:31:13', '2023-10-22 09:31:13', 1, 1, 0);
-INSERT INTO `order_item` VALUES (4, '1715903496005353472', 1, 1, '2023-10-22 09:31:13', '2023-10-22 09:31:13', 1, 1, 0);
-INSERT INTO `order_item` VALUES (5, '1715903496005353472', 1, 7, '2023-10-22 09:31:24', '2023-10-22 09:31:24', 1, 1, 0);
-INSERT INTO `order_item` VALUES (6, '1715903715296149504', 1, 7, '2023-10-22 09:31:40', '2023-10-22 09:31:40', 1, 1, 0);
-INSERT INTO `order_item` VALUES (7, '1715903715296149504', 2, 7, '2023-10-22 09:31:56', '2023-10-22 09:31:56', 1, 1, 0);
-INSERT INTO `order_item` VALUES (8, '1715903715296149504', 2, 1, '2023-10-22 09:31:56', '2023-10-22 09:31:56', 1, 1, 0);
-INSERT INTO `order_item` VALUES (9, '1715903496005353472', 1, 7, '2023-10-22 09:32:48', '2023-10-22 09:32:48', 1, 1, 0);
-INSERT INTO `order_item` VALUES (10, '1715903496005353472', 1, 1, '2023-10-22 09:32:51', '2023-10-22 09:32:51', 1, 1, 0);
-INSERT INTO `order_item` VALUES (11, '1715903715296149504', 1, 7, '2023-10-22 09:33:06', '2023-10-22 09:33:06', 1, 1, 0);
-INSERT INTO `order_item` VALUES (12, '1715903715296149504', 1, 1, '2023-10-22 09:33:09', '2023-10-22 09:33:09', 1, 1, 0);
-INSERT INTO `order_item` VALUES (13, '1715903715296149504', 2, 7, '2023-10-22 09:33:15', '2023-10-22 09:33:15', 1, 1, 0);
-INSERT INTO `order_item` VALUES (14, '1715903496005353472', 1, 7, '2023-10-22 09:33:23', '2023-10-22 09:33:23', 1, 1, 0);
-INSERT INTO `order_item` VALUES (15, '1715903496005353472', 1, 1, '2023-10-22 09:33:32', '2023-10-22 09:33:32', 1, 1, 0);
-INSERT INTO `order_item` VALUES (16, '1715903496005353472', 1, 1, '2023-10-22 09:35:56', '2023-10-22 09:35:56', 1, 1, 0);
-INSERT INTO `order_item` VALUES (17, '1715903715296149504', 1, 7, '2023-10-22 09:36:00', '2023-10-22 09:36:00', 1, 1, 0);
-INSERT INTO `order_item` VALUES (18, '1715903715296149504', 1, 7, '2023-10-22 09:36:03', '2023-10-22 09:36:03', 1, 1, 0);
-INSERT INTO `order_item` VALUES (19, '1715903496005353472', 3, 1, '2023-10-22 09:36:08', '2023-10-22 09:36:08', 1, 1, 0);
-INSERT INTO `order_item` VALUES (20, '1715903496005353472', 2, 7, '2023-10-22 09:59:15', '2023-10-22 09:59:15', 1, 1, 0);
-INSERT INTO `order_item` VALUES (21, '1715903496005353472', 1, 1, '2023-10-22 09:59:15', '2023-10-22 09:59:15', 1, 1, 0);
-INSERT INTO `order_item` VALUES (22, '1715903496005353472', 1, 7, '2023-10-22 10:02:46', '2023-10-22 10:02:46', 1, 1, 0);
-INSERT INTO `order_item` VALUES (23, '1715903496005353472', 1, 7, '2023-10-22 10:03:44', '2023-10-22 10:03:44', 1, 1, 0);
-INSERT INTO `order_item` VALUES (24, '1715903496005353472', 1, 1, '2023-10-22 10:06:45', '2023-10-22 10:06:45', 1, 1, 0);
-INSERT INTO `order_item` VALUES (25, '1715903496005353472', 1, 7, '2023-10-22 10:06:45', '2023-10-22 10:06:45', 1, 1, 0);
-INSERT INTO `order_item` VALUES (26, '1715903496005353472', 1, 7, '2023-10-22 10:07:13', '2023-10-22 10:07:13', 1, 1, 0);
-INSERT INTO `order_item` VALUES (27, '1715903496005353472', 1, 7, '2023-10-22 10:07:19', '2023-10-22 10:07:19', 1, 1, 0);
-INSERT INTO `order_item` VALUES (28, '1715903496005353472', 1, 7, '2023-10-22 10:08:59', '2023-10-22 10:08:59', 1, 1, 0);
-INSERT INTO `order_item` VALUES (29, '1715924276684521472', 1, 1, '2023-10-22 10:53:23', '2023-10-22 10:53:23', 1, 1, 0);
-INSERT INTO `order_item` VALUES (30, '1715924276684521472', 5, 7, '2023-10-22 10:53:23', '2023-10-22 10:53:23', 1, 1, 0);
-INSERT INTO `order_item` VALUES (31, '1715924276684521472', 1, 1, '2023-10-22 10:53:33', '2023-10-22 10:53:33', 1, 1, 0);
-INSERT INTO `order_item` VALUES (32, '1715924276684521472', 5, 7, '2023-10-22 10:53:33', '2023-10-22 10:53:33', 1, 1, 0);
-INSERT INTO `order_item` VALUES (33, '1715924756605173760', 1, 7, '2023-10-22 10:55:17', '2023-10-22 10:55:17', 1, 1, 0);
-INSERT INTO `order_item` VALUES (34, '1715929654855991296', 1, 7, '2023-10-22 11:14:45', '2023-10-22 11:14:45', 1, 1, 0);
-INSERT INTO `order_item` VALUES (35, '1715966004997128192', 2, 7, '2023-10-22 13:39:12', '2023-10-22 13:39:12', 1, 1, 0);
-INSERT INTO `order_item` VALUES (36, '1715966004997128192', 1, 7, '2023-10-22 13:40:02', '2023-10-22 13:40:02', 1, 1, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

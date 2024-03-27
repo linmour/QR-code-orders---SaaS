@@ -33,10 +33,6 @@ public class AppProductDto implements Serializable {
 
     private BigDecimal price;
 
-    private Byte valueSpec;
-
-
-    private Byte nonValueSpec;
 
     /**
      * 商品状态 0下架 1上架
@@ -53,5 +49,4 @@ public class AppProductDto implements Serializable {
     private Long sortId;
 
 
-    private Integer selectNum;
 }

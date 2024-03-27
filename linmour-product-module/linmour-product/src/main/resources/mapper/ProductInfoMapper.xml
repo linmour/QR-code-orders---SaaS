@@ -4,37 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.linmour.product.mapper.ProductInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.ProductInfo">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
-            <result property="intro" column="intro" jdbcType="VARCHAR"/>
-            <result property="valueSpec" column="value_spec" jdbcType="TINYINT"/>
-            <result property="nonValueSpec" column="non_value_spec" jdbcType="TINYINT"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="sortId" column="sort_id" jdbcType="BIGINT"/>
-            <result property="picture" column="picture" jdbcType="VARCHAR"/>
-            <result property="price" column="price" jdbcType="DECIMAL"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
-            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
-            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+    <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.ProductSort">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="sort" column="sort" jdbcType="VARCHAR"/>
+        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+        <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,shop_id,
-        intro,spec,status,
-        sort_id,picture,price,
-        create_time,update_time,deleted,
-        create_by,update_by
+        id,sort,shop_id,
+        create_time,update_time,create_by,
+        update_by,deleted
     </sql>
-    <select id="getSort" resultType="java.util.Map">
-        SELECT b.sort, a.id FROM product_info a, product_sort b
-        WHERE a.id IN (
-        <foreach collection="productIds" item="productId" separator=",">
-            #{productId}
-        </foreach>
-        )AND a.sort_id = b.id
-    </select>
 </mapper>

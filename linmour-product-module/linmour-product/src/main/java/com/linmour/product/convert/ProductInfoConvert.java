@@ -20,7 +20,7 @@ public interface ProductInfoConvert {
 
     ProductInfo AddProductDtoToProductInfo(AddProductDto addProductDto);
     AppProductDto convert(ProductInfo productInfo);
-    List<AppProductDto> convertProductInfo(List<ProductInfo> productInfo);
+    List<ProductDetailDto> convertProductInfo(List<ProductInfo> productInfo);
     List<AppProductSort> convert(List<ProductSort> list);
     default InventoryDto InventoryDtoToProductInventory(ProductInventory dto){
         if (dto == null){

@@ -19,6 +19,6 @@ public class AppProductSort {
      */
     private Long shopId;
 
-    private List<AppProductDto> list;
+    private List<ProductDetailDto> list;
 
 }

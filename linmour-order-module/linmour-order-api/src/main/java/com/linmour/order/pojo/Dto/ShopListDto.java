@@ -49,8 +49,5 @@ public class ShopListDto implements Serializable {
     private Long sortId;
 
 
-    private Integer valueSpec;
-    private Integer nonValueSpec;
-
     private Integer number;
 }

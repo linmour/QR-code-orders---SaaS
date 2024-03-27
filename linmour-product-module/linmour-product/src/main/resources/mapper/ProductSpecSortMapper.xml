@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.linmour.product.mapper.SpecSortMapper">
+<mapper namespace="com.linmour.product.mapper.ProductSpecSortMapper">
 
-    <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.SpecSort">
+    <resultMap id="BaseResultMap" type="com.linmour.product.pojo.Do.ProductSpecSort">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="deleted" column="deleted" jdbcType="INTEGER"/>

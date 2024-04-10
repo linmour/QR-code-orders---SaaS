@@ -1,6 +1,7 @@
 package com.linmour.order.controller.app.order;
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
 import com.linmour.order.pojo.Dto.CheckoutDto;
@@ -40,6 +41,11 @@ public class AppOrderController {
     @GetMapping("/GetOrderInfoDetail/{orderId}")
     public Result GetOrderInfoDetail(@PathVariable Long orderId) {
         return Result.success(orderInfoService.GetOrderInfoDetail(orderId));
+    }
+    @PostMapping("/updateOrderItemStatus/{tableId}/{index}")
+    public Result updateOrderItemStatus(@PathVariable String  tableId ,@PathVariable Long index) {
+        orderInfoService.updateOrderItemStatus(tableId,index);
+        return Result.success();
     }
 
 

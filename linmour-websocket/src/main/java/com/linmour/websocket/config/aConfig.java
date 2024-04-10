@@ -1,4 +1,4 @@
-package com.linmour.common.config;
+package com.linmour.websocket.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-public class RedisConfig {
+public class aConfig {
  
     @Bean
     @SuppressWarnings(value = { "unchecked", "rawtypes" })

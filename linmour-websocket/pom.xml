@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>linmour-websocket</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!--        websocket-->
@@ -19,8 +20,12 @@
         </dependency>
         <!--        mq-->
         <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
         </dependency>
 
         <dependency>
@@ -28,10 +33,7 @@
             <artifactId>linmour-order-api</artifactId>
             <version>${revision}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>com.linmour</groupId>
-                    <artifactId>linmour-common-api</artifactId>
-                </exclusion>
+
                 <exclusion>
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -42,12 +44,6 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-security</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.alibaba</groupId>
-                    <artifactId>fastjson</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 

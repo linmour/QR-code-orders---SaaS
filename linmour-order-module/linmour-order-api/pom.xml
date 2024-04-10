@@ -17,18 +17,9 @@
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-product-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.linmour</groupId>
-                    <artifactId>linmour-common-api</artifactId>
-                </exclusion>
-            </exclusions>
             <version>${revision}</version>
         </dependency>
-        <dependency>
-            <groupId>com.linmour</groupId>
-            <artifactId>linmour-common-api</artifactId>
-        </dependency>
+
 
     </dependencies>
 

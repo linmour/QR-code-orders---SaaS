@@ -104,6 +104,15 @@ public class RedisCache {
         return count == null ? 0 : count;
     }
 
+    /*
+     *   修改list中对应index的值
+     *
+     *
+     * */
+    public <T> void setListValue(final String key, final long index, final T value) {
+        redisTemplate.opsForList().set(key, index, value);
+    }
+
     /**
      * 获得缓存的list对象
      *
@@ -112,6 +121,14 @@ public class RedisCache {
      */
     public <T> List<T> getCacheList(final String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
+    }
+
+    /*
+     *   获取list里的某一条数据
+     *
+     * */
+    public <T> Object getListValue(final String key, final long index) {
+        return redisTemplate.opsForList().index(key, index);
     }
 
     /**
@@ -248,6 +265,7 @@ public class RedisCache {
         HashOperations<String, String, T> hashOperations = redisTemplate.opsForHash();
         hashOperations.putAll(key, entries);
     }
+
     /**
      * 获取Hash缓存的值
      *
@@ -284,6 +302,22 @@ public class RedisCache {
     }
 
     /**
+     * 增加hash的数量，如果不存在自动创建
+     */
+
+    public void incrementHash(String key, String field, Long num) {
+        //如果不存在就直接创建
+        if (!hasHashKey(key, field))
+            this.setHashValue(key, field, num);
+        else {
+            HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
+            hashOperations.increment(key, field, num);
+
+        }
+    }
+
+
+    /**
      * 判断Hash缓存中是否存在指定的Hash键
      *
      * @param key   Redis键
@@ -293,6 +327,13 @@ public class RedisCache {
     public boolean hasHashKey(String key, String field) {
         HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
         return hashOperations.hasKey(key, field);
+    }
+
+    /*
+     *判断redis是否有这个键
+     */
+    public boolean hasKey(String key) {
+        return redisTemplate.hasKey(key) != null ? redisTemplate.hasKey(key) : false;
     }
 
     /**
@@ -328,9 +369,9 @@ public class RedisCache {
         return hashOperations.size(key);
     }
 
-    public <T> List<String> getHashFields(String key, List<String> fields) {
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-        List<String> values = hashOperations.multiGet(key, fields);
+    public <T> List<Object> getHashFields(String key, List<String> fields) {
+        HashOperations<String, String, Object> hashOperations = redisTemplate.opsForHash();
+        List<Object> values = hashOperations.multiGet(key, fields);
 
         return values;
     }

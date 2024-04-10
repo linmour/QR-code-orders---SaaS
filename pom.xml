@@ -16,6 +16,7 @@
         <module>linmour-order-module</module>
         <module>linmour-restaurant-module</module>
         <module>linmour-websocket</module>
+        <module>linmour-dataAnaly-module</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -35,7 +36,6 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <!-- 依赖包版本管理 -->
-        <rocketmq.version>2.2.0</rocketmq.version>
         <security.version>2.3.9.RELEASE</security.version>
         <validator.version>6.1.5.Final</validator.version>
         <spring.boot.version>2.3.9.RELEASE</spring.boot.version>
@@ -135,6 +135,10 @@
             <dependency>
                 <groupId>com.linmour</groupId>
                 <artifactId>linmour-restaurant-api</artifactId>
+                <version>${revision}</version>
+            </dependency>            <dependency>
+                <groupId>com.linmour</groupId>
+                <artifactId>linmour-dataAnaly-api</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -314,9 +318,14 @@
                 <version>${minio.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.rocketmq</groupId>
-                <artifactId>rocketmq-spring-boot-starter</artifactId>
-                <version>${rocketmq.version}</version>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.client.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>

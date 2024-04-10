@@ -1,6 +1,7 @@
 package com.linmour.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.OrderAllDto;
 import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Do.OrderInfo;
@@ -11,7 +12,6 @@ import com.linmour.order.pojo.Dto.OrderInfoDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
 * @author linmour
@@ -35,4 +35,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     OrderAllDto GetCurrentOrderInfo(Long tableId);
 
     OrderAllDto GetOrderInfoDetail(Long orderId);
+
+    void updateOrderItemStatus(String tableId,Long index);
 }

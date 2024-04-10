@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateOrderDto implements Serializable {
 
+    private String orderId;
+
     private Long tableId;
     private BigDecimal amount;
     private List<OrderItem> orderItems;

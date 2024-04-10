@@ -52,7 +52,7 @@ public class CreateOrderHandler extends Handler {
                     JSONArray orderItem = jsonObject.getJSONArray("orderItem");
                     List<OrderItem> list = orderItem.toJavaList(OrderItem.class);
 //                    if (producerMq.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, list.get(0).getShopId())))
-                    Result result = orderFeign.createOrder(new CreateOrderDto(Long.parseLong(webSocket.getTableId()), amount, list, remark, getShopId()));
+                    Result result = orderFeign.createOrder(new CreateOrderDto(null,Long.parseLong(webSocket.getTableId()), amount, list, remark, getShopId()));
                     String a = "本桌订单提交成功";
                     if (result != null || result.getMsg().equals("出现错误")) {
                         result.setMsg("order");

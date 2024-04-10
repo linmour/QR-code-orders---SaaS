@@ -15,8 +15,8 @@ spring:
         namespace: @nacos.namespace@
         file-extension: yml
         shared-configs:
-          - dataId: rocketmq.yml
-            refresh: true
+#          - dataId: rocketmq.yml
+#            refresh: true
           - data-id: redis.yml
             refresh: true
 

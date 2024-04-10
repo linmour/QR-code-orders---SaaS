@@ -2,12 +2,16 @@ package com.linmour.websocket.ws;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.linmour.redisPub.RedisPublisher;
+import com.linmour.security.utils.RedisCache;
 import com.linmour.websocket.config.WebSocketConfig;
 import com.linmour.websocket.config.WebSocketCustomEncoding;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -23,11 +27,23 @@ import java.util.concurrent.ConcurrentHashMap;
 * @Params: WebSocketServer.sendInfoApi(使用JSON,用户名);
 * @Return
 */
-@ServerEndpoint(value = "/websocket/order/{userId}",encoders = WebSocketCustomEncoding.class,configurator = WebSocketConfig.class)
+@ServerEndpoint(value = "/websocket/order/{shopId}",encoders = WebSocketCustomEncoding.class,configurator = WebSocketConfig.class)
 @Component
 @Slf4j
 public class WebSocketServer {
- 
+
+    @Resource
+    private RedisPublisher a;
+
+    //注入为空
+    public static RedisPublisher redisPublisher;
+
+    @PostConstruct
+    public void b() {
+        redisPublisher = this.a;
+    }
+
+
     /**静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。*/
     private static int onlineCount = 0;
     /**concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。*/
@@ -35,33 +51,33 @@ public class WebSocketServer {
     /**与某个客户端的连接会话，需要通过它来给客户端发送数据*/
     private Session session;
     /**接收userId*/
-    private String userId="";
+    private String shopId="";
  
     /**
      * 连接建立成功调用的方法
      * */
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") String userId) {
+    public void onOpen(Session session, @PathParam("shopId") String shopId) {
         this.session = session;
-        this.userId=userId;
-        if(webSocketMap.containsKey(userId)){
-            webSocketMap.remove(userId);
+        this.shopId=shopId;
+        if(webSocketMap.containsKey(shopId)){
+            webSocketMap.remove(shopId);
             //加入set中
         }else{
-            webSocketMap.put(userId,this);
+            webSocketMap.put(shopId,this);
             //加入set中
             addOnlineCount();
             //在线数加1
         }
  
-        log.info("用户连接:"+userId+",当前在线人数为:" + getOnlineCount());
+        log.info("用户连接:"+shopId+",当前在线人数为:" + getOnlineCount());
  
         try {
             HashMap<Object, Object> map = new HashMap<>();
             map.put("key","连接成功");
             sendMessage(JSON.toJSONString(map));
         } catch (IOException e) {
-            log.error("用户:"+userId+",网络异常!!!!!!");
+            log.error("用户:"+shopId+",网络异常!!!!!!");
         }
     }
  
@@ -70,12 +86,12 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose() {
-        if(webSocketMap.containsKey(userId)){
-            webSocketMap.remove(userId);
+        if(webSocketMap.containsKey(shopId)){
+            webSocketMap.remove(shopId);
             //从set中删除
             subOnlineCount();
         }
-        log.info("用户退出:"+userId+",当前在线人数为:" + getOnlineCount());
+        log.info("用户退出:"+shopId+",当前在线人数为:" + getOnlineCount());
     }
  
     /**
@@ -84,7 +100,7 @@ public class WebSocketServer {
      * @param message 客户端发送过来的消息*/
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("用户消息:"+userId+",报文:"+message);
+        log.info("用户消息:"+shopId+",报文:"+message);
         //可以群发消息
         //消息保存到数据库、redis
         if(StringUtils.isNotBlank(message)){
@@ -92,8 +108,11 @@ public class WebSocketServer {
                 //解析发送的报文
                 JSONObject jsonObject = JSONObject.parseObject(message);
                 //追加发送人(防止串改)
-                jsonObject.put("fromUserId",this.userId);
+                jsonObject.put("fromUserId",this.shopId);
                 String fromUserId=jsonObject.getString("fromUserId");
+                if (jsonObject.containsKey("dataAnaly")){
+                    redisPublisher.publishMessage(this.shopId);
+                }
                 //传送给对应toUserId用户的websocket
                 if(StringUtils.isNotBlank(fromUserId) && webSocketMap.containsKey(fromUserId)){
                     webSocketMap.get(fromUserId).sendMessage(1);
@@ -117,7 +136,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("用户错误:"+this.userId+",原因:"+error.getMessage());
+        log.error("用户错误:"+this.shopId+",原因:"+error.getMessage());
         error.printStackTrace();
     }
     /**

@@ -2,7 +2,10 @@ package com.linmour.order.pojo.Do;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.linmour.product.pojo.Dto.ProductSortAndOption;
 import lombok.Data;
 
@@ -35,6 +38,7 @@ public class OrderItem implements Serializable {
      */
 
     private Long shopId;
+    private Integer status;
 
     private Long productId;
 

@@ -12,11 +12,6 @@
 账号: 1
 密码: 123
 
-#### 演示地址
-
-- 管理后台：
-- 小程序：
-
 
 #### 项目架构
 
@@ -29,7 +24,7 @@
 |---------------------------------------------------------------------------------------------|------------------|-------------|
 | [Spring Cloud Alibaba](https://github.com/alibaba/spring-cloud-alibaba)                     | 微服务框架            |2021.0.4.0  |              
 | [Nacos](https://github.com/alibaba/nacos)                                                   | 配置中心 & 注册中心      | 2.0.4
-| [RocketMQ](https://github.com/apache/rocketmq)                                              | 消息队列             | 4.9.4
+| [Kafa](https://github.com/apache/kafka)                                              | 消息队列             | 4.9.4
 | [Spring Cloud Gateway](https://github.com/spring-cloud/spring-cloud-gateway)                | 服务网关           |3.4.1
 | [MySQL](https://www.mysql.com/cn/)                                                          | 数据库服务器           | 5.7 / 8.0+
 | webSocket                                                 | 前后端长连接   |
@@ -52,6 +47,7 @@
 
 #### 主要功能展示
 <img src=".images/Snipaste_2023-11-30_17-22-25.png" width="580">
+<img src=".images/Snipaste_2024-04-10_15-55-35.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-22-37.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-23-17.png" width="580">
 <img src=".images/Snipaste_2023-11-30_17-22-56.png" width="580">

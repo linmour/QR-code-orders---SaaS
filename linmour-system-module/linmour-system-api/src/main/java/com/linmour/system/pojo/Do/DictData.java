@@ -41,6 +41,7 @@ public class DictData implements Serializable {
      */
     private Integer status;
 
+    private String  colorType;
     /**
      * 
      */

@@ -40,7 +40,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>com.linmour</groupId>
+            <artifactId>linmour-dataAnaly-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.linmour</groupId>
+                    <artifactId>linmour-common-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.linmour</groupId>
             <artifactId>linmour-security</artifactId>

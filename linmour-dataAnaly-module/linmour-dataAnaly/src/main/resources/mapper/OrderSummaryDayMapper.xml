@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmour.dataAnaly.mapper.OrderSummaryDayMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmour.dataAnaly.pojo.Do.OrderSummaryDay">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+            <result property="productNum" column="product_num" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="avgPrice" column="avg_price" jdbcType="DECIMAL"/>
+            <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,date,order_num,
+        product_num,price,avg_price,
+        shop_id
+    </sql>
+</mapper>

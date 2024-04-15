@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,15 +69,15 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         //这个是新店没有分类会报空指针
         if (dto.getSortId() == null)
             return success();
-
+        List<ProductDetailDto> productDetails = getProductDetails(productInfos.stream().map(ProductInfo::getId).collect(Collectors.toList()));
         Page<ProductInfo> productInfoPage = page(new Page<ProductInfo>(dto.getPageNo(), dto.getPageSize()), new LambdaQueryWrapper<ProductInfo>()
                 .eq(StringUtils.isNotBlank(dto.getSortId().toString()), ProductInfo::getSortId, dto.getSortId())
         );
         if (ObjectUtil.isNull(productInfoPage.getRecords()))
             throw new CustomException(AppHttpCodeEnum.PRODUCT_ERROR);
 
-        List<ProductInfoPageDto> productInfoPageDtos = ProductInfoConvert.IN.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
-        return success(new PageResult<>(productInfoPageDtos, productInfoPage.getTotal()));
+//        List<ProductInfoPageDto> productInfoPageDtos = ProductInfoConvert.IN.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
+        return success(new PageResult<>(productDetails, productInfoPage.getTotal()));
     }
 
     @Override
@@ -87,6 +88,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     public List<ProductDetailDto> getProductDetails(List<Long> productIds) {
+        if (productIds.isEmpty())
+            return new ArrayList<>();
         List<ProductInfo> productInfos = productInfoMapper.selectBatchIds(productIds);
         List<ProductDetailDto> productDetailDtos = ProductInfoConvert.IN.ProductInfoToProductDetailDto(productInfos);
         //查询规格分类
@@ -129,6 +132,35 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         ProductInfo productInfo = ProductInfoConvert.IN.AddProductDtoToProductInfo(product);
         productInfoService.saveOrUpdate(productInfo);
         List<ProductSortAndOption> specSortAndOption = product.getSpecSortAndOption();
+        List<Long> collect;
+
+        if (!specSortAndOption.isEmpty()) {
+            collect = specSortAndOption.stream()
+                    .map(ProductSortAndOption::getProductSpecSort)
+                    .map(ProductSpecSort::getId)
+                    .collect(Collectors.toList());
+
+
+        } else {
+            collect = new ArrayList<>();
+        }
+
+
+        //这些是要删除的规格
+        List<ProductSpecSort> productSpecSorts = productSpecSortMapper.selectList(new LambdaQueryWrapper<ProductSpecSort>().eq(ProductSpecSort::getProductId, productInfo.getId()));
+        if (productSpecSorts.isEmpty())
+            return;
+        List<Long> specSortIds = productSpecSorts.stream().map(ProductSpecSort::getId).collect(Collectors.toList());
+        List<Long> missingValues = specSortIds.stream()
+                .filter(value -> !collect.contains(value))
+                .collect(Collectors.toList());
+        if (!missingValues.isEmpty()) {
+            productSpecSortMapper.deleteBatchIds(missingValues);
+            productSpecOptionMapper.delete(new LambdaQueryWrapper<ProductSpecOption>().in(ProductSpecOption::getSpecSortId, missingValues));
+        }
+
+        //插入新增的
+
         specSortAndOption.forEach(n -> {
             ProductSpecSort productSpecSort = n.getProductSpecSort();
             productSpecSort.setProductId(productInfo.getId());
@@ -139,24 +171,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             });
             productSpecOptionService.saveOrUpdateBatch(productSpecOptions);
         });
-    //这些是要删除的规格
-        List<ProductSpecSort> productSpecSorts = productSpecSortMapper.selectList(new LambdaQueryWrapper<ProductSpecSort>().notIn(ProductSpecSort::getId,
-                specSortAndOption.stream()
-                        .map(ProductSortAndOption::getProductSpecSort)
-                        .map(ProductSpecSort::getId)
-                        .collect(Collectors.toList())));
-        if (productSpecSorts.size()>0){
-            List<Long> productSpecSortIds = productSpecSorts.stream().map(ProductSpecSort::getId).collect(Collectors.toList());
-            productSpecSortMapper.deleteBatchIds(productSpecSortIds);
-            productSpecOptionMapper.delete(new LambdaQueryWrapper<ProductSpecOption>().in(ProductSpecOption::getSpecSortId,
-                    productSpecSortIds));
-        }
-        List<ProductSpecOption> productSpecOptions = productSpecOptionMapper.selectList(new LambdaQueryWrapper<ProductSpecOption>().notIn(ProductSpecOption::getId,
-                specSortAndOption.stream()
-                        .flatMap(p -> p.getProductSpecOptions().stream())
-                        .map(ProductSpecOption::getId)
-                        .collect(Collectors.toList())));
-        productSpecOptionMapper.deleteBatchIds(productSpecOptions.stream().map(ProductSpecOption::getId).collect(Collectors.toList()));
 
         //库存
 //        List<ProductInventory> list = ProductInfoConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());

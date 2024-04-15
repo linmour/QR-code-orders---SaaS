@@ -1,7 +1,6 @@
 package com.linmour.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.OrderAllDto;
 import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Do.OrderInfo;
@@ -37,4 +36,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     OrderAllDto GetOrderInfoDetail(Long orderId);
 
     void updateOrderItemStatus(String tableId,Long index);
+
+    List<OrderAllDto> GetOrderByShopId(Long shopId);
 }

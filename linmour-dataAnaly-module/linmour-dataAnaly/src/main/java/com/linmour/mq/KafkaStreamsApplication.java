@@ -75,6 +75,7 @@ public class KafkaStreamsApplication {
                 redisCache.incrementHash("dataAnaly:orderSummaryTimePeriod:" + orderInfo.getShopId() +":" + detectMealTime(createTime), "productNum", Long.valueOf(orderItems.size()));
                 redisCache.incrementHash("dataAnaly:orderSummaryTimePeriod:" + orderInfo.getShopId() +":" + detectMealTime(createTime), "price", (orderInfo.getPayAmount()).longValue());
 
+                //通知webstock推送给前端
                 redisPublisher.publishMessage(String.valueOf(orderInfo.getShopId()));
                 return orderAllDto;
             } catch (JsonProcessingException e) {

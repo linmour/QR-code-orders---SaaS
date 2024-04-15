@@ -1,7 +1,6 @@
 package com.linmour.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.system.convert.DictDataDtoConvert;
 import com.linmour.system.mapper.DictDataMapper;
 import com.linmour.system.mapper.DictTypeMapper;
 import com.linmour.system.pojo.Do.DictData;
@@ -25,9 +24,8 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType>
     @Resource
     private DictDataMapper dictDataMapper;
     @Override
-    public Result getDictList() {
-        List<DictData> dictData = dictDataMapper.selectList(null);
-        return Result.success(DictDataDtoConvert.IN.convert(dictData));
+    public List<DictData> getDictList() {
+        return dictDataMapper.selectList(null);
     }
 
     @Override

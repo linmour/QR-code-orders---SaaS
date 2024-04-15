@@ -1,8 +1,11 @@
 package com.linmour.system.service;
 
+import com.linmour.system.pojo.Do.DictData;
 import com.linmour.system.pojo.Do.DictType;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.security.dtos.Result;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -11,7 +14,7 @@ import com.linmour.security.dtos.Result;
 */
 public interface DictTypeService extends IService<DictType> {
 
-    Result getDictList();
+    List<DictData> getDictList();
 
     Result getDict(String dictType);
 }

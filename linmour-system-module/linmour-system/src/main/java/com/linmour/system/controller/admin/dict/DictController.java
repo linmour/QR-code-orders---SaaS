@@ -19,7 +19,7 @@ public class DictController {
 
     @GetMapping("/getDictList")
     public Result getDictList(){
-        return dictTypeService.getDictList();
+        return Result.success(dictTypeService.getDictList());
     }
     @GetMapping("/getDict/{dictType}")
     public Result getDict(@PathVariable String dictType){

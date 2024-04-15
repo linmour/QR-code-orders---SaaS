@@ -42,6 +42,12 @@ public class OrderController {
         return Result.success(orderInfoService.GetCurrentOrderInfo(tableId));
     }
 
+    @GetMapping("/GetOrderByShopId/{ShopId}")
+    public Result GetOrderByShopId(@PathVariable Long ShopId) {
+        return Result.success(orderInfoService.GetOrderByShopId(ShopId));
+    }
+
+
     @PostMapping("/changeOrder")
     public Result changeOrderStatus(@RequestBody Map<String, OrderInfoDto> map) {
         OrderInfoDto orderInfoDto = map.get("orderInfoDto");
@@ -82,9 +88,9 @@ public class OrderController {
         a.setShopId(1L);
         b.setShopId(2L);
         c.setShopId(4L);
-        a.setOrderId("aaa");
-        b.setOrderId("bbb");
-        c.setOrderId("ccc");
+//        a.setOrderId("aaa");
+//        b.setOrderId("bbb");
+//        c.setOrderId("ccc");
         orderItemService.save(a);
         orderItemService.save(b);
         orderItemService.save(c);

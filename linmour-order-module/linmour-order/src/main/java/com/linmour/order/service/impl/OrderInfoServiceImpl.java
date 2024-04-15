@@ -1,7 +1,6 @@
 package com.linmour.order.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -22,16 +21,12 @@ import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.OrderItemService;
 import com.linmour.order.utils.IdGenerateUtil;
-import com.linmour.product.pojo.Dto.ProductDetailDto;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -119,7 +114,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
 
-
     @Override
     public Result checkout(CheckoutDto checkoutDto) {
         String tableId = checkoutDto.getTableId().toString();
@@ -153,6 +147,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderInfoMapper.insert(orderInfo);
             List<Object> cacheList = redisCache.getCacheList(orderItemKey);
             List<OrderItem> list = JSONObject.parseArray(JSONObject.toJSONString(cacheList), OrderItem.class);
+            list.stream().forEach(m -> {
+                m.setOrderId(orderInfo.getId());
+                m.setStatus(1);
+            });
             orderItemService.saveBatch(list);
             kafkaProducer.originalOrder(new OrderAllDto(orderInfo, list));
             //删除缓存中的订单信息
@@ -239,6 +237,20 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         ;
         orderItem.setStatus(orderItem.getStatus().equals(1) ? 0 : 1);
         redisCache.setListValue(orderItemKey, index, orderItem);
+    }
+
+    @Override
+    public List<OrderAllDto> GetOrderByShopId(Long shopId) {
+        List<OrderAllDto> orderAllDtos = new ArrayList<>();
+        List<OrderInfo> orderInfos = orderInfoMapper.selectList(new LambdaQueryWrapper<OrderInfo>().eq(OrderInfo::getShopId, shopId));
+        List<String> orderIds = orderInfos.stream().map(OrderInfo::getId).collect(Collectors.toList());
+        List<OrderItem> orderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().in(OrderItem::getOrderId, orderIds));
+
+        orderInfos.forEach(m -> {
+            orderAllDtos.add(new OrderAllDto(m, orderItems.stream().filter(n -> n.getOrderId().equals(m.getId())).collect(Collectors.toList())));
+        });
+
+        return orderAllDtos;
     }
 }
 

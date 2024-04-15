@@ -1,5 +1,6 @@
 package com.linmour.websocket.mq;
 
+import com.linmour.dataAnaly.pojo.Do.ProductSummaryDay;
 import com.linmour.security.utils.RedisCache;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -35,6 +36,13 @@ public class RedisSubscriber implements MessageListener {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> allHash = redisCache.getAllHash("dataAnaly:orderSummaryDay:" + message);
         Map<String, Object> allHash1 = redisCache.getAllHash("dataAnaly:productSummaryDay:" + message);
+        List<ProductSummaryDay> productSummaryDays = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : allHash1.entrySet()) {
+            ProductSummaryDay productSummaryDay = new ProductSummaryDay();
+            productSummaryDay.setName(entry.getKey());
+            productSummaryDay.setNum((Integer) entry.getValue());
+            productSummaryDays.add(productSummaryDay);
+        }
         List<String> s = new ArrayList<>();
         s.add("晚餐");
         s.add("深夜");
@@ -46,7 +54,7 @@ public class RedisSubscriber implements MessageListener {
             list.add(allHash2);
         });
         map.put("orderSummaryDay",allHash);
-        map.put("productSummaryDay",allHash1);
+        map.put("productSummaryDay",productSummaryDays);
         map.put("timePeriodMap",list);
         try {
             sendInfo(map,message.toString());

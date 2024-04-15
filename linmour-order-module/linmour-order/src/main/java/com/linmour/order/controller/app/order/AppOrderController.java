@@ -33,9 +33,9 @@ public class AppOrderController {
         return Result.success(orderInfoService.GetHistoryOrderList(tableId));
     }
 
-    @GetMapping("/GetCurrentOrderInfo/{orderId}")
-    public Result getCurrentOrderInfo(@PathVariable Long orderId) {
-        return Result.success(orderInfoService.GetCurrentOrderInfo(orderId));
+    @GetMapping("/GetCurrentOrderInfo/{tableId}")
+    public Result getCurrentOrderInfo(@PathVariable Long tableId) {
+        return Result.success(orderInfoService.GetCurrentOrderInfo(tableId));
     }
 
     @GetMapping("/GetOrderInfoDetail/{orderId}")

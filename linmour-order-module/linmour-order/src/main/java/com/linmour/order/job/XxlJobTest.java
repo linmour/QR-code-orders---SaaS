@@ -25,8 +25,6 @@ import java.util.List;
 @Component
 public class XxlJobTest {
 
-//    @Resource
-//    private RedisCache redisCache;
     @XxlJob("xxlJobTest")
     public void xxlJobTest(String date) {
 

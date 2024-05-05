@@ -9,9 +9,8 @@
 项目地址：[餐厅后台管理系统](https://gitee.com/lsclinmour/linmour-scan-order-vue)
 项目地址：[小程序点餐](https://gitee.com/lsclinmour/linmour-scan-order-uniapp)
 
-账号: 1
-密码: 123
-
+商户：账号: 1  密码: 123
+管理员：账号: 2  密码: 123
 
 #### 项目架构
 

@@ -18,10 +18,7 @@
             <version>3.11.11</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
@@ -72,9 +69,10 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>icu.mhb</groupId>
-            <artifactId>mybatis-plus-join</artifactId>
+            <groupId>com.github.yulichang</groupId>
+            <artifactId>mybatis-plus-join-boot-starter</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

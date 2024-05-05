@@ -279,6 +279,16 @@ public class RedisCache {
     }
 
     /**
+     * 获取匹配的键列表
+     *
+     * @param keyPattern 键模式
+     * @return 匹配的键列表
+     */
+    public List<String> getMatchingKeys(String keyPattern) {
+        Set<String> keys = redisTemplate.keys(keyPattern);
+        return new ArrayList<>(keys);
+    }
+    /**
      * 删除Hash缓存中的值
      *
      * @param key    Redis键

@@ -23,10 +23,16 @@ public class ProductController {
         return (productInfoService.getProductPage(dto));
     }
 
+    @GetMapping("/deletedProduct/{id}")
+    public Result deletedProduct(@PathVariable Long id) {
+        productInfoService.deletedProduct(id);
+        return Result.success();
+    }
+
     @PostMapping("/changeProduct")
-    public Result changeProduct(@RequestBody Map map){
+    public Result changeProduct(@RequestBody Map map) {
         Integer intValue = (Integer) map.get("id");
-        productInfoService.changeProduct(Long.valueOf(intValue.intValue()),(Integer) (map.get("status")));
+        productInfoService.changeProduct(Long.valueOf(intValue.intValue()), (Integer) (map.get("status")));
         return Result.success();
     }
 
@@ -37,7 +43,7 @@ public class ProductController {
     }
 
     @PostMapping("/saveOrUpdateProduct")
-    public Result saveOrUpdateProduct(@RequestBody Map<String, AddProductDto> map){
+    public Result saveOrUpdateProduct(@RequestBody Map<String, AddProductDto> map) {
         AddProductDto product = map.get("product");
         productInfoService.saveOrUpdateProduct(product);
         return Result.success();

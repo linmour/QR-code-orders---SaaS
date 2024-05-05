@@ -45,7 +45,7 @@
         <mysql.version>5.1.49</mysql.version>
         <mybatis.version>3.5.1</mybatis.version>
         <rediss.version>3.16.8</rediss.version>
-        <mpj.version>1.2.0</mpj.version>
+        <mpj.version>1.4.11</mpj.version>
         <mybatis.spring.version>2.0.1</mybatis.spring.version>
         <mybatis.plus.version>3.4.1</mybatis.plus.version>
         <lang3.version>3.5</lang3.version>
@@ -333,10 +333,11 @@
                 <version>${hutool.version}</version>
             </dependency>
             <dependency>
-                <groupId>icu.mhb</groupId>
-                <artifactId>mybatis-plus-join</artifactId>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
                 <version>${mpj.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>

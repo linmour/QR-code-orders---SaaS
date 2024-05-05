@@ -1,5 +1,6 @@
 package com.linmour.product.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -15,13 +16,12 @@ import com.linmour.product.pojo.Do.*;
 import com.linmour.product.pojo.Dto.*;
 import com.linmour.product.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.jcp.xml.dsig.internal.dom.Utils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +56,10 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     private ProductSpecOptionMapper productSpecOptionMapper;
     @Resource
     private ProductSpecOptionService productSpecOptionService;
+    @Resource
+    private RProductInventotyMapper rProductInventotyMapper;
+    @Resource
+    private RProductInventotyService rProductInventotyService;
 
 
     @Override
@@ -76,7 +80,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         if (ObjectUtil.isNull(productInfoPage.getRecords()))
             throw new CustomException(AppHttpCodeEnum.PRODUCT_ERROR);
 
-//        List<ProductInfoPageDto> productInfoPageDtos = ProductInfoConvert.IN.ProductInfoToProductInfoPageDto(productInfoPage.getRecords());
+
         return success(new PageResult<>(productDetails, productInfoPage.getTotal()));
     }
 
@@ -98,9 +102,26 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         //查询规格选项
         List<ProductSpecOption> productSpecOptions = productSpecOptionMapper.selectList(new LambdaQueryWrapper<ProductSpecOption>().in(productSpecSortIds.size() > 0, ProductSpecOption::getSpecSortId, productSpecSortIds));
         List<Long> sortIds = productInfos.stream().map(ProductInfo::getSortId).collect(Collectors.toList());
-        //查出商品分类
+                //查出商品分类
         List<ProductSort> productSorts = productSortMapper.selectBatchIds(sortIds);
         productDetailDtos.forEach(m -> {
+            //材料
+            List<RProductInventoty> rProductInventoty = rProductInventotyMapper.selectList(new LambdaQueryWrapper<RProductInventoty>().in(RProductInventoty::getProductId,m.getId()));
+            List<ProductInventoryAllDto> productInventoryAllDtos = BeanUtil.copyToList(rProductInventoty, ProductInventoryAllDto.class);
+            if (!rProductInventoty.isEmpty()){
+                List<Long> inventoryIds = rProductInventoty.stream().map(RProductInventoty::getInventoryId).collect(Collectors.toList());
+                List<ProductInventory> productInventories = productInventoryMapper.selectList(new LambdaQueryWrapper<ProductInventory>().in(ProductInventory::getId, inventoryIds));
+                productInventories.forEach(p ->{
+                    productInventoryAllDtos.forEach(l ->{
+                        if (p.getId().equals(l.getInventoryId())){
+                            l.setName(p.getName());
+                            l.setUnit(p.getUnit());
+                        }
+                    });
+                });
+                m.setInventoryAllList(productInventoryAllDtos);
+            }
+
             List<ProductSortAndOption> productSortAndOptions = new ArrayList<>();
             productSorts.forEach(n -> {
                 if (n.getId().equals(m.getSortId())) {
@@ -123,6 +144,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             });
             m.setProductSortAndOptions(productSortAndOptions);
         });
+
+
         return productDetailDtos;
 
     }
@@ -134,13 +157,16 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         List<ProductSortAndOption> specSortAndOption = product.getSpecSortAndOption();
         List<Long> collect;
 
+        //库存关系更新
+        rProductInventotyMapper.delete(new LambdaQueryWrapper<RProductInventoty>().eq(RProductInventoty::getProductId,productInfo.getId()));
+        List<RProductInventoty> rProductInventoties = BeanUtil.copyToList(product.getInventoryAllList(), RProductInventoty.class);
+        rProductInventotyService.saveOrUpdateBatch(rProductInventoties);
+
         if (!specSortAndOption.isEmpty()) {
             collect = specSortAndOption.stream()
                     .map(ProductSortAndOption::getProductSpecSort)
                     .map(ProductSpecSort::getId)
                     .collect(Collectors.toList());
-
-
         } else {
             collect = new ArrayList<>();
         }
@@ -172,9 +198,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             productSpecOptionService.saveOrUpdateBatch(productSpecOptions);
         });
 
-        //库存
-//        List<ProductInventory> list = ProductInfoConvert.IN.inventoryDtoListToProductInventoryList(product.getInventoryList(), productInfo.getId());
-//        productInventoryService.saveOrUpdateBatch(list);
+
     }
 
 
@@ -194,6 +218,11 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         });
         return sorts;
+    }
+
+    @Override
+    public void deletedProduct(Long id) {
+        productInfoMapper.deleteById(id);
     }
 }
 

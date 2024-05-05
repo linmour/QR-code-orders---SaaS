@@ -18,11 +18,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-typehandlers-jsr310</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.linmour</groupId>-->
-        <!--            <artifactId>linmour-security</artifactId>-->
-        <!--            <version>${revision}</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
@@ -44,6 +39,10 @@
             <groupId>com.linmour</groupId>
             <artifactId>linmour-order-api</artifactId>
             <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.linmour</groupId>
+            <artifactId>linmour-system-api</artifactId>
         </dependency>
         <!-- 引入shardingjdbc -->
         <!--        <dependency>-->

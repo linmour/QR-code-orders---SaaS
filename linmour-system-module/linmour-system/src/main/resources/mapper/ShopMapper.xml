@@ -9,7 +9,7 @@
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="certificate" column="certificate" jdbcType="VARCHAR"/>
             <result property="intro" column="intro" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="shopStatus" column="status" jdbcType="TINYINT"/>
             <result property="auditStatus" column="audit_status" jdbcType="TINYINT"/>
             <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
             <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>

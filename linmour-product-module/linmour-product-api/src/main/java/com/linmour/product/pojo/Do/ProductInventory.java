@@ -40,23 +40,18 @@ public class ProductInventory implements Serializable {
     @TableField(value = "unit")
     private String unit;
 
-    /**
-     * 所属店铺
-     */
-    @TableField(value = "shop_id")
-    private Long shopId;
-
-    @TableField(value = "product_id")
-    private Long productId;
-
 
     /**
      * 阈值，提示库存不足
      */
     @TableField(value = "threshold")
     private Integer threshold;
-    @TableField(value = "quantity")
-    private Integer quantity;
+
+    /**
+     * 所属店铺
+     */
+    @TableField(value = "shop_id")
+    private Long shopId;
 
     /**
      * 

@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 public class OrderInfoDto implements Serializable {
 
     private String id;
+    private String shopName;
+
 
     /**
      * 用户id
@@ -38,6 +40,8 @@ public class OrderInfoDto implements Serializable {
     
     private Integer payStatus;
 
+    private BigDecimal commission;
+
     /**
      * 支付金额
      */
@@ -56,6 +60,8 @@ public class OrderInfoDto implements Serializable {
     
     private String remark;
 
+
+    private Long shopId;
 
     
     private String createTime;

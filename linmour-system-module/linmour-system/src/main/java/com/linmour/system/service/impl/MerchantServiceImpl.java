@@ -1,9 +1,8 @@
 package com.linmour.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.linmour.common.service.FileStorageService;
 import com.linmour.common.tess4j.Tess4jClient;
 import com.linmour.security.dtos.LoginUser;
 import com.linmour.security.dtos.LoginVo;
@@ -15,9 +14,9 @@ import com.linmour.security.utils.RedisCache;
 import com.linmour.system.convert.MerchantConvert;
 import com.linmour.system.mapper.MerchantMapper;
 import com.linmour.system.pojo.Do.Merchant;
+import com.linmour.system.pojo.Dto.MerchantPage;
 import com.linmour.system.pojo.Dto.UserInfoDto;
 import com.linmour.system.service.MerchantService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +29,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,8 +51,9 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
     private RedisCache redisCache;
     @Resource
     private MerchantMapper merchantMapper;
+
     @Resource
-    private FileStorageService fileStorageService;
+    private MerchantService merchantService;
     @Resource
     private Tess4jClient tess4jClient;
 
@@ -104,10 +105,7 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
         String fileName = id.toString();
-        String fileId = fileStorageService.uploadPicture(multipartFile, "avatar", fileName);
-        merchantMapper.update(null, new LambdaUpdateWrapper<Merchant>().eq(Merchant::getId, id)
-                .set(StringUtils.isNotBlank(fileId), Merchant::getAvatar, fileId));
-        return Result.success(fileId);
+        return Result.success();
 
     }
 
@@ -131,20 +129,31 @@ public class MerchantServiceImpl extends ServiceImpl<MerchantMapper, Merchant>
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
         String fileNmae = id.toString();
-        String url = fileStorageService.uploadPicture(file, "idCard", fileNmae);
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("idCardUrl", url);
-        map.put("idCard", result);
-
-        return Result.success(map);
+        return Result.success();
 
     }
 
     @Override
-    public Result register(Merchant merchant) {
-        merchantMapper.insert(merchant);
-        return Result.success();
+    public Long  saveOrUpdateMerchant(Merchant merchant) {
+        merchantService.saveOrUpdate(merchant);
+        return merchant.getId();
+    }
+
+    @Override
+    public List<Merchant> getMerchantPage(MerchantPage merchant) {
+        return merchantMapper.selectList(new LambdaQueryWrapper<Merchant>().eq(Merchant::getType,2));
+    }
+
+    @Override
+    public Long save0rUpdateMerchant(Merchant merchant) {
+        merchantService.saveOrUpdate(merchant);
+        return merchant.getId();
+    }
+
+    @Override
+    public List<Merchant> getMerchantByIds(List<Long> ids) {
+        return merchantMapper.selectBatchIds(ids);
+
     }
 
 

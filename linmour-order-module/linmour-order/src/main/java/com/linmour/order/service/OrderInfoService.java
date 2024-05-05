@@ -1,12 +1,9 @@
 package com.linmour.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.order.pojo.Dto.OrderAllDto;
+import com.linmour.order.pojo.Dto.*;
 import com.linmour.security.dtos.Result;
 import com.linmour.order.pojo.Do.OrderInfo;
-import com.linmour.order.pojo.Dto.CheckoutDto;
-import com.linmour.order.pojo.Dto.CreateOrderDto;
-import com.linmour.order.pojo.Dto.OrderInfoDto;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +22,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     Result checkout(CheckoutDto checkoutDto);
 
-//    Map<String, Object> getOrderInfo(Long tableId);
-
     Result changeOrder(OrderInfoDto orderInfoDto);
 
     List<OrderAllDto> GetHistoryOrderList(Long tableId);
@@ -37,5 +32,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     void updateOrderItemStatus(String tableId,Long index);
 
-    List<OrderAllDto> GetOrderByShopId(Long shopId);
+    List<OrderAllDto> GetOrderByShopId();
+
+    List<OrderInfoDto> getOrderPayAmount(OrderInfoPage orderInfoPage);
 }

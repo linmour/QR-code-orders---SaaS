@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.linmour.order.pojo.Do.OrderItem;
 import com.linmour.order.pojo.Dto.CreateOrderDto;
-import com.linmour.order.pojo.Dto.ShopListDto;
 import com.linmour.security.dtos.Result;
 import com.linmour.websocket.feign.OrderFeign;
 import com.linmour.websocket.ws.AppWebSocketServer;

@@ -32,4 +32,5 @@ public interface ProductInfoService extends IService<ProductInfo> {
 
     List<AppProductSort> getProductList();
 
+    void deletedProduct(Long id);
 }

@@ -16,9 +16,11 @@ public class LoginVo implements Serializable {
     private String password;
     private Integer status;
     private Long shopId;
+    private Integer type;
 
 
-    public LoginVo(Long id) {
+    public LoginVo(Long id,Integer type) {
         this.id = id;
+        this.type = type;
     }
 }

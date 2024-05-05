@@ -23,8 +23,7 @@ spring:
             refresh: true
           - dataId: kafka.yml
             refresh: true
-#        - dataId: rocketmq.yml
-#          refresh: true
+
 
 
 

@@ -3,7 +3,6 @@ package com.linmour.restaurant.service.impl;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.linmour.security.dtos.Result;
-import com.linmour.common.service.FileStorageService;
 import com.linmour.restaurant.covert.TableConvert;
 import com.linmour.restaurant.mapper.RestaurantTableMapper;
 import com.linmour.restaurant.pojo.Do.RestaurantTable;
@@ -39,8 +38,6 @@ public class RestaurantTableServiceImpl extends ServiceImpl<RestaurantTableMappe
     @Resource
     private RestTemplate restTemplate;
 
-    @Resource
-    private FileStorageService fileStorageService;
 
     @Value("${wx.appid}")
     private String appid;

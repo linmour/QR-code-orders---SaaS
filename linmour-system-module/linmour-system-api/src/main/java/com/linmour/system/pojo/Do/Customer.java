@@ -11,4 +11,5 @@ public class Customer {
     private String nickName;
     private String avatar;
     private String openid;
+    private Long ShopId;
 }

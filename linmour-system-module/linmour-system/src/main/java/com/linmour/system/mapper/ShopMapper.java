@@ -1,5 +1,6 @@
 package com.linmour.system.mapper;
 
+import com.github.yulichang.base.MPJBaseMapper;
 import com.linmour.system.pojo.Do.Shop;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -9,7 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-07-21 15:23:21
 * @Entity com.linmour.Do.pojo.system.Shop
 */
-public interface ShopMapper extends BaseMapper<Shop> {
+public interface ShopMapper extends MPJBaseMapper<Shop> {
 
 
 }

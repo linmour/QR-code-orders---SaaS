@@ -37,7 +37,7 @@ public class OrderSummaryTimePeriod implements Serializable {
 21:00 - 00:00
      */
     @TableField(value = "time_period")
-    private Date timePeriod;
+    private String timePeriod;
 
     /**
      * 

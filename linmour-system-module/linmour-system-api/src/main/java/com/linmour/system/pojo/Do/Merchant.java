@@ -56,7 +56,7 @@ public class Merchant implements Serializable {
      * 权限类型
      */
     @TableField(value = "type")
-    private String type;
+    private Integer type;
 
     /**
      * 性别  0女 1男

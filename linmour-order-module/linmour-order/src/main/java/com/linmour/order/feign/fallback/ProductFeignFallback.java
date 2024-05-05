@@ -13,4 +13,9 @@ public class ProductFeignFallback implements ProductFeign {
     public Result getProductDetails(List<Long> productIds) {
         return null;
     }
+
+    @Override
+    public Result reduceInventories(List<Long> productIds) {
+        return null;
+    }
 }

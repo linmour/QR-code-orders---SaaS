@@ -2,6 +2,10 @@ package com.linmour.product.service;
 
 import com.linmour.product.pojo.Do.ProductInventory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.linmour.product.pojo.Dto.ProductInventoryAllDto;
+import com.linmour.security.dtos.PageResult;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -10,4 +14,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ProductInventoryService extends IService<ProductInventory> {
 
+    PageResult getProductInventory(ProductInventoryAllDto dto);
+
+    void createInventory(ProductInventoryAllDto dto);
+
+    void deletedInventory(Long id);
+
+    ProductInventory getProductInventoryById(Long id);
+
+    void updateInventory(ProductInventory productInventory);
+
+    void reduceInventories(List<Long> productIds);
 }

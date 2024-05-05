@@ -13,7 +13,7 @@ import java.util.List;
 * @Entity com.linmour.product.pojo.Do.ProductInventory
 */
 public interface ProductInventoryMapper extends BaseMapper<ProductInventory> {
-    List<ProductInventory> getInventory(@Param("productIds") String productIds);
+    List<ProductInventory> getInventory(@Param("shopId") Long shopId);
 }
 
 

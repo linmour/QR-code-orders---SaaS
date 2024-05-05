@@ -1,7 +1,6 @@
 package com.linmour.system.service.impl;
 
 import cn.hutool.core.lang.UUID;
-import com.linmour.common.service.FileStorageService;
 import com.linmour.security.dtos.LoginUser;
 import com.linmour.security.dtos.Result;
 import com.linmour.system.service.UploadService;
@@ -19,16 +18,14 @@ import static com.linmour.security.utils.SecurityUtils.getShopId;
 @Service
 public class UploadServiceImpl implements UploadService {
 
-    @Resource
-    private FileStorageService fileStorageService;
+
 
     @Override
     public Result uploadImg(MultipartFile file,String prefix) {
         LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = user.getLoginVo().getId();
         String fileName = id.toString();
-        String fileId = fileStorageService.uploadPicture(file, prefix, fileName);
-        return Result.success(fileId);
+        return Result.success();
     }
 
     @Override
@@ -39,9 +36,7 @@ public class UploadServiceImpl implements UploadService {
         List<String> list = new ArrayList<>();
         for (MultipartFile multipartFile : file) {
             String fileName = id.toString() + "/" + shopId + "/" + UUID.randomUUID().toString().replace("-", "");
-            String url = fileStorageService.uploadPicture(multipartFile, prefix, fileName);
-            list.add(url);
         }
-        return success(list);
+        return success();
     }
 }

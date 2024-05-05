@@ -1,8 +1,6 @@
 package com.linmour.product.pojo.Dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.linmour.product.pojo.Do.ProductSpecSort;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,7 +45,7 @@ public class AddProductDto implements Serializable {
 
     private List<ProductSortAndOption> specSortAndOption;
 
-    private List<InventoryDto> inventoryList;
+    private List<ProductInventoryAllDto> inventoryAllList;
     private String picture;
 
 }

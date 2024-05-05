@@ -1,7 +1,10 @@
 package com.linmour.order.controller.admin.order;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.linmour.order.pojo.Dto.OrderInfoPage;
+import com.linmour.security.dtos.PageParam;
 import com.linmour.security.dtos.Result;
 import com.linmour.security.utils.RedisCache;
 import com.linmour.order.mapper.OrderItemMapper;
@@ -23,13 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.linmour.security.utils.SecurityUtils.getShopId;
+
 @RestController
 @RequestMapping("/order/order")
 public class OrderController {
     @Resource
     private OrderInfoService orderInfoService;
-//    @Resource
-//    private CassandraTemplate cassandraTemplate;
+
     @Resource
     private OrderItemService orderItemService;
     @Resource
@@ -42,9 +46,14 @@ public class OrderController {
         return Result.success(orderInfoService.GetCurrentOrderInfo(tableId));
     }
 
-    @GetMapping("/GetOrderByShopId/{ShopId}")
-    public Result GetOrderByShopId(@PathVariable Long ShopId) {
-        return Result.success(orderInfoService.GetOrderByShopId(ShopId));
+    @GetMapping("/GetOrderByShopId")
+    public Result GetOrderByShopId() {
+        return Result.success(orderInfoService.GetOrderByShopId());
+    }
+
+    @GetMapping("/getOrderPayAmount")
+    public Result getOrderPayAmount(OrderInfoPage orderInfoPage) {
+        return Result.success(orderInfoService.getOrderPayAmount(orderInfoPage));
     }
 
 
@@ -102,7 +111,7 @@ public class OrderController {
         List<OrderItem> orderItems = orderItemMapper.selectList(null);
         orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderId, 1111));
         System.out.println("--------------------------------------------------------------------------");
-        orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getShopId, 88));
+        orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().eq(!getShopId().equals(0L),OrderItem::getShopId, 88));
     }
 
     @GetMapping("/d")

@@ -21,42 +21,25 @@
 		{
 			"hostGroup":[
 				{
-					"env":"dev",
-					"url":""
+					"env":"local",
+					"url":"http://localhost:12800"
 				}
 			],
-			"name":"通用"
+			"name":"linmour-dataAnaly"
 		},
 		{
 			"hostGroup":[
 				{
 					"env":"dev",
-					"url":"http://localhost:12803"
+					"url":"http://localhost:12801"
 				}
 			],
-			"name":"linmour-restaurant"
-		},
-		{
-			"hostGroup":[
-				{
-					"env":"dev",
-					"url":"http://localhost:12802"
-				}
-			],
-			"name":"linmour-product"
-		},
-		{
-			"hostGroup":[
-				{
-					"env":"dev",
-					"url":"http://localhost:12804"
-				}
-			],
-			"name":"linmour-order"
+			"name":"linmour-system"
 		}
 	],
 	"envList":[
-		"dev"
+		"dev",
+		"local"
 	],
 	"headerList":[],
 	"maxDescriptionLength":-1,
@@ -65,10 +48,8 @@
 	"projectList":[
 		"线上",
 		"gateway",
-		"通用",
-		"linmour-restaurant",
-		"linmour-product",
-		"linmour-order"
+		"linmour-dataAnaly",
+		"linmour-system"
 	],
 	"syncModel":{
 		"branch":"master",

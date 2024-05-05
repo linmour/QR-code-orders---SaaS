@@ -2,8 +2,10 @@ package com.linmour.system.service;
 
 import com.linmour.system.pojo.Do.Shop;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.linmour.system.pojo.Dto.ShopPageDto;
+import com.linmour.system.pojo.Dto.ShopPage;
 import com.linmour.security.dtos.Result;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -17,14 +19,17 @@ public interface ShopService extends IService<Shop> {
      * @param dto
      * @return
      */
-    Result shopList(ShopPageDto dto);
+    Result shopList(ShopPage dto);
 
     /**
      * 查询分店
      * @param dto
      * @return
      */
-    Result SonShopList(ShopPageDto dto);
+    Result SonShopList(ShopPage dto);
 
-    Result register(Shop shop);
+
+    Long save0rUpdateShop(Shop shop);
+
+    List<Shop> getShopByIds(List<Long> ids);
 }

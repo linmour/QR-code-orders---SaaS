@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.linmour.system.pojo.Do.Merchant;
 
 
+import com.linmour.system.pojo.Dto.MerchantPage;
 import com.linmour.system.pojo.Dto.UserInfoDto;
 import com.linmour.security.dtos.LoginVo;
 import com.linmour.security.dtos.Result;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
 * @author linmour
@@ -27,5 +30,12 @@ public interface MerchantService extends IService<Merchant> {
     Result ocr(MultipartFile multipartFile);
 
 
-    Result register(Merchant merchant);
+    Long saveOrUpdateMerchant(Merchant merchant);
+
+
+    List<Merchant> getMerchantPage(MerchantPage merchant);
+
+    Long save0rUpdateMerchant(Merchant merchant);
+
+    List<Merchant> getMerchantByIds(List<Long> ids);
 }

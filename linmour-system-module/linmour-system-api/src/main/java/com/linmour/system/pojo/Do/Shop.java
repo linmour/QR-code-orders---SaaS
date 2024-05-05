@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -45,8 +46,8 @@ public class Shop implements Serializable {
     /**
      * 店铺状态 0停用 1正常
      */
-    @TableField(value = "status")
-    private Integer status;
+    @TableField(value = "shop_status")
+    private Integer shopStatus;
 
     /**
      * 审核状态 0未通过 1通过 2审核中
@@ -59,6 +60,7 @@ public class Shop implements Serializable {
      */
     @TableField(value = "parent_id")
     private Long parentId;
+
 
     /**
      * 店主
@@ -81,6 +83,8 @@ public class Shop implements Serializable {
     @TableField(value = "business_hours")
     private LocalTime businessHours;
 
+    @TableField(value = "fee_rate")
+    private BigDecimal feeRate;
 
     /**
      * 

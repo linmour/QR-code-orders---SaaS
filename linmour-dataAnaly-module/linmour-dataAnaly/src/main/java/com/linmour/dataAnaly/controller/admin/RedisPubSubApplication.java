@@ -1,5 +1,7 @@
 package com.linmour.dataAnaly.controller.admin;
 
+import com.linmour.dataAnaly.mapper.OrderSummaryTimePeriodMapper;
+import com.linmour.dataAnaly.pojo.Do.OrderSummaryTimePeriod;
 import com.linmour.redisPub.RedisPublisher;
 import com.linmour.security.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,18 @@ public class RedisPubSubApplication {
     private RedisPublisher redisPublisher;
     @Resource
     private RedisCache redisCache;
-
+    @Resource
+    private OrderSummaryTimePeriodMapper orderSummaryTimePeriodMapper;
     public static void main(String[] args) {
         SpringApplication.run(RedisPubSubApplication.class, args);
     }
 
     @PostMapping("/publish")
     public void publishMessage(@RequestBody String message) {
-        List<Object> allHashValues = redisCache.getAllHashValues("dataAnaly:orderSummaryDay:1");
-        Object orderNum = redisCache.getHashValue("dataAnaly:orderSummaryDay:1", "orderNum");
-        Map<String, Object> allHash = redisCache.getAllHash("dataAnaly:orderSummaryDay:1" );
-        Map<String, Object> a = redisCache.getAllHash("fd" );
-        Object login = redisCache.getCacheObject("login");
+//        System.out.println(orderSummaryTimePeriodMapper.selectById(1));
+        OrderSummaryTimePeriod orderSummaryTimePeriod = new OrderSummaryTimePeriod();
+        orderSummaryTimePeriod.setTimePeriod("45");
+        orderSummaryTimePeriod.setShopId(1L);
+        orderSummaryTimePeriodMapper.insert(orderSummaryTimePeriod);
     }
 }

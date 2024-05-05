@@ -20,6 +20,7 @@ public class ShopListDto implements Serializable {
 
     private Long shopId;
 
+
     /**
      * 商品简介
      */

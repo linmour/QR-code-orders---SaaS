@@ -40,7 +40,7 @@ public class ProductInfoPageDto extends PageParam implements Serializable {
     /**
      * 商品状态 0下架 1上架
      */
-   
+
     private Integer status;
 
     /**

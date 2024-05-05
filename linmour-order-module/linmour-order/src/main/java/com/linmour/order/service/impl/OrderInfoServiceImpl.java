@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linmour.mq.KafkaProducer;
+import com.linmour.order.feign.SystemFeign;
 import com.linmour.order.pojo.Dto.*;
 import com.linmour.security.dtos.Result;
 import com.linmour.security.utils.RedisCache;
@@ -22,12 +23,15 @@ import com.linmour.order.service.OrderInfoService;
 import com.linmour.order.service.OrderItemService;
 import com.linmour.order.utils.IdGenerateUtil;
 
+import com.linmour.system.pojo.Do.Merchant;
+import com.linmour.system.pojo.Do.Shop;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,6 +64,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private RedisCache redisCache;
     @Resource
     private RedissonClient redissonClient;
+    @Resource
+    private SystemFeign systemFeign;
 
 
     @Override
@@ -69,7 +75,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         OrderInfo orderInfo = new OrderInfo();
         String orderId;
         String tableId = createOrderDto.getTableId().toString();
-        String productKey = PRODUCT + ":" + getShopId();
         String orderInfoKey = ORDERINFO + ":" + getShopId() + ":" + tableId;
         String orderItemKey = ORDER_ITEM + ":" + getShopId() + ":" + tableId;
 
@@ -98,16 +103,18 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderInfo.setRemark(redisCache.getHashValue(orderInfoKey, "remark").toString());
         }
         createOrderDto.setOrderId(orderId);
+        List<OrderItem> orderItems = createOrderDto.getOrderItems();
+        //扣减库存
+        List<Long> productIds = orderItems.stream().map(OrderItem::getProductId).collect(Collectors.toList());
+        productFeign.reduceInventories(productIds);
 
 
         //推送到mq，由webstock推送给餐厅订单来了
         Result<Object> result1 = new Result<>();
-        //为了方便拿到shopid
-        result1.setMsg(getShopId().toString());
-        SeatOrderDto seatOrderDto = new SeatOrderDto(orderInfo.getId(), orderInfo.getPayAmount().toString(), orderInfo.getTableId().toString(), createOrderDto.getOrderItems());
+        SeatOrderDto seatOrderDto = new SeatOrderDto(orderInfo.getId(), orderInfo.getPayAmount().toString(), orderInfo.getTableId().toString(), orderItems);
         result1.setData(seatOrderDto);
 //            producerMq.orderCreationCompleted(result1);
-        redisCache.setCacheList(orderItemKey, createOrderDto.getOrderItems());
+        redisCache.setCacheList(orderItemKey, orderItems);
 
         return result1;
 
@@ -152,6 +159,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 m.setStatus(1);
             });
             orderItemService.saveBatch(list);
+            //进行流式计算
             kafkaProducer.originalOrder(new OrderAllDto(orderInfo, list));
             //删除缓存中的订单信息
             redisCache.deleteObject(orderInfoKey);
@@ -240,9 +248,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public List<OrderAllDto> GetOrderByShopId(Long shopId) {
+    public List<OrderAllDto> GetOrderByShopId() {
         List<OrderAllDto> orderAllDtos = new ArrayList<>();
-        List<OrderInfo> orderInfos = orderInfoMapper.selectList(new LambdaQueryWrapper<OrderInfo>().eq(OrderInfo::getShopId, shopId));
+        List<OrderInfo> orderInfos = orderInfoMapper.selectList(new LambdaQueryWrapper<OrderInfo>().eq(!ObjectUtil.isNull(getShopId()), OrderInfo::getShopId, getShopId()));
         List<String> orderIds = orderInfos.stream().map(OrderInfo::getId).collect(Collectors.toList());
         List<OrderItem> orderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OrderItem>().in(OrderItem::getOrderId, orderIds));
 
@@ -251,6 +259,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         });
 
         return orderAllDtos;
+    }
+
+    @Override
+    public List<OrderInfoDto> getOrderPayAmount(OrderInfoPage orderInfoPage) {
+        List<OrderInfo> orderInfos = orderInfoMapper.selectList(new LambdaQueryWrapper<OrderInfo>()
+                .eq(!ObjectUtil.isNull(orderInfoPage.getPayType()), OrderInfo::getPayType, orderInfoPage.getPayType())
+                .eq(!ObjectUtil.isNull(orderInfoPage.getShopId()), OrderInfo::getShopId, orderInfoPage.getShopId()));
+        List<OrderInfoDto> orderInfoDtos = BeanUtil.copyToList(orderInfos, OrderInfoDto.class);
+        List<Shop> shopList = systemFeign.getShopByIds(orderInfos.stream().map(OrderInfo::getShopId).collect(Collectors.toList()));
+
+        orderInfoDtos.forEach(m -> {
+            shopList.forEach(n -> {
+                if (m.getShopId().equals(n.getId())){
+                    m.setCommission(m.getPayAmount().multiply(n.getFeeRate().divide(new BigDecimal("100"))));
+                    System.out.println(n.getFeeRate().divide(new BigDecimal("100")));
+                    m.setShopName(n.getName());
+                }
+            });
+        });
+
+        return orderInfoDtos;
     }
 }
 

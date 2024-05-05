@@ -2,6 +2,8 @@ package com.linmour.product.pojo.Dto;
 
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.linmour.product.pojo.Do.ProductInventory;
+import com.linmour.product.pojo.Do.RProductInventoty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -67,6 +69,7 @@ public class ProductDetailDto implements  Serializable  {
     private BigDecimal price;
     private String sort;
     private List<ProductSortAndOption> productSortAndOptions;
+    private List<ProductInventoryAllDto> inventoryAllList;
 
 
 

@@ -14,7 +14,10 @@ import static com.linmour.security.utils.SecurityUtils.getShopId;
 public class FeignRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
-        template.header("Token","1");
-        template.header("Shopid",getShopId().toString());
+        template.header("Token", "1");
+        if (getShopId() == null)
+            template.header("Shopid", "0");
+        else
+            template.header("Shopid", getShopId().toString());
     }
 }

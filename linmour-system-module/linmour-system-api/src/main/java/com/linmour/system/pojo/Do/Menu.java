@@ -51,9 +51,6 @@ public class Menu implements Serializable {
     @TableField(value = "permissions")
     private String permissions;
 
-    @TableField(value = "sort")
-    private String sort;
-
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

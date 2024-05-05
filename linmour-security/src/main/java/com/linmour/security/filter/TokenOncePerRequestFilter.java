@@ -59,7 +59,7 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
             //TODO 为了方便测试
             if (token.equals("1")) {
                 LoginUser loginUser = new LoginUser();
-                loginUser.setLoginVo(new LoginVo(1L));
+                loginUser.setLoginVo(new LoginVo(1L,1));
                 if (shopId != null)
                     loginUser.getLoginVo().setShopId(Long.valueOf(shopId));
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
@@ -77,8 +77,10 @@ public class TokenOncePerRequestFilter extends OncePerRequestFilter {
                     return;
                 }
                 LoginUser user = JSON.toJavaObject(redisCache.getCacheObject(USER_LOGIN_KEY + id), LoginUser.class);
-                if (shopId != null && !Objects.isNull(user))
+                if (shopId != null && !Objects.isNull(user)){
                     user.getLoginVo().setShopId(Long.valueOf(shopId));
+                }else
+                    user.getLoginVo().setShopId(null);
 
                 if (Objects.isNull(user)) {
                     Result result = Result.error(NEED_LOGIN);

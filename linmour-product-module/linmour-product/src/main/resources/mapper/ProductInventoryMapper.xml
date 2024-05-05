@@ -25,6 +25,11 @@
         update_by,deleted
     </sql>
     <select id="getInventory" resultType="com.linmour.product.pojo.Do.ProductInventory">
-        SELECT a.* FROM product_inventory a WHERE a.product_id IN (#{productIds})
+        SELECT a.* FROM product_inventory a
+        <where>
+            <if test="shopId != 0">
+                AND a.shop_id = #{shopId}
+            </if>
+        </where>
     </select>
 </mapper>

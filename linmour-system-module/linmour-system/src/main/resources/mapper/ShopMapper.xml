@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linmour.system.mapper.ShopMapper">
+
+    <resultMap id="BaseResultMap" type="com.linmour.system.pojo.Do.Shop">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="certificate" column="certificate" jdbcType="VARCHAR"/>
+            <result property="intro" column="intro" jdbcType="VARCHAR"/>
+            <result property="shopStatus" column="status" jdbcType="TINYINT"/>
+            <result property="auditStatus" column="audit_status" jdbcType="TINYINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="position" column="position" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,certificate,
+        intro,status,audit_status,
+        parent_id,merchant_id,position,
+        create_time,update_time,deleted
+    </sql>
+</mapper>

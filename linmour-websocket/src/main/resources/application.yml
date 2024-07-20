@@ -1,0 +1,41 @@
+server:
+  port: 12805
+spring:
+  application:
+    name: linmour-websocket
+  main:
+    allow-bean-definition-overriding: true
+
+
+
+# grpc配置
+grpc:
+  server:
+    port: 20001
+  # grpc clienT相关配置
+  client:
+    # 服务名（不同服务名可对应不同配置）
+    # nacos-grpc是服务端配置的名字，GrpcClient注解会用到
+    order-grpc:
+      address: 'static://127.0.0.1:29898'
+      # 是否开启保持连接（长连接）
+      enableKeepAlive: true
+      # 保持连接时长（默认20s）
+      keepAliveTimeout: 20s
+      # 没有RPC调用时是否保持连接（默认false，可禁用避免额外消耗CPU）
+      keepAliveWithoutCalls: false
+      # 客户端负载均衡策略(round_robin（默认）, pick_first)
+      defaultLoadBalancingPolicy: round_robin
+      # 通信类型
+      # plaintext | plaintext_upgrade | tls
+      # 明文通信且http/2 | 明文通信且升级http/1.1为http/2 | 使用TLS（ALPN/NPN）通信
+      negotiationType: plaintext
+
+---
+spring:
+  redis:
+    # password: 123456
+    # host: 192.168.1.135
+    password: cheng128
+    host: 120.79.7.243
+    database: 2

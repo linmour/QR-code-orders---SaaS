@@ -1,0 +1,60 @@
+server:
+  port: 12803
+spring:
+  application:
+    name: linmour-restaurant
+  profiles:
+    active: dev
+
+---
+spring:
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size:  100MB
+      # 设置总上传的文件大小
+      max-request-size:  200MB
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://120.79.7.243:3306/lsc_restaurant?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    username: root
+    password: cheng128
+# 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.linmour.restaurant.pojo
+  global-config:
+    db-config:
+      #      设置逻辑删除，在执行sql时会自动拼接
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      #      用数据库的id自增，要不然用的是雪花算法
+      id-type: auto
+wx:
+  appid: wx2728606f5f2b4621
+  secret: 9ecbe72e173907443e9742803a980533
+
+---
+spring:
+  redis:
+    # password: 123456
+    # host: 192.168.1.135
+    password: cheng128
+    host: 120.79.7.243
+    database: 2
+redisson:
+  codec: org.redisson.codec.JsonJacksonCodec
+  threads: 4
+  netty:
+    threads: 4
+  single-server-config:
+    # address: "redis://192.168.1.135:6379"
+    # password: 123456
+    address: "redis://120.79.7.243:6379"
+    password: cheng128
+    database: 2

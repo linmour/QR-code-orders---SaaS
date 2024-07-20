@@ -1,0 +1,103 @@
+jwt:
+  signing-key: qmPlus
+  expires-time: 7d
+  buffer-time: 1d
+  issuer: qmPlus
+# zap logger configuration
+zap:
+  level: info
+  format: console
+  prefix: "[gva/server]"
+  director: log
+  show-line: true
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  log-in-console: true
+
+# redis configuration
+redis:
+  #是否使用redis集群模式
+  useCluster: false
+  #使用集群模式addr和db默认无效
+  addr: 120.79.7.243:6379
+  password: "cheng128"
+  db: 2
+#  clusterAddrs:
+#    - "172.21.0.3:7000"
+#    - "172.21.0.4:7001"
+#    - "172.21.0.2:7002"
+
+#mongo:
+#  coll: ''
+#  options: ''
+#  database: 'mall'
+#  username: 'admin'
+#  password: '123456'
+#  auth-source: ''
+#  min-pool-size: 0
+#  max-pool-size: 100
+#  socket-timeout-ms: 0
+#  connect-timeout-ms: 0
+#  is-zap: true
+#  hosts:
+#    - host: '127.0.0.1'
+#      port: '27017'
+
+mysql:
+  path: "120.79.7.243"
+  port: 3306
+  config: "charset=utf8mb4&parseTime=True&loc=Local"
+  db-name: "lsc_order"
+  username: "root"
+  password: "cheng128"
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: "debug"
+  log-zap: false
+
+logger:
+  level: info
+  prefix: '[gva]'
+  director: log
+  show_line: true
+  log_in_console: true
+
+system:
+  host: local
+  port: 12804
+  env: dev
+  db-type: mysql
+  oss-type: local # 控制oss选择走本地还是 七牛等其他仓 自行增加其他oss仓可以在 server/utils/upload/upload.go 中 NewOss函数配置
+  use-redis: true # 使用redis
+  use-mongo: false     # 使用mongo
+  use-multipoint: false
+  # IP限制次数 一个小时15000次
+  iplimit-count: 15000
+  #  IP限制一个小时
+  iplimit-time: 3600
+  #  路由全局前缀
+  router-prefix: ""
+
+# local configuration
+local:
+  path: uploads/file
+  store-path: uploads/file
+  
+# autocode configuration
+autocode:
+  transfer-restart: true
+  # root 自动适配项目根目录
+  # 请不要手动配置,他会在项目加载的时候识别出根路径
+  root: ""
+  server: /server
+  server-plug: /plugin/%s
+  server-api: /api/%s
+  server-initialize: /initialize
+  server-model: /model/%s
+  server-request: /model/%s/request/
+  server-router: /router/%s
+  server-service: /service/%s
+  web: /web/src
+  web-api: /api
+  web-form: /view
+  web-table: /view

@@ -1,0 +1,33 @@
+
+syntax = "proto3"; // 协议版本
+import "google/protobuf/any.proto";
+package service;
+// 选项配置
+option java_multiple_files = true;
+//生成位置
+option java_package = "com.linmour.system.grpc";
+option java_outer_classname = "grpc";
+
+service System {
+  rpc getShopByIds(LongList) returns (Result1){}
+  rpc getMerchantByIds(LongList) returns (Result1){}
+}
+
+
+
+
+message LongList {
+  repeated int64 values = 1;
+}
+
+// 定义一个通用的响应消息类型
+message Result1 {
+  int32 code = 1; // 响应编码
+  string msg = 2; // 响应提示信息
+  bytes  data = 3; // 响应内容，使用Any类型来传递任意类型的消息
+}
+// 定义一个通用的响应消息类型
+message Result2 {
+  int32 code = 1; // 响应编码
+  string msg = 2; // 响应提示信息
+}

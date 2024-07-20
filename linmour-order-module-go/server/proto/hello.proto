@@ -1,0 +1,43 @@
+// 指定当前proto语法的版本，有2和3
+syntax = "proto3";
+// option go_package = "path;name";
+// path表示生成的go文件的存放地址，会自动生成目录，.表示当前目录
+// name表示生成的go文件的包名
+option go_package = ".;service"; // 生成的go文件在上一层目录下的service包里
+// 指定文件生成出来的package
+package service;
+
+service Product {
+  // 简单gRPC
+  rpc getProductDetails(LongList) returns (Result){}
+  rpc reduceInventories(LongList) returns (Result1){}
+
+}
+service System{
+  rpc getShopByIds(LongList) returns (Result){}
+  rpc getMerchantByIds(LongList) returns (Result){}
+}
+service Order {
+  rpc createOrder(Object) returns (Result){}
+}
+
+
+message Object{
+  string  data = 1;
+}
+
+message LongList {
+  repeated int64 values = 1;
+}
+
+// 定义一个通用的响应消息类型
+message Result {
+  int32 code = 1; // 响应编码
+  string msg = 2; // 响应提示信息
+  bytes  data = 3; // 响应内容，使用Any类型来传递任意类型的消息
+}
+// 定义一个通用的响应消息类型
+message Result1 {
+  int32 code = 1; // 响应编码
+  string msg = 2; // 响应提示信息
+}

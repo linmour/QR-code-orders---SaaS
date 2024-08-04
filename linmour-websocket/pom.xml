@@ -54,6 +54,11 @@
             <groupId>com.linmour</groupId>
             <artifactId>linmour-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>  <!-- 请使用最新的版本号 -->
+        </dependency>
     </dependencies>
 
     <build>
